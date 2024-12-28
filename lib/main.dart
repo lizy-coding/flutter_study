@@ -5,14 +5,16 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => CounterModel(),
-      child: MyApp(),
+    ChangeNotifierProvider<CounterModel>(
+      create: (context) => CounterModel(name: 'Default', count: 0),
+      child: const MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -30,12 +32,27 @@ class CounterScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Counter'),
+        title: const Text('Counter'),
       ),
       body: Center(
-        child: Text(
-          'Count: ${counterModel.count}',
-          style: TextStyle(fontSize: 24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Name: ${counterModel.name}',
+              style: const TextStyle(fontSize: 24),
+            ),
+            Text(
+              'Count: ${counterModel.count}',
+              style: const TextStyle(fontSize: 24),
+            ),
+            TextField(
+              onChanged: (value) {
+                counterModel.setName(value);
+              },
+              decoration: const InputDecoration(labelText: 'Enter new name'),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
