@@ -303,7 +303,10 @@ class _ButtonSceneState extends State<ButtonScene> with TickerProviderStateMixin
               foregroundColor: color,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             ),
-            onPressed: onTap,
+            onPressed: () {
+              anim.forward(from: 0.0);  // 添加按钮点击动画触发
+              onTap();                  // 触发点击回调
+            },
             child: Text(text, style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
@@ -345,22 +348,11 @@ class _ButtonSceneState extends State<ButtonScene> with TickerProviderStateMixin
                 itemCount: events.length,
                 reverse: true,
                 itemBuilder: (context, index) {
+                  final timestamp = events[index];
                   return Container(
-                    margin: const EdgeInsets.only(bottom: 4),
-                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-                    decoration: BoxDecoration(
-                      color: color.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.arrow_right, color: color, size: 16),
-                        const SizedBox(width: 4),
-                        Text(
-                          '事件 #${events[index]}',
-                          style: TextStyle(color: color),
-                        ),
-                      ],
+                    // 添加时间戳格式化显示
+                    child: Text('${DateTime.fromMillisecondsSinceEpoch(timestamp).toString().substring(11, 19)}',
+                      style: TextStyle(color: color.withOpacity(0.8))
                     ),
                   );
                 },

@@ -1,6 +1,20 @@
 # debounce_throttle
 
-A new Flutter project.
+```mermaid
+sequenceDiagram
+    participant User
+    participant Throttle
+    participant Function
+    User->>Throttle: 触发事件
+    Throttle->>Function: 检查时间间隔
+    Throttle->>Function: 达到间隔，执行函数
+    User->>Throttle: 再次触发事件
+    Throttle->>Function: 未达间隔，忽略
+    User->>Throttle: 再次触发事件
+    Throttle->>Function: 未达间隔，忽略
+    Note over Throttle,Function: 达到时间间隔
+    Throttle->>Function: 达到间隔，执行函数
+```
 
 ## Getting Started
 
