@@ -54,6 +54,7 @@ flowchart TD
     G2 --> I2[结束]
     H2 --> I2[结束]
 ```
+[isolate](https://github.com/lizy-coding/flutter_study/blob/master/isolate_test/isolate.gif)
 
 ### 如何运行
 ```bash
