@@ -1,3 +1,7 @@
+# isolate_test
+实现一个 demo 探索 isolate 原理
+
+
 # debounce_throttle
 
 实现一个 demo 对比防抖与节流
