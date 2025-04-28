@@ -54,11 +54,11 @@ StreamSubscription 表示对 Stream 的订阅，通过它你可以暂停、恢�
 
 ```mermaid
 flowchart LR
-  A[创建 StreamController] --> B[调用 stream.listen() 订阅]
-  B --> C[调用 controller.add() 推送数据]
+  A[创建 StreamController] --> B[调用 stream.listen 订阅]
+  B --> C[调用 controller.add推送数据]
   C --> D[订阅者 onData 接收数据]
-  B --> E[调用 subscription.cancel() 取消订阅]
-  E --> F[调用 controller.close() 关闭 Stream]
+  B --> E[调用 subscription.cancel取消订阅]
+  E --> F[调用 controller.close 关闭 Stream]
   C --> F
 ```
 
@@ -66,10 +66,11 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-  A[创建 broadcast StreamController] --> B1[订阅者1 调用 stream.listen()]
-  A --> B2[订阅者2 调用 stream.listen()]
-  C[调用 controller.add() 推送数据] --> D1[订阅者1 onData 接收数据]
+  flowchart LR
+  A[创建 broadcast StreamController] --> B1[订阅者1 调用 stream.listen]
+  A --> B2[订阅者2 调用 stream.listen]
+  C[调用 controller.add 推送数据] --> D1[订阅者1 onData 接收数据]
   C --> D2[订阅者2 onData 接收数据]
-  B1 --> E[调用 controller.close() 关闭 Stream]
+  B1 --> E[调用 controller.close 关闭 Stream]
   B2 --> E
 ```
