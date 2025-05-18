@@ -66,7 +66,6 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-  flowchart LR
   A[创建 broadcast StreamController] --> B1[订阅者1 调用 stream.listen]
   A --> B2[订阅者2 调用 stream.listen]
   C[调用 controller.add 推送数据] --> D1[订阅者1 onData 接收数据]
