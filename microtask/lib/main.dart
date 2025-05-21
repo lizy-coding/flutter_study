@@ -272,7 +272,7 @@ class _EventDemoPageState extends State<EventDemoPage> {
     await Future.delayed(const Duration(milliseconds: 500), () {
       _addLog('【事件任务】第二个await的Future执行');
     });
-    
+     
     // 第二个await之后的代码也会被包装成微任务
     _addLog('【微任务】第二个await之后的代码');
     
