@@ -1,5 +1,5 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'features/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,14 +11,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter 事件机制演示',
+      title: 'Flutter 事件机制学习',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const EventDemoPage(title: 'Flutter 事件机制演示'),
+      debugShowCheckedModeBanner: false,
+      home: const HomePage(),
     );
   }
+<<<<<<< HEAD
 }
 
 /// Flutter事件机制示例页面
@@ -279,3 +281,6 @@ class _EventDemoPageState extends State<EventDemoPage> {
     _addLog('【微任务】async函数结束');
   }
 }
+=======
+}
+>>>>>>> 54a9a9a50b1bd7fb3c068ef70582392351489284
