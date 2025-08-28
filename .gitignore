@@ -1,0 +1,118 @@
+# macOS
+.DS_Store
+._.DS_Store
+._*
+
+# Flutter/Dart
+**/build/
+**/android/build/
+**/ios/build/
+**/macos/build/
+**/windows/build/
+**/linux/build/
+**/web/build/
+
+# Flutter generated files
+**/flutter/generated_plugin_registrant.cc
+**/flutter/generated_plugin_registrant.h
+**/flutter/generated_plugins.cmake
+**/flutter/ephemeral/
+
+# Dart/Flutter cache
+**/.dart_tool/
+**/pubspec.lock
+
+# Flutter metadata
+**/.metadata
+
+# IDE files
+**/.vscode/
+**/.idea/
+*.swp
+*.swo
+*~
+
+# Analysis options (usually auto-generated)
+**/analysis_options.yaml
+
+# Android generated files
+**/android/.gradle/
+**/android/.gradletasknamecache
+**/android/app/src/main/java/io/flutter/plugins/
+**/android/gradle.properties
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/app/build.gradle.kts
+**/android/build.gradle.kts
+**/android/settings.gradle.kts
+**/android/gradle/wrapper/
+**/android/.gitignore
+
+# iOS generated files
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Runner.xcworkspace/xcshareddata/swiftpm/
+**/ios/*.pbxuser
+**/ios/*.perspectivev3
+**/ios/*.xcuserstate
+**/ios/.gitignore
+
+# macOS generated files
+**/macos/Flutter/ephemeral/
+**/macos/Flutter/Generated.xcconfig
+**/macos/Flutter/flutter_export_environment.sh
+**/macos/Runner.xcworkspace/xcshareddata/swiftpm/
+**/macos/*.pbxuser
+**/macos/*.perspectivev3
+**/macos/*.xcuserstate
+
+# Windows generated files
+**/windows/flutter/generated_plugin_registrant.cc
+**/windows/flutter/generated_plugin_registrant.h
+**/windows/flutter/generated_plugins.cmake
+
+# Linux generated files
+**/linux/flutter/generated_plugin_registrant.cc
+**/linux/flutter/generated_plugin_registrant.h
+**/linux/flutter/generated_plugins.cmake
+
+# Web generated files
+**/web/manifest.json
+**/web/icons/
+**/web/favicon.png
+**/web/index.html
+
+# Resource files (commonly auto-generated)
+**/android/app/src/main/res/
+**/android/app/src/debug/AndroidManifest.xml
+**/android/app/src/main/AndroidManifest.xml
+**/android/app/src/profile/AndroidManifest.xml
+**/android/app/src/main/kotlin/
+
+# iOS resource files
+**/ios/Runner/Assets.xcassets/
+**/ios/Runner/Base.lproj/
+**/ios/Runner/*.plist
+**/ios/Runner/*.swift
+**/ios/Runner/*.h
+**/ios/RunnerTests/
+
+# macOS resource files  
+**/macos/Runner/Assets.xcassets/
+**/macos/Runner/Base.lproj/
+**/macos/Runner/Configs/
+**/macos/Runner/*.plist
+**/macos/Runner/*.swift
+**/macos/Runner/*.entitlements
+**/macos/RunnerTests/
+
+# Windows resource files
+**/windows/runner/
+**/windows/CMakeLists.txt
+
+# Generated test files
+**/test/widget_test.dart
