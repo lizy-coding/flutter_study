@@ -3,6 +3,7 @@ import 'dart:isolate';
 import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'task_manager.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,41 +25,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// 任务模型
-class Task {
-  final int id;
-  final String name;
-  int progress;
-  bool isCompleted;
-  Isolate? isolate;
-  ReceivePort? receivePort;
-  StreamSubscription<dynamic>? subscription;
-  final Color color;
-
-  Task({
-    required this.id,
-    required this.name,
-    this.progress = 0,
-    this.isCompleted = false,
-  }) : color = _getRandomColor();
-
-  static Color _getRandomColor() {
-    final random = Random();
-    return Color.fromRGBO(
-      random.nextInt(200) + 55, // 确保颜色不太暗
-      random.nextInt(200) + 55,
-      random.nextInt(200) + 55,
-      1.0,
-    );
-  }
-
-  void dispose() {
-    isolate?.kill(priority: Isolate.immediate);
-    subscription?.cancel();
-    receivePort?.close();
-  }
-}
-
 class MultiTaskIsolatePage extends StatefulWidget {
   const MultiTaskIsolatePage({super.key, required this.title});
 
@@ -69,81 +35,59 @@ class MultiTaskIsolatePage extends StatefulWidget {
 }
 
 class _MultiTaskIsolatePageState extends State<MultiTaskIsolatePage> {
-  final List<Task> _tasks = [];
-  int _nextTaskId = 1;
+  late final TaskManager _taskManager;
+
+  @override
+  void initState() {
+    super.initState();
+    _taskManager = TaskManager(
+      onTaskUpdate: (task) {
+        // 任务更新时刷新UI
+        setState(() {});
+      },
+      onTaskComplete: (task) {
+        // 任务完成时可以执行一些操作
+        // 在这里我们只需要刷新UI
+        setState(() {});
+      },
+    );
+  }
 
   @override
   void dispose() {
-    // 清理所有任务资源
-    for (final task in _tasks) {
-      task.dispose();
-    }
+    // 清理任务管理器资源
+    _taskManager.dispose();
     super.dispose();
   }
 
   // 创建并启动新任务
   void _startNewTask() {
-    final task = Task(
-      id: _nextTaskId++,
-      name: '任务 ${_nextTaskId - 1}',
-    );
-
-    setState(() {
-      _tasks.add(task);
-    });
-
-    _startTaskInIsolate(task);
+    _taskManager.startNewTask();
+    setState(() {});
   }
 
-  // 在Isolate中启动任务
-  void _startTaskInIsolate(Task task) async {
-    task.receivePort = ReceivePort();
+  // 暂停任务
+  void _pauseTask(Task task) {
+    _taskManager.pauseTask(task);
+    setState(() {});
+  }
 
-    // 启动Isolate，传递任务ID和sendPort
-    task.isolate = await Isolate.spawn(
-      _taskIsolate,
-      {
-        'sendPort': task.receivePort!.sendPort,
-        'taskId': task.id,
-      },
-    );
-
-    // 监听任务进度更新
-    task.subscription = task.receivePort!.listen((dynamic data) {
-      if (data is Map<String, dynamic>) {
-        final int taskId = data['taskId'];
-        final Task? updatedTask = _tasks.firstWhereOrNull((t) => t.id == taskId);
-
-        if (updatedTask != null) {
-          setState(() {
-            if (data.containsKey('progress')) {
-              updatedTask.progress = data['progress'];
-            }
-            if (data.containsKey('completed')) {
-              updatedTask.isCompleted = data['completed'];
-            }
-          });
-        }
-      }
-    });
+  // 恢复任务
+  void _resumeTask(Task task) {
+    _taskManager.resumeTask(task);
+    setState(() {});
   }
 
   // 停止特定任务
   void _stopTask(Task task) {
-    setState(() {
-      task.dispose();
-      _tasks.remove(task);
-    });
+    _taskManager.stopTask(task);
+    setState(() {});
   }
 
   // 停止所有任务
   void _stopAllTasks() {
-    setState(() {
-      for (final task in _tasks) {
-        task.dispose();
-      }
-      _tasks.clear();
-    });
+    _taskManager.stopAllTasks();
+    setState(() {});
   }
 
   @override
@@ -153,7 +97,7 @@ class _MultiTaskIsolatePageState extends State<MultiTaskIsolatePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
         actions: [
-          if (_tasks.isNotEmpty)
+          if (_taskManager.tasks.isNotEmpty)
             IconButton(
               icon: const Icon(Icons.clear_all),
               onPressed: _stopAllTasks,
@@ -161,15 +105,15 @@ class _MultiTaskIsolatePageState extends State<MultiTaskIsolatePage> {
             ),
         ],
       ),
-      body: _tasks.isEmpty
+      body: _taskManager.tasks.isEmpty
           ? const Center(
               child: Text('点击下方按钮添加任务'),
             )
           : ListView.builder(
               padding: const EdgeInsets.all(16.0),
-              itemCount: _tasks.length,
+              itemCount: _taskManager.tasks.length,
               itemBuilder: (context, index) {
-                final task = _tasks[index];
+                final task = _taskManager.tasks[index];
                 return Card(
                   elevation: 4,
                   margin: const EdgeInsets.only(bottom: 12.0),
@@ -210,16 +154,33 @@ class _MultiTaskIsolatePageState extends State<MultiTaskIsolatePage> {
                             Text(
                               task.isCompleted
                                   ? '已完成'
-                                  : '进行中',
+                                  : task.isPaused
+                                      ? '已暂停'
+                                      : '进行中',
                               style: TextStyle(
                                 color: task.isCompleted
                                     ? Colors.green
-                                    : Colors.blue,
+                                    : task.isPaused
+                                        ? Colors.orange
+                                        : Colors.blue,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
                         ),
+                        if (!task.isCompleted)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                icon: Icon(task.isPaused ? Icons.play_arrow : Icons.pause),
+                                onPressed: task.isPaused
+                                    ? () => _resumeTask(task)
+                                    : () => _pauseTask(task),
+                                tooltip: task.isPaused ? '继续任务' : '暂停任务',
+                              ),
+                            ],
+                          ),
                       ],
                     ),
                   ),
@@ -233,40 +194,4 @@ class _MultiTaskIsolatePageState extends State<MultiTaskIsolatePage> {
       ),
     );
   }
-}
-
-// Isolate中执行的任务函数
-void _taskIsolate(dynamic message) {
-  final SendPort sendPort = message['sendPort'];
-  final int taskId = message['taskId'];
-  final Random random = Random();
-  int progress = 0;
-  
-  // 每个任务的完成时间随机（10-30秒）
-  final int totalSteps = random.nextInt(20) + 10;
-  final int delayMs = random.nextInt(500) + 300;
-  
-  // 创建定时器模拟任务执行
-  Timer.periodic(Duration(milliseconds: delayMs), (timer) {
-    // 每次进度随机增加（2-8%）
-    final int progressIncrement = random.nextInt(7) + 2;
-    progress = min(progress + progressIncrement, 100);
-    
-    // 发送进度更新
-    sendPort.send({
-      'taskId': taskId,
-      'progress': progress,
-      'completed': progress >= 100,
-    });
-    
-    // 任务完成时停止定时器
-    if (progress >= 100 || timer.tick >= totalSteps) {
-      sendPort.send({
-        'taskId': taskId,
-        'progress': 100,
-        'completed': true,
-      });
-      timer.cancel();
-    }
-  });
 }
