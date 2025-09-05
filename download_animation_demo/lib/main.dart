@@ -234,14 +234,10 @@ class _DownloadAnimationPageState extends State<DownloadAnimationPage>
                   color: Colors.transparent,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(20),
-                    onTap: () {
-                      final RenderBox renderBox = context.findRenderObject() as RenderBox;
-                      final position = renderBox.localToGlobal(Offset.zero);
-                      final itemPosition = Offset(
-                        position.dx + renderBox.size.width - 40,
-                        position.dy + (index * 80) + 100,
-                      );
-                      
+                    onTapDown: (TapDownDetails details) {
+                      // 直接使用点击位置作为动画起始点
+                      final itemPosition = details.globalPosition;
+                         
                       _startDownload(
                         file['name'] as String,
                         file['size'] as String,
