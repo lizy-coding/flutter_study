@@ -1,4 +1,4 @@
-name: isolate_stream_demo
+name: download_animation_demo
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -31,12 +31,10 @@ dependencies:
   flutter:
     sdk: flutter
 
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-
-  # Collection package for utility functions like firstWhereOrNull
-  collection: ^1.18.0
 
 dev_dependencies:
   flutter_test:
