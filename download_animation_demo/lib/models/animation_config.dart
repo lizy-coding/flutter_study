@@ -4,12 +4,14 @@ class AnimationConfig {
   final double flyingItemOffset; // 飞入点的偏移量
   final double flyingItemPadding; // 飞入点内边距
   final double flyingItemRadius; // 飞入点圆角
+  final double flyingSpeed; // 飞入动效速度倍数（1.0为正常速度）
 
   const AnimationConfig({
     this.animationDuration = 1500,
     this.flyingItemOffset = 30.0,
     this.flyingItemPadding = 8.0,
     this.flyingItemRadius = 8.0,
+    this.flyingSpeed = 1.0,
   });
 
   /// 创建一个可修改的配置副本
@@ -18,12 +20,14 @@ class AnimationConfig {
     double? flyingItemOffset,
     double? flyingItemPadding,
     double? flyingItemRadius,
+    double? flyingSpeed,
   }) {
     return AnimationConfig(
       animationDuration: animationDuration ?? this.animationDuration,
       flyingItemOffset: flyingItemOffset ?? this.flyingItemOffset,
       flyingItemPadding: flyingItemPadding ?? this.flyingItemPadding,
       flyingItemRadius: flyingItemRadius ?? this.flyingItemRadius,
+      flyingSpeed: flyingSpeed ?? this.flyingSpeed,
     );
   }
 
@@ -34,6 +38,7 @@ class AnimationConfig {
       'flyingItemOffset': flyingItemOffset,
       'flyingItemPadding': flyingItemPadding,
       'flyingItemRadius': flyingItemRadius,
+      'flyingSpeed': flyingSpeed,
     };
   }
 
@@ -44,6 +49,7 @@ class AnimationConfig {
       flyingItemOffset: map['flyingItemOffset'],
       flyingItemPadding: map['flyingItemPadding'],
       flyingItemRadius: map['flyingItemRadius'],
+      flyingSpeed: map['flyingSpeed'] ?? 1.0,
     );
   }
 }

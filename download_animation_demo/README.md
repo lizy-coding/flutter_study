@@ -27,6 +27,7 @@
 | `flyingItemOffset` | double | 30.0 | 飞入点的偏移量（控制大小） | 10-50 |
 | `flyingItemPadding` | double | 8.0 | 飞入点内边距 | 4-16 |
 | `flyingItemRadius` | double | 8.0 | 飞入点圆角半径 | 4-16 |
+| `flyingSpeed` | double | 1.0 | 飞入动效速度倍数（1.0为正常速度） | 0.5-3.0 |
 
 ### 参数设置方法
 
@@ -39,6 +40,7 @@ DownloadAnimationPage(
     flyingItemOffset: 40.0,
     flyingItemPadding: 12.0,
     flyingItemRadius: 12.0,
+    flyingSpeed: 1.5,  // 1.5倍速度
   ),
 )
 ```
@@ -84,6 +86,7 @@ flutter run
 - 飞行元素大小
 - 内边距
 - 圆角半径
+- 飞入动效速度
 
 ## 技术实现要点
 

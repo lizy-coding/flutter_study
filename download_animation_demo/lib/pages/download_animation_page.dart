@@ -74,7 +74,7 @@ class _DownloadAnimationPageState extends State<DownloadAnimationPage>
 
   void _animateDownload(DownloadItem item) {
     final animationController = AnimationController(
-      duration: Duration(milliseconds: animationConfig.animationDuration),
+      duration: Duration(milliseconds: (animationConfig.animationDuration / animationConfig.flyingSpeed).round()),
       vsync: this,
     );
 
@@ -89,8 +89,8 @@ class _DownloadAnimationPageState extends State<DownloadAnimationPage>
     ).animate(curveAnimation);
 
     final scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.0,
+      begin: 1.2,
+      end: 0.2,
     ).animate(CurvedAnimation(
       parent: animationController,
       curve: const Interval(0.7, 1.0, curve: Curves.easeIn),
@@ -285,6 +285,27 @@ class _DownloadAnimationPageState extends State<DownloadAnimationPage>
                 ),
               ],
             ),
+
+            // 飞入速度滑块
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('飞入速度: ${animationConfig.flyingSpeed.toStringAsFixed(1)}x'),
+                Slider(
+                  value: animationConfig.flyingSpeed,
+                  min: 0.5,
+                  max: 3.0,
+                  divisions: 25,
+                  onChanged: (value) {
+                    setState(() {
+                      animationConfig = animationConfig.copyWith(
+                        flyingSpeed: value,
+                      );
+                    });
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -458,22 +479,28 @@ class _DownloadAnimationPageState extends State<DownloadAnimationPage>
             child: Opacity(
               opacity: math.max(0.0, opacity),
               child: Container(
-                padding: EdgeInsets.all(animationConfig.flyingItemPadding),
+                padding: EdgeInsets.all(animationConfig.flyingItemPadding + 4),
                 decoration: BoxDecoration(
                   color: Colors.blue.shade600,
-                  borderRadius: BorderRadius.circular(animationConfig.flyingItemRadius),
+                  borderRadius: BorderRadius.circular(animationConfig.flyingItemRadius + 2),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.blue.shade300,
-                      blurRadius: 8,
-                      spreadRadius: 2,
+                      blurRadius: 12,
+                      spreadRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                    BoxShadow(
+                      color: Colors.blue.shade600.withOpacity(0.3),
+                      blurRadius: 20,
+                      spreadRadius: 8,
                     ),
                   ],
                 ),
                 child: SvgPicture.asset(
                   'assets/icons/paper_plane.svg',
-                  width: 24,
-                  height: 24,
+                  width: 32,
+                  height: 32,
                   colorFilter: const ColorFilter.mode(
                     Colors.white,
                     BlendMode.srcIn,

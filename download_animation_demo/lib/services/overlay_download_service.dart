@@ -72,8 +72,8 @@ class OverlayDownloadService {
     VoidCallback? onComplete,
   ) {
     // 使用单例 Ticker Provider
-    final animationController = AnimationController(
-      duration: Duration(milliseconds: config.animationDuration),
+ final animationController = AnimationController(
+      duration: Duration(milliseconds: (config.animationDuration / config.flyingSpeed).round()),
       vsync: _OverlayTickerProvider(),
     );
     
@@ -88,8 +88,8 @@ class OverlayDownloadService {
     ).animate(curveAnimation);
     
     final scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.0,
+      begin: 1.2,
+      end: 0.2,
     ).animate(CurvedAnimation(
       parent: animationController,
       curve: const Interval(0.7, 1.0, curve: Curves.easeIn),
@@ -145,28 +145,34 @@ class OverlayDownloadService {
             child: Opacity(
               opacity: math.max(0.0, opacity),
               child: Container(
-                padding: EdgeInsets.all(config.flyingItemPadding),
-                decoration: BoxDecoration(
-                  color: Colors.green.shade600, // 使用不同颜色区分
-                  borderRadius: BorderRadius.circular(config.flyingItemRadius),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.green.shade300,
-                      blurRadius: 8,
-                      spreadRadius: 2,
+                  padding: EdgeInsets.all(config.flyingItemPadding + 4),
+                   decoration: BoxDecoration(
+                     color: Colors.green.shade600,
+                     borderRadius: BorderRadius.circular(config.flyingItemRadius + 2),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.green.shade300,
+                        blurRadius: 12,
+                        spreadRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                      BoxShadow(
+                        color: Colors.green.shade600.withOpacity(0.3),
+                        blurRadius: 20,
+                        spreadRadius: 8,
+                      ),
+                    ],
+                  ),
+                  child: SvgPicture.asset(
+                    'assets/icons/paper_plane.svg',
+                    width: 32,
+                    height: 32,
+                    colorFilter: const ColorFilter.mode(
+                      Colors.white,
+                      BlendMode.srcIn,
                     ),
-                  ],
-                ),
-                child: SvgPicture.asset(
-                  'assets/icons/paper_plane.svg',
-                  width: 24,
-                  height: 24,
-                  colorFilter: const ColorFilter.mode(
-                    Colors.white,
-                    BlendMode.srcIn,
                   ),
                 ),
-              ),
             ),
           ),
         );
