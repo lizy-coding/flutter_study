@@ -128,30 +128,54 @@ class DrawingCanvasPainter extends CustomPainter {
   }
 
   /// 绘制吸附线
+  /// 只有当元素进入吸附阈值范围内时才显示吸附线
   void _drawSnapLines(Canvas canvas, Size canvasSize) {
     if (selectedElement == null) return;
 
-    final snapLines = AdsorptionManager.calculateSnapLines(
+    // 使用新的可见吸附线方法
+    final visibleSnapLines = AdsorptionManager.getVisibleSnapLines(
       elements,
       selectedElement,
     );
 
+    if (visibleSnapLines.isEmpty) return;
+
     final snapLinePaint = Paint()
-      ..color = Colors.red.withOpacity(0.6)
-      ..strokeWidth = 1.0
+      ..color = Colors.red.withOpacity(0.8)
+      ..strokeWidth = 1.5
       ..style = PaintingStyle.stroke;
 
-    for (final snapLine in snapLines) {
+    for (final snapLine in visibleSnapLines) {
       Offset start = snapLine.start;
       Offset end = snapLine.end;
 
-      // 调整线条长度以适应画布
+      // 调整线条长度以适应画布，但让线条更贴近元素
       if (snapLine.type == SnapType.vertical) {
-        start = Offset(snapLine.start.dx, 0);
-        end = Offset(snapLine.start.dx, canvasSize.height);
+        // 计算垂直线的合理范围
+        double minY = double.infinity;
+        double maxY = double.negativeInfinity;
+        
+        for (final element in elements) {
+          final bounds = element.bounds;
+          minY = math.min(minY, bounds.top - 20);
+          maxY = math.max(maxY, bounds.bottom + 20);
+        }
+        
+        start = Offset(snapLine.start.dx, math.max(0, minY));
+        end = Offset(snapLine.start.dx, math.min(canvasSize.height, maxY));
       } else if (snapLine.type == SnapType.horizontal) {
-        start = Offset(0, snapLine.start.dy);
-        end = Offset(canvasSize.width, snapLine.start.dy);
+        // 计算水平线的合理范围
+        double minX = double.infinity;
+        double maxX = double.negativeInfinity;
+        
+        for (final element in elements) {
+          final bounds = element.bounds;
+          minX = math.min(minX, bounds.left - 20);
+          maxX = math.max(maxX, bounds.right + 20);
+        }
+        
+        start = Offset(math.max(0, minX), snapLine.start.dy);
+        end = Offset(math.min(canvasSize.width, maxX), snapLine.start.dy);
       }
 
       _drawDashedLine(canvas, start, end, snapLinePaint);

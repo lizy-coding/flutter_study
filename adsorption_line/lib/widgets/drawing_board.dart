@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../models/drawing_element.dart';
 import '../state/drawing_state.dart';
@@ -18,6 +17,13 @@ class _DrawingBoardState extends State<DrawingBoard> {
   ElementType _selectedTool = ElementType.rectangle;
   Color _selectedColor = Colors.blue;
   double _strokeWidth = 2.0;
+
+  @override
+  void dispose() {
+    // 清理吸附管理器的计时器
+    AdsorptionManager.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -321,14 +327,14 @@ class _DrawingBoardState extends State<DrawingBoard> {
     final drawingState = context.read<DrawingState>();
 
     if (drawingState.isDragging && drawingState.selectedElement != null) {
-      // 使用吸附管理器计算吸附位置
-      final snappedPosition = AdsorptionManager.snapPosition(
+      // 应用磁吸效果的拖拽逻辑
+      final magneticPosition = AdsorptionManager.applyMagneticEffect(
         position,
         drawingState.elements,
         drawingState.selectedElement!,
       );
 
-      drawingState.updateDrag(snappedPosition);
+      drawingState.updateDrag(magneticPosition);
     }
   }
 
