@@ -341,6 +341,20 @@ class _DrawingBoardState extends State<DrawingBoard> {
   /// 处理拖拽结束
   void _handlePanEnd() {
     final drawingState = context.read<DrawingState>();
+
+    // 在拖拽结束时应用最终的磁吸效果
+    if (drawingState.selectedElement != null) {
+      AdsorptionManager.applyMagneticEffect(
+        drawingState.selectedElement!.position,
+        drawingState.elements,
+        drawingState.selectedElement!,
+        onElementSnapped: (snappedElement) {
+          // 更新元素的最终坐标
+          drawingState.updateElement(snappedElement);
+        },
+      );
+    }
+
     drawingState.endDrag();
   }
 }
