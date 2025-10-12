@@ -1,17 +1,18 @@
 # 下载飞入动画演示
 
-这是一个使用Flutter开发的下载飞入动画演示项目，展示了文件下载时的流畅动画效果。项目提供了两种不同的实现方式：**自定义 View 实现**和**Overlay 实现**，用户可以对比两种方案的效果差异。
+这是一个使用Flutter开发的下载飞入动画演示项目，展示了文件下载时的流畅动画效果。项目提供了三种不同的实现方式：**自定义 View 实现**、**Paint 绘制动画**和**Overlay 实现**，用户可以对比多种方案的效果差异。
 
 ## 功能特性
 
 ### 🎯 核心功能
-- **双重实现方案**：提供自定义 View 和 Overlay 两种下载动效实现
-- **效果对比页面**：并排展示两种实现方式，便于直观对比
+- **三种实现方案**：提供自定义 View、Paint 绘制和 Overlay 三种下载动效实现
+- **效果对比页面**：并排展示不同实现方式，便于直观对比
 - **动画参数控制**：实时调整动画参数，观察效果变化
 - **响应式设计**：适配不同屏幕尺寸和设备
 
 ### 🔧 技术特性
 - **自定义 View 实现**：基于 Stack 和 Positioned 的传统实现方式
+- **Paint 绘制实现**：使用 CustomPaint 和 Canvas API 直接绘制动画
 - **Overlay 实现**：基于全局 Overlay 的高级实现，不受视图层级限制
 - **单例服务**：Overlay 服务采用单例模式，确保全局唯一性
 - **资源管理**：完善的动画清理和资源释放机制
@@ -34,7 +35,7 @@
 1. **通过代码传入配置**：在创建`DownloadAnimationPage`时，可以通过构造函数传入自定义的`AnimationConfig`对象：
 
 ```dart
-DownloadAnimationPage(
+class DownloadAnimationPage (
   animationConfig: AnimationConfig(
     animationDuration: 2000,  // 2秒
     flyingItemOffset: 40.0,
@@ -58,6 +59,7 @@ lib/
 │   └── overlay_download_item.dart # Overlay 动画数据模型
 ├── pages/
 │   ├── download_animation_page.dart    # 自定义 View 下载动画页面
+│   ├── paint_animation_page.dart       # Paint 绘制动画页面
 │   └── download_comparison_page.dart   # 两种实现方式对比页面
 └── services/
     └── overlay_download_service.dart   # Overlay 下载动效服务类
@@ -73,10 +75,11 @@ flutter run
 
 ### 2. 功能导航
 
-启动应用后，主页面提供两个选项：
+启动应用后，主页面提供三个选项：
 
 - **自定义 View 实现**：体验基于 Stack 和 Positioned 的传统实现方式
-- **效果对比页面**：并排对比两种实现方式的差异
+- **Paint 绘制动画**：体验使用 CustomPaint 和 Canvas API 绘制的动画效果
+- **效果对比页面**：并排对比 Custom View 和 Overlay 实现方式的差异
 
 ### 3. 参数调整
 
@@ -97,6 +100,18 @@ flutter run
 - **状态管理**：使用 StatefulWidget 和 setState 管理 UI 状态
 - **参数配置**：通过 AnimationConfig 类统一管理动画参数
 
+### 🖌️ Paint 绘制实现
+
+- **CustomPainter**：继承 CustomPainter 实现自定义绘制逻辑
+- **Canvas API**：使用 Canvas 的 drawCircle、drawPath 等方法直接绘制
+- **视觉效果**：
+  - 多层光晕效果（MaskFilter.blur）
+  - 径向渐变圆圈（RadialGradient）
+  - Path 绘制自定义图标
+  - 运动轨迹尾迹效果
+- **性能优化**：通过 shouldRepaint 控制重绘时机
+- **动画集成**：使用 Listenable.merge 监听多个 AnimationController
+
 ### 🌐 Overlay 实现
 
 - **全局覆盖**：使用 Flutter 的 Overlay 系统实现全局动画效果
@@ -108,19 +123,20 @@ flutter run
 
 - **模块分离**：Models、Services、Pages 分层架构，职责清晰
 - **可扩展性**：支持通过配置对象自定义动画参数
-- **代码复用**：两种实现方式共享动画配置和数据模型
+- **代码复用**：三种实现方式共享动画配置和数据模型
 - **性能优化**：合理的资源管理和动画生命周期控制
 
-## 两种实现方式对比
+## 三种实现方式对比
 
-| 特性 | 自定义 View 实现 | Overlay 实现 |
-|------|-----------------|-------------|
-| **适用场景** | 简单页面内动画 | 复杂视图层级、全局动画 |
-| **实现复杂度** | 较低 | 较高 |
-| **视图层级限制** | 受限于当前页面 | 不受限制，可覆盖任意内容 |
-| **资源管理** | 相对简单 | 需要手动管理 OverlayEntry |
-| **性能影响** | 较小 | 需要注意资源清理 |
-| **使用建议** | 页面内简单动效 | 复杂交互、跨页面动效 |
+| 特性 | 自定义 View 实现 | Paint 绘制实现 | Overlay 实现 |
+|------|-----------------|---------------|-------------|
+| **适用场景** | 简单页面内动画 | 需要丰富视觉效果的动画 | 复杂视图层级、全局动画 |
+| **实现复杂度** | 较低 | 中等 | 较高 |
+| **视觉效果** | 基础 | 丰富（光晕、渐变、尾迹等） | 基础 |
+| **性能** | 良好 | 优秀（直接绘制） | 需要注意资源清理 |
+| **视图层级限制** | 受限于当前页面 | 受限于当前页面 | 不受限制，可覆盖任意内容 |
+| **资源管理** | 相对简单 | 中等 | 需要手动管理 OverlayEntry |
+| **使用建议** | 页面内简单动效 | 需要精细视觉效果的场景 | 复杂交互、跨页面动效 |
 
 ## 开发环境
 

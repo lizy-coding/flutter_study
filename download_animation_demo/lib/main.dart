@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'pages/download_animation_page.dart';
 import 'pages/download_comparison_page.dart';
+import 'pages/paint_animation_page.dart';
 import 'models/animation_config.dart';
 
 void main() {
@@ -109,7 +110,33 @@ class HomePage extends StatelessWidget {
             ),
             
             const SizedBox(height: 16),
-            
+
+            // Paint 绘制动画实现
+            _buildNavigationCard(
+              context: context,
+              title: 'Paint 绘制动画',
+              subtitle: '使用 CustomPaint 实现的动画效果',
+              icon: Icons.brush,
+              color: Colors.teal,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PaintAnimationPage(
+                      animationConfig: AnimationConfig(
+                        animationDuration: 2000,
+                        flyingItemOffset: 30,
+                        flyingItemPadding: 8,
+                        flyingItemRadius: 8,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+
+            const SizedBox(height: 16),
+
             // 对比页面
             _buildNavigationCard(
               context: context,
@@ -155,7 +182,7 @@ class HomePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '• Custom View: 使用 Stack + AnimatedBuilder 实现\n• Overlay: 使用全局 Overlay 实现，不受视图层级限制',
+                    '• Custom View: 使用 Stack + AnimatedBuilder 实现\n• Paint: 使用 CustomPaint 绘制动画\n• Overlay: 使用全局 Overlay 实现，不受视图层级限制',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.blue.shade700,
@@ -193,7 +220,7 @@ class HomePage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha:0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(

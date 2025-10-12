@@ -234,10 +234,12 @@ class _HomePageState extends State<HomePage> {
   void _showAddArticleDialog() {
     final titleController = TextEditingController();
     final contentController = TextEditingController();
+    // Store the scaffold messenger context
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
     
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('添加文章'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -262,7 +264,7 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('取消'),
           ),
           TextButton(
@@ -271,13 +273,13 @@ class _HomePageState extends State<HomePage> {
               final content = contentController.text.trim();
               
               if (title.isEmpty || content.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
+                scaffoldMessenger.showSnackBar(
                   const SnackBar(content: Text('标题和内容不能为空')),
                 );
                 return;
               }
               
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
               
               // 显示加载指示器
               setState(() {
@@ -287,13 +289,16 @@ class _HomePageState extends State<HomePage> {
               try {
                 final result = await _apiService.createArticle(title, content);
                 
+                // Check if the widget is still mounted before updating UI
+                if (!mounted) return;
+                
                 if (result['success'] == true) {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  scaffoldMessenger.showSnackBar(
                     const SnackBar(content: Text('文章创建成功')),
                   );
                   await _refreshArticles();
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  scaffoldMessenger.showSnackBar(
                     SnackBar(content: Text(result['message'] ?? '文章创建失败')),
                   );
                   setState(() {
@@ -301,7 +306,10 @@ class _HomePageState extends State<HomePage> {
                   });
                 }
               } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
+                // Check if the widget is still mounted before updating UI
+                if (!mounted) return;
+                
+                scaffoldMessenger.showSnackBar(
                   SnackBar(content: Text('创建失败: $e')),
                 );
                 setState(() {
