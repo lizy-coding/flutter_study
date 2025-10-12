@@ -2,11 +2,12 @@
 
 这是一个使用Flutter开发的下载飞入动画演示项目，展示了文件下载时的流畅动画效果。项目提供了三种不同的实现方式：**自定义 View 实现**、**Paint 绘制动画**和**Overlay 实现**，用户可以对比多种方案的效果差异。
 
-- Overlay 实现
+### Overlay 实现
+
 ![download](https://github.com/lizy-coding/flutter_study/blob/master/download_animation_demo/assets/download.gif)
 
+### paint 绘制
 
-- paint 绘制
 ![paint_download](https://github.com/lizy-coding/flutter_study/blob/master/download_animation_demo/assets/paint_download.gif)
 
 
