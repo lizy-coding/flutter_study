@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter create:*)",
+      "Bash(flutter pub:*)",
+      "WebFetch(domain:pub.dev)",
+      "Bash(flutter run:*)",
+      "Bash(flutter config:*)",
+      "Bash(git rm:*)",
+      "Bash(true)"
+    ],
+    "deny": []
+  }
+}
