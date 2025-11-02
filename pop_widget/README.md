@@ -14,6 +14,9 @@
 - AboutDialog：通过 AppBar 信息按钮或 Drawer 菜单触发
 - Context Menu（showMenu）：点击列表项在手指位置弹出菜单
 - 退出确认弹窗：返回键触发（`WillPopScope`）
+- 顺序链式弹窗：可按指定顺序打开多个弹窗，并按自定义顺序关闭（示例：打开 A→B→C，关闭 B→A→C）
+  - Navigator 版本：固定示例顺序，带每个弹窗右上角关闭按钮
+  - Overlay 版本：支持在应用内“编辑 Overlay 顺序”按钮拖拽调整打开/关闭顺序；每个弹窗右上角带关闭按钮
 
 ## 运行
 
