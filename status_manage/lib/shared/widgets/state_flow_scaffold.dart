@@ -22,15 +22,13 @@ class StateFlowScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final animatedColor = value.isEven
-        ? colorScheme.primaryContainer.withOpacity(0.4)
-        : colorScheme.secondaryContainer.withOpacity(0.4);
+    final animatedColor =
+        value.isEven
+            ? colorScheme.primaryContainer.withOpacity(0.4)
+            : colorScheme.secondaryContainer.withOpacity(0.4);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(pageTitle),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text(pageTitle), centerTitle: true),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 520),
@@ -48,7 +46,9 @@ class StateFlowScaffold extends StatelessWidget {
             ),
             child: Card(
               elevation: 0,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Column(
@@ -63,21 +63,27 @@ class StateFlowScaffold extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(
                       subtitle,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black54),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: Colors.black54),
                       textAlign: TextAlign.center,
                     ),
                     const Divider(height: 32),
                     AnimatedSwitcher(
                       duration: const Duration(milliseconds: 260),
-                      transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
+                      transitionBuilder:
+                          (child, animation) =>
+                              ScaleTransition(scale: animation, child: child),
                       child: Text(
                         '$value',
                         key: ValueKey(value),
                         textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .displayLarge
-                            ?.copyWith(fontWeight: FontWeight.w700, letterSpacing: 1.5),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.displayLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.5,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -134,14 +140,17 @@ class _FlowTimeline extends StatelessWidget {
           Chip(
             label: Text(
               steps[i],
-              style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
+              style: theme.textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
             avatar: CircleAvatar(
               radius: 10,
-              backgroundColor: theme.colorScheme.primary.withOpacity(0.2),
+              backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.2),
               child: Text('${i + 1}', style: theme.textTheme.labelSmall),
             ),
-            backgroundColor: theme.colorScheme.surfaceVariant.withOpacity(0.6),
+            backgroundColor: theme.colorScheme.surfaceContainerHighest
+                .withValues(alpha: 0.6),
           ),
           if (i != steps.length - 1)
             Icon(Icons.trending_flat, color: theme.colorScheme.primary),
