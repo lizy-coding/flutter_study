@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class RiverpodTodoRoute extends ConsumerWidget {
   const RiverpodTodoRoute({super.key});
 
-  static const routeName = '/riverpod/todo';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

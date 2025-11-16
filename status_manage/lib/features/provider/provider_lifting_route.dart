@@ -4,8 +4,6 @@ import 'package:provider/provider.dart';
 class ProviderLiftingRoute extends StatelessWidget {
   const ProviderLiftingRoute({super.key});
 
-  static const routeName = '/provider/lifting';
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(

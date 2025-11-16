@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class RiverpodLiftingRoute extends ConsumerWidget {
   const RiverpodLiftingRoute({super.key});
 
-  static const routeName = '/riverpod/lifting';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

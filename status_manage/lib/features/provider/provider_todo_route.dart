@@ -6,8 +6,6 @@ import 'package:provider/provider.dart';
 class ProviderTodoRoute extends StatelessWidget {
   const ProviderTodoRoute({super.key});
 
-  static const routeName = '/provider/todo';
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(

@@ -6,8 +6,6 @@ import '../../shared/widgets/state_flow_scaffold.dart';
 class RiverpodRoute extends ConsumerWidget {
   const RiverpodRoute({super.key});
 
-  static const routeName = '/riverpod';
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final count = ref.watch(counterProvider);

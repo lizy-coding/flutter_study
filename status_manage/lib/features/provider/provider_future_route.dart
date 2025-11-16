@@ -4,8 +4,6 @@ import 'package:provider/provider.dart';
 class ProviderFutureRoute extends StatelessWidget {
   const ProviderFutureRoute({super.key});
 
-  static const routeName = '/provider/future';
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(

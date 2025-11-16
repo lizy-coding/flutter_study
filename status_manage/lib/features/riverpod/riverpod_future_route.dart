@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class RiverpodFutureRoute extends ConsumerWidget {
   const RiverpodFutureRoute({super.key});
 
-  static const routeName = '/riverpod/future';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
