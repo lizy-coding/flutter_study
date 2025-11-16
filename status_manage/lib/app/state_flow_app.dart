@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:status_manage/features/provider/provider_future_route.dart';
+import 'package:status_manage/features/provider/provider_lifting_route.dart';
+import 'package:status_manage/features/provider/provider_route.dart';
+import 'package:status_manage/features/provider/provider_todo_route.dart';
+import 'package:status_manage/features/riverpod/riverpod_future_route.dart';
+import 'package:status_manage/features/riverpod/riverpod_lifting_route.dart';
+import 'package:status_manage/features/riverpod/riverpod_route.dart';
+import 'package:status_manage/features/riverpod/riverpod_todo_route.dart';
 
-import '../features/provider/provider_route.dart';
-import '../features/provider/provider_lifting_route.dart';
-import '../features/provider/provider_future_route.dart';
-import '../features/provider/provider_todo_route.dart';
-import '../features/riverpod/riverpod_route.dart';
-import '../features/riverpod/riverpod_lifting_route.dart';
-import '../features/riverpod/riverpod_future_route.dart';
-import '../features/riverpod/riverpod_todo_route.dart';
+import 'app_routes.dart';
+import 'route_paths.dart';
 
 /// 根部 MaterialApp，集中声明路由，避免示例全部堆在 main.dart 中。
 class StateFlowApp extends StatelessWidget {
@@ -23,17 +25,10 @@ class StateFlowApp extends StatelessWidget {
         visualDensity: VisualDensity.standard,
       ),
       routes: {
-        StateFlowHome.routeName: (_) => const StateFlowHome(),
-        ProviderRoute.routeName: (_) => const ProviderRoute(),
-        ProviderLiftingRoute.routeName: (_) => const ProviderLiftingRoute(),
-        ProviderFutureRoute.routeName: (_) => const ProviderFutureRoute(),
-        ProviderTodoRoute.routeName: (_) => const ProviderTodoRoute(),
-        RiverpodRoute.routeName: (_) => const RiverpodRoute(),
-        RiverpodLiftingRoute.routeName: (_) => const RiverpodLiftingRoute(),
-        RiverpodFutureRoute.routeName: (_) => const RiverpodFutureRoute(),
-        RiverpodTodoRoute.routeName: (_) => const RiverpodTodoRoute(),
+        RoutePaths.home: (_) => const StateFlowHome(),
+        ...AppRoutes.routes,
       },
-      initialRoute: StateFlowHome.routeName,
+      initialRoute: RoutePaths.home,
       debugShowCheckedModeBanner: false,
     );
   }
@@ -43,7 +38,7 @@ class StateFlowApp extends StatelessWidget {
 class StateFlowHome extends StatelessWidget {
   const StateFlowHome({super.key});
 
-  static const routeName = '/';
+  
 
   @override
   Widget build(BuildContext context) {
@@ -52,56 +47,56 @@ class StateFlowHome extends StatelessWidget {
         title: 'Provider / ChangeNotifier',
         flow: '事件 → value → notifyListeners → Consumer 重建',
         icon: Icons.extension,
-        routeName: ProviderRoute.routeName,
+        routeName: RoutePaths.provider,
         chipLabel: '依赖收集',
       ),
       _HomeCardData(
         title: 'Provider / 状态提升',
         flow: '父级集中管理 → 子组件共享',
         icon: Icons.vertical_align_top,
-        routeName: ProviderLiftingRoute.routeName,
+        routeName: RoutePaths.providerLifting,
         chipLabel: 'props + 上提',
       ),
       _HomeCardData(
         title: 'Provider / 数据获取',
         flow: '异步加载 → 缓存 → 重建',
         icon: Icons.cloud_download,
-        routeName: ProviderFutureRoute.routeName,
+        routeName: RoutePaths.providerFuture,
         chipLabel: 'FutureBuilder / 缓存',
       ),
       _HomeCardData(
         title: 'Provider / 全局 Todo',
         flow: '列表变更 → notifyListeners',
         icon: Icons.checklist,
-        routeName: ProviderTodoRoute.routeName,
+        routeName: RoutePaths.providerTodo,
         chipLabel: 'ChangeNotifier',
       ),
       _HomeCardData(
         title: 'Riverpod / StateNotifier',
         flow: '事件 → state=new → 容器广播 → 重建',
         icon: Icons.sync_alt,
-        routeName: RiverpodRoute.routeName,
+        routeName: RoutePaths.riverpod,
         chipLabel: '声明式图谱',
       ),
       _HomeCardData(
         title: 'Riverpod / 状态提升',
         flow: 'Provider 图谱共享',
         icon: Icons.vertical_align_top,
-        routeName: RiverpodLiftingRoute.routeName,
+        routeName: RoutePaths.riverpodLifting,
         chipLabel: 'StateNotifierProvider',
       ),
       _HomeCardData(
         title: 'Riverpod / 数据获取',
         flow: 'FutureProvider → when()',
         icon: Icons.cloud_download,
-        routeName: RiverpodFutureRoute.routeName,
+        routeName: RoutePaths.riverpodFuture,
         chipLabel: '缓存与错误处理',
       ),
       _HomeCardData(
         title: 'Riverpod / 全局 Todo',
         flow: '列表不可变 → state 赋值广播',
         icon: Icons.checklist,
-        routeName: RiverpodTodoRoute.routeName,
+        routeName: RoutePaths.riverpodTodo,
         chipLabel: 'StateNotifier',
       ),
     ];

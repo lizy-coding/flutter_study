@@ -6,8 +6,6 @@ import '../../shared/widgets/state_flow_scaffold.dart';
 class ProviderRoute extends StatelessWidget {
   const ProviderRoute({super.key});
 
-  static const routeName = '/provider';
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
