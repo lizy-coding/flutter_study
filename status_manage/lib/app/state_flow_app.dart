@@ -99,6 +99,13 @@ class StateFlowHome extends StatelessWidget {
         routeName: RoutePaths.riverpodTodo,
         chipLabel: 'StateNotifier',
       ),
+      _HomeCardData(
+        title: 'Bloc / flutter_bloc',
+        flow: 'Event → Bloc → emit(State) → 重建',
+        icon: Icons.scatter_plot,
+        routeName: RoutePaths.bloc,
+        chipLabel: '事件驱动 / 不可变状态',
+      ),
     ];
 
     return Scaffold(

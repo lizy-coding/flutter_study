@@ -8,4 +8,5 @@ class RoutePaths {
   static const riverpodLifting = '/riverpod/lifting';
   static const riverpodFuture = '/riverpod/future';
   static const riverpodTodo = '/riverpod/todo';
+  static const bloc = '/bloc';
 }
