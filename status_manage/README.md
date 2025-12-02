@@ -102,12 +102,27 @@
 
 ```text
 lib/
-├── main.dart                      # 仅负责挂 ProviderScope 与 StateFlowApp
-├── app/state_flow_app.dart        # MaterialApp + 首页卡片导航
+├── main.dart                              # 仅负责挂 ProviderScope 与 StateFlowApp
+├── app/state_flow_app.dart                # MaterialApp + 首页卡片导航
+├── app/app_routes.dart                    # 集中路由映射
+├── app/route_paths.dart                   # 统一路由常量
 ├── features/
-│   ├── provider/provider_route.dart   # ChangeNotifier 流程
-│   └── riverpod/riverpod_route.dart   # StateNotifier / Riverpod 流程
-└── shared/widgets/state_flow_scaffold.dart # 统一 UI、动画、时间轴
+│   ├── provider/                          # Provider 场景
+│   │   ├── provider_route.dart            # 基础计数器
+│   │   ├── provider_lifting_route.dart    # 状态提升与共享
+│   │   ├── provider_future_route.dart     # 数据获取与缓存
+│   │   └── provider_todo_route.dart       # 全局 Todo 示例
+│   ├── riverpod/                          # Riverpod 场景
+│   │   ├── riverpod_route.dart            # 基础计数器
+│   │   ├── riverpod_lifting_route.dart    # 状态提升与共享
+│   │   ├── riverpod_future_route.dart     # 数据获取与缓存
+│   │   └── riverpod_todo_route.dart       # 全局 Todo 示例
+│   └── bloc/                              # Bloc 场景（新增）
+│       ├── counter_event.dart             # 事件定义
+│       ├── counter_state.dart             # 状态定义
+│       ├── counter_bloc.dart              # 业务逻辑层
+│       └── bloc_route.dart                # UI 展示与绑定
+└── shared/widgets/state_flow_scaffold.dart# 统一 UI、动画、时间轴
 ```
 
 - `StateFlowHome` 使用卡片描述每条刷新链路，并跳转到对应示例路由。
@@ -119,7 +134,7 @@ lib/
 1. **阅读首页卡片**：先理解 Provider / Riverpod 的链路文字描述，再进入路由体验。
 2. **触发按钮事件**：在页面内点击 “加 1 / 重置”，观察数值动画和时间轴变化。
 3. **查看控制台日志**：结合 `debugPrint` 输出，核对每一步到底发生了什么。
-4. **扩展练习**：可以按照同样的结构新增 Bloc 等路由，只需实现对应的 `flowSteps` 与状态模型。
+4. **扩展练习**：本项目已新增 Bloc 路由（`lib/features/bloc/bloc_route.dart`），对比 Provider 与 Riverpod 的刷新链路与 API 差异。
 
 ## 运行
 
@@ -134,3 +149,11 @@ flutter analyze
 
 > 如果在 WSL 中运行 `flutter` 出现 `'/usr/bin/env: bash\r'` 报错，说明当前使用的是 Windows 发行版的 Flutter，可改在 Windows 终端执行或将脚本行结尾转换为 LF。
 ```
+## Bloc 示例说明
+
+- 入口路由：`lib/features/bloc/bloc_route.dart`
+- 事件与状态：`lib/features/bloc/counter_event.dart`、`lib/features/bloc/counter_state.dart`
+- 业务逻辑：`lib/features/bloc/counter_bloc.dart`
+- 测试用例：`test/bloc_counter_test.dart`
+
+运行交互：在 Bloc 页面点击“加 1 / 重置”，控制台与 UI 将展示 “add(Event) → Bloc 处理 → emit(State) → BlocBuilder 重建” 的完整链路。
