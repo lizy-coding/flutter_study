@@ -10,6 +10,7 @@ class StateFlowScaffold extends StatelessWidget {
     required this.flowSteps,
     required this.onAdd,
     required this.onReset,
+    this.extra,
   });
 
   final String pageTitle;
@@ -18,6 +19,7 @@ class StateFlowScaffold extends StatelessWidget {
   final List<String> flowSteps;
   final VoidCallback onAdd;
   final VoidCallback onReset;
+  final Widget? extra;
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +112,10 @@ class StateFlowScaffold extends StatelessWidget {
                       '提示：配合调试控制台日志，可完整追踪 “事件 → 状态变化 → 通知 → build() 重建”。',
                       textAlign: TextAlign.center,
                     ),
+                    if (extra != null) ...[
+                      const SizedBox(height: 16),
+                      extra!,
+                    ],
                   ],
                 ),
               ),

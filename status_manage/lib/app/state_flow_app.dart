@@ -45,10 +45,10 @@ class StateFlowHome extends StatelessWidget {
     final cards = [
       _HomeCardData(
         title: 'Provider / ChangeNotifier',
-        flow: '事件 → value → notifyListeners → Consumer 重建',
+        flow: '事件 → notifyListeners → 仅依赖字段重建（context.select）',
         icon: Icons.extension,
         routeName: RoutePaths.provider,
-        chipLabel: '依赖收集',
+        chipLabel: '依赖收集 / 粒度刷新',
       ),
       _HomeCardData(
         title: 'Provider / 状态提升',
