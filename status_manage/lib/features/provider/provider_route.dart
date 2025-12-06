@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../shared/widgets/state_flow_scaffold.dart';
+import 'models/counter_cn.dart';
+import 'widgets/provider_perks.dart';
+import 'widgets/granular_grid.dart';
 
-part 'widgets/counter_cn.dart';
-part 'widgets/provider_perks.dart';
-part 'widgets/granular_grid.dart';
 
 class ProviderRoute extends StatelessWidget {
   const ProviderRoute({super.key});
@@ -36,7 +36,7 @@ class ProviderRoute extends StatelessWidget {
             ],
             onAdd: counter.increment,
             onReset: counter.reset,
-            extra: const _ProviderPerks(),
+            extra: const ProviderPerks(),
           );
         },
       ),

@@ -158,3 +158,8 @@ flutter analyze
 - 测试用例：`test/bloc_counter_test.dart`
 
 运行交互：在 Bloc 页面点击“加 1 / 重置”，控制台与 UI 将展示 “add(Event) → Bloc 处理 → emit(State) → BlocBuilder 重建” 的完整链路。
+- Provider 模型抽离与颗粒度订阅：
+  - 模型接口：`lib/features/provider/models/counter_model.dart`
+  - 具体实现：`lib/features/provider/models/counter_cn.dart`
+  - 视图层示例：`lib/features/provider/provider_route.dart`、`lib/features/provider/widgets/provider_perks.dart`、`lib/features/provider/widgets/granular_grid.dart`
+  - 单元测试：`test/provider_counter_test.dart`
