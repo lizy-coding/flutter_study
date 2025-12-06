@@ -108,7 +108,7 @@ lib/
 ├── app/route_paths.dart                   # 统一路由常量
 ├── features/
 │   ├── provider/                          # Provider 场景
-│   │   ├── provider_route.dart            # 基础计数器
+│   │   ├── provider_route.dart            # 基础计数器 + 深层叶子直取祖先状态 + Selector 粒度刷新
 │   │   ├── provider_lifting_route.dart    # 状态提升与共享
 │   │   ├── provider_future_route.dart     # 数据获取与缓存
 │   │   └── provider_todo_route.dart       # 全局 Todo 示例
@@ -128,6 +128,7 @@ lib/
 - `StateFlowHome` 使用卡片描述每条刷新链路，并跳转到对应示例路由。
 - 每个示例页面都调用 `debugPrint` 输出「事件 → 状态 → 通知 → build」关键日志，可与 UI 动效对照理解刷新流。
 - `StateFlowScaffold` 加入 `AnimatedSwitcher`、`AnimatedContainer` 与步骤时间轴，帮助观察状态变化节奏。
+- Provider 基础示例增加「深层叶子」与「粒度刷新」区块：最深层 Widget 直接 `context.read/select` 祖先状态，无需 props 传递；`Selector/context.select` 将重建范围锁定在监听字段，配合控制台日志可观察哪些 Widget 被重建。
 
 ## 学习建议
 

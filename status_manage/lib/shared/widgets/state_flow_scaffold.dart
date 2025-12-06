@@ -26,8 +26,8 @@ class StateFlowScaffold extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final animatedColor =
         value.isEven
-            ? colorScheme.primaryContainer.withOpacity(0.4)
-            : colorScheme.secondaryContainer.withOpacity(0.4);
+            ? colorScheme.primaryContainer.withValues(alpha: 0.4)
+            : colorScheme.secondaryContainer.withValues(alpha: 0.4);
 
     return Scaffold(
       appBar: AppBar(title: Text(pageTitle), centerTitle: true),

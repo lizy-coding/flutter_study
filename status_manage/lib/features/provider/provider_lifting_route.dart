@@ -44,7 +44,7 @@ class _LiftingCN extends ChangeNotifier {
 }
 
 class _LDisplay extends StatelessWidget {
-  const _LDisplay({super.key});
+  const _LDisplay();
   @override
   Widget build(BuildContext context) {
     final v = context.select<_LiftingCN, int>((s) => s.value);
@@ -53,7 +53,7 @@ class _LDisplay extends StatelessWidget {
 }
 
 class _LControls extends StatelessWidget {
-  const _LControls({super.key});
+  const _LControls();
   @override
   Widget build(BuildContext context) {
     final s = context.read<_LiftingCN>();

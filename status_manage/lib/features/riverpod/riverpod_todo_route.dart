@@ -16,9 +16,9 @@ class RiverpodTodoRoute extends ConsumerWidget {
 }
 
 class _Todo {
-  _Todo(this.title, {this.done = false});
+  _Todo(this.title);
   final String title;
-  bool done;
+  bool done = false;
 }
 
 class _TodoRP extends StateNotifier<List<_Todo>> {
@@ -38,7 +38,7 @@ class _TodoRP extends StateNotifier<List<_Todo>> {
 final _todoProvider = StateNotifierProvider<_TodoRP, List<_Todo>>((ref) => _TodoRP());
 
 class _TodoBody extends ConsumerWidget {
-  const _TodoBody({super.key});
+  const _TodoBody();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final list = ref.watch(_todoProvider);
@@ -59,7 +59,7 @@ class _TodoBody extends ConsumerWidget {
 }
 
 class _AddFab extends ConsumerWidget {
-  const _AddFab({super.key});
+  const _AddFab();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final n = ref.read(_todoProvider.notifier);
