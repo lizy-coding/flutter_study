@@ -95,3 +95,9 @@ By abstracting the model and using dependency injection, we achieve a design pat
 - **Enhances Code Maintainability and Scalability**: The modular nature of this design pattern makes it easier to maintain and scale the application as it grows.
 
 This demo provides a foundational understanding of how IoC can be implemented in Flutter, leveraging the `provider` package to manage state and dependencies effectively.
+
+## IoC 容器示例与使用
+- 核心实现位于 `lib/ioc/`：`types.dart` 提供接口与生命周期定义，`container.dart` 实现注册/解析、作用域、命名与条件注册、循环依赖检测、属性注入和异步解析。
+- 快速接入：在 `main.dart` 中创建 `ioc.Container`，使用 `registerSingleton`/`registerTransient`/`registerScoped` 注册依赖，再通过 `container.resolve<T>()` 或 `resolveAsync<T>()` 注入到 `Provider` 或其它服务。
+- 示例与扩展指南：查看 `IOC_SAMPLE.md` 获取完整代码片段、环境配置和扩展能力（自动注册、作用域覆写等）。
+- 运行与验证：`flutter run` 启动示例；`flutter test test/ioc_container_test.dart` 覆盖生命周期、命名/条件注册、属性注入、作用域与异步解析。
