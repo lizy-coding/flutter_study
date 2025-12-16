@@ -1,13 +1,23 @@
 // main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_ioc/model/counter_model.dart';
+import 'package:flutter_ioc/ioc/ioc.dart' as ioc;
 import 'package:provider/provider.dart';
 
 void main() {
+  // Set up the IoC container and register dependencies once at startup.
+  final container = ioc.Container(environment: {'appName': 'Counter'});
+  container.registerSingleton<CounterModel>(
+    (_) => CounterModel(name: 'Default', count: 0),
+  );
+
   runApp(
-    ChangeNotifierProvider<CounterModel>(
-      create: (context) => CounterModel(name: 'Default', count: 0),
-      child: const MyApp(),
+    Provider<ioc.IoCContainer>.value(
+      value: container,
+      child: ChangeNotifierProvider<CounterModel>(
+        create: (_) => container.resolve<CounterModel>(),
+        child: const MyApp(),
+      ),
     ),
   );
 }
