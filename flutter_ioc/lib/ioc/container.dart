@@ -1,66 +1,6 @@
 import 'dart:async';
 
-/// Lifecycle options for registered services.
-enum Lifetime { singleton, transient, scoped }
-
-/// Factory that creates instances and can pull other dependencies from the resolver.
-typedef Factory<T> = FutureOr<T> Function(ContainerResolver resolver);
-
-/// Predicate to decide whether a registration should be used.
-typedef Condition = bool Function(ContainerResolver resolver);
-
-/// Hook to inject dependencies into already created instances.
-typedef PropertyInjector<T> = void Function(T instance, ContainerResolver resolver);
-
-/// Registers a bundle of services.
-abstract class AutoRegistrar {
-  void register(IoCContainer container);
-}
-
-/// Simplified resolver interface exposed to factories and property injectors.
-abstract class ContainerResolver {
-  T resolve<T>({String? name});
-  Future<T> resolveAsync<T>({String? name});
-  bool flag(String key, {bool defaultValue = false});
-  Object? env(String key);
-}
-
-/// Public IoC container interface.
-abstract class IoCContainer implements ContainerResolver {
-  void registerSingleton<T>(
-    Factory<T> factory, {
-    String? name,
-    Condition? condition,
-    List<PropertyInjector<T>>? propertyInjectors,
-  });
-
-  void registerTransient<T>(
-    Factory<T> factory, {
-    String? name,
-    Condition? condition,
-    List<PropertyInjector<T>>? propertyInjectors,
-  });
-
-  void registerScoped<T>(
-    Factory<T> factory, {
-    String? name,
-    Condition? condition,
-    List<PropertyInjector<T>>? propertyInjectors,
-  });
-
-  void autoRegister(List<AutoRegistrar> registrars);
-
-  IoCContainer createScope({Map<String, Object?> environmentOverrides = const {}});
-}
-
-/// Base error type for the container.
-class ContainerException implements Exception {
-  ContainerException(this.message);
-  final String message;
-
-  @override
-  String toString() => 'ContainerException: $message';
-}
+import 'types.dart';
 
 class _ContainerKey {
   _ContainerKey(this.type, this.name);
@@ -103,8 +43,8 @@ class Container implements IoCContainer {
         _parent = parent;
 
   final Map<Type, List<_Registration>> _registrations = {};
-  final Map<_ContainerKey, dynamic> _scopedInstances = {};
-  final List<_ContainerKey> _resolutionPath = [];
+  final Map<_ContainerKey, dynamic> _scopedInstances = {}; // Scope-specific cache.
+  final List<_ContainerKey> _resolutionPath = []; // Tracks resolution chain to detect cycles.
   final Map<String, Object?> _environment;
   final Container? _parent;
 
