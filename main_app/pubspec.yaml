@@ -1,0 +1,15 @@
+name: main_app
+description: A Flutter app shell.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  go_router: ^14.2.0
+
+flutter:
+  uses-material-design: true
