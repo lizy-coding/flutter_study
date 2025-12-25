@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:interceptor_test/network/api/api_service.dart';
-import 'package:interceptor_test/network/interceptor/auth_interceptor.dart';
+
+import '../network/api/api_service.dart';
+import '../network/interceptor/auth_interceptor.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

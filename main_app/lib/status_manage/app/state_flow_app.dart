@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'app_routes.dart';
 import 'route_paths.dart';
+
+const String _statusManageBaseRoute = '/status-manage';
 
 /// 根部 MaterialApp，集中声明路由，避免示例全部堆在 main.dart 中。
 class StateFlowApp extends StatelessWidget {
@@ -209,7 +212,7 @@ class _RouteListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return ListTile(
-      onTap: () => Navigator.of(context).pushNamed(data.routeName),
+      onTap: () => context.push('$_statusManageBaseRoute${data.routeName}'),
       contentPadding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       leading: CircleAvatar(

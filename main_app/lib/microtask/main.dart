@@ -20,7 +20,6 @@ class MyApp extends StatelessWidget {
       home: const HomePage(),
     );
   }
-<<<<<<< HEAD
 }
 
 /// Flutter事件机制示例页面
@@ -281,6 +280,3 @@ class _EventDemoPageState extends State<EventDemoPage> {
     _addLog('【微任务】async函数结束');
   }
 }
-=======
-}
->>>>>>> 54a9a9a50b1bd7fb3c068ef70582392351489284

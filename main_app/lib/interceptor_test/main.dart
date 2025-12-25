@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:interceptor_test/mock_server/mock_server.dart';
-import 'package:interceptor_test/pages/home_page.dart';
+
+import 'mock_server/mock_server.dart';
+import 'pages/home_page.dart';
 
 // 全局模拟服务器实例
 final MockServer mockServer = MockServer();

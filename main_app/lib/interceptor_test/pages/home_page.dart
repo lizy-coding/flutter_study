@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:interceptor_test/models/article.dart';
-import 'package:interceptor_test/network/api/api_service.dart';
-import 'package:interceptor_test/network/interceptor/auth_interceptor.dart';
-import 'package:interceptor_test/pages/login_page.dart';
+
+import '../models/article.dart';
+import '../network/api/api_service.dart';
+import '../network/interceptor/auth_interceptor.dart';
+import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

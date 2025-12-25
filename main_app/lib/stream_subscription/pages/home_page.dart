@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stream_subscription/pages/broadcast_demo/broadcast_demo_page.dart';
-import 'package:stream_subscription/pages/stream_demo_page.dart';
+
+import 'broadcast_demo/broadcast_demo_page.dart';
+import 'stream_demo_page.dart';
 
 /// 应用主页
 class HomePage extends StatelessWidget {

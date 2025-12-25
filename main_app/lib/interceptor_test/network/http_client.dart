@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:interceptor_test/network/interceptor/auth_interceptor.dart';
-import 'package:interceptor_test/network/interceptor/error_interceptor.dart';
-import 'package:interceptor_test/network/interceptor/log_interceptor.dart';
-import 'package:interceptor_test/network/interceptor/retry_interceptor.dart';
+
+import 'interceptor/auth_interceptor.dart';
+import 'interceptor/error_interceptor.dart';
+import 'interceptor/log_interceptor.dart';
+import 'interceptor/retry_interceptor.dart';
 
 /// 网络请求客户端
 class HttpClient {
