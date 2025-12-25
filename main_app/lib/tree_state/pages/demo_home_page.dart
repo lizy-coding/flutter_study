@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../routes.dart';
 
 /// 主页列出所有示例入口，便于在调试时快速跳转。
 class DemoHomePage extends StatelessWidget {
+  static const String _baseRoute = '/tree-state';
+
   const DemoHomePage({super.key});
 
   @override
@@ -49,7 +52,7 @@ class DemoHomePage extends StatelessWidget {
               title: Text(demo.title),
               subtitle: Text(demo.subtitle),
               trailing: const Icon(Icons.chevron_right),
-              onTap: () => Navigator.of(context).pushNamed(demo.routeName),
+              onTap: () => context.push('$_baseRoute${demo.routeName}'),
             ),
         ],
       ),

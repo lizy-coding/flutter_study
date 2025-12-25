@@ -1,4 +1,4 @@
-import 'package:debounce_throttle/utils/debounce_throttle.dart' show Debouncer, Throttle;
+import 'utils/debounce_throttle.dart' show Debouncer, Throttle;
 import 'package:flutter/material.dart';
 
 void main() {

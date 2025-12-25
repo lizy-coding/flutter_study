@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:developer' as developer;
-import 'package:usb_detector_demo/models/usb_device_info.dart';
-import 'package:usb_serial/usb_serial.dart';
+
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:usb_serial/usb_serial.dart';
+
+import '../models/usb_device_info.dart';
 
 class UsbDetectionService {
   static final UsbDetectionService _instance = UsbDetectionService._internal();

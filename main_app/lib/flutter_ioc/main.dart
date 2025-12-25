@@ -1,8 +1,9 @@
 // main.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_ioc/model/counter_model.dart';
-import 'package:flutter_ioc/ioc/ioc.dart' as ioc;
 import 'package:provider/provider.dart';
+
+import 'ioc/ioc.dart' as ioc;
+import 'model/counter_model.dart';
 
 void main() {
   // Set up the IoC container and register dependencies once at startup.

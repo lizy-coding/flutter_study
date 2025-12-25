@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:interceptor_test/network/http_client.dart';
+
+import '../http_client.dart';
 
 /// API服务类
 /// 封装对后端API的调用
