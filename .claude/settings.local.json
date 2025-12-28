@@ -7,7 +7,14 @@
       "Bash(flutter run:*)",
       "Bash(flutter config:*)",
       "Bash(git rm:*)",
-      "Bash(true)"
+      "Bash(true)",
+      "Bash(tree:*)",
+      "Bash(find:*)",
+      "Bash(du:*)",
+      "Bash(chmod:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }
