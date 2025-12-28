@@ -141,7 +141,7 @@ class DrawingCanvasPainter extends CustomPainter {
     if (visibleSnapLines.isEmpty) return;
 
     final snapLinePaint = Paint()
-      ..color = Colors.red.withOpacity(0.8)
+      ..color = Colors.red.withValues(alpha: 0.8)
       ..strokeWidth = 1.5
       ..style = PaintingStyle.stroke;
 

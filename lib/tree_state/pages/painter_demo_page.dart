@@ -71,7 +71,7 @@ class PainterDemoPainter extends CustomPainter {
     canvas.drawLine(Offset(0, center.dy), Offset(size.width, center.dy), axisPaint);
 
     final fillPaint = Paint()
-      ..color = Colors.blueAccent.withOpacity(0.3)
+      ..color = Colors.blueAccent.withValues(alpha: 0.3)
       ..style = PaintingStyle.fill;
     final strokePaint = Paint()
       ..color = Colors.blueAccent

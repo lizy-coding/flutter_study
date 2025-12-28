@@ -157,7 +157,7 @@ class OverlayDownloadService {
                         offset: const Offset(0, 2),
                       ),
                       BoxShadow(
-                        color: Colors.green.shade600.withOpacity(0.3),
+                        color: Colors.green.shade600.withValues(alpha: 0.3),
                         blurRadius: 20,
                         spreadRadius: 8,
                       ),

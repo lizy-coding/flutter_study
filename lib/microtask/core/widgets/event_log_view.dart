@@ -37,7 +37,7 @@ class EventLogView extends StatelessWidget {
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 4),
                   elevation: 0,
-                  color: log.color.withOpacity(0.05),
+                  color: log.color.withValues(alpha: 0.05),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(

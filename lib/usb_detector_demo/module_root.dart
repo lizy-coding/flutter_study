@@ -169,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 vertical: 4,
                               ),
                               decoration: BoxDecoration(
-                                color: _getStatusColor(device.status).withOpacity(0.1),
+                                color: _getStatusColor(device.status).withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
                                   color: _getStatusColor(device.status),

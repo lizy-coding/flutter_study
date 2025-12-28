@@ -279,7 +279,7 @@ class _ButtonSceneState extends State<ButtonScene> with TickerProviderStateMixin
           ),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: color.withOpacity(0.2),
+              backgroundColor: color.withValues(alpha: 0.2),
               foregroundColor: color,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             ),
@@ -316,7 +316,7 @@ class _ButtonSceneState extends State<ButtonScene> with TickerProviderStateMixin
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          border: Border.all(color: color.withOpacity(0.5)),
+          border: Border.all(color: color.withValues(alpha: 0.5)),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
@@ -332,7 +332,7 @@ class _ButtonSceneState extends State<ButtonScene> with TickerProviderStateMixin
                   return Container(
                     // 添加时间戳格式化显示
                     child: Text('${DateTime.fromMillisecondsSinceEpoch(timestamp).toString().substring(11, 19)}',
-                      style: TextStyle(color: color.withOpacity(0.8))
+                      style: TextStyle(color: color.withValues(alpha: 0.8))
                     ),
                   );
                 },

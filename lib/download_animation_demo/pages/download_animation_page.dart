@@ -491,7 +491,7 @@ class _DownloadAnimationPageState extends State<DownloadAnimationPage>
                       offset: const Offset(0, 2),
                     ),
                     BoxShadow(
-                      color: Colors.blue.shade600.withOpacity(0.3),
+                      color: Colors.blue.shade600.withValues(alpha: 0.3),
                       blurRadius: 20,
                       spreadRadius: 8,
                     ),

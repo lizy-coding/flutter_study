@@ -118,7 +118,7 @@ class _WithIsolatePageState extends State<WithIsolatePage> with SingleTickerProv
               duration: const Duration(milliseconds: 500),
               height: 100,
               decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.2),
+                color: Colors.blue.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Center(

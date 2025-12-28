@@ -1,5 +1,3 @@
-import 'package:dio/dio.dart';
-
 import '../http_client.dart';
 
 /// API服务类
