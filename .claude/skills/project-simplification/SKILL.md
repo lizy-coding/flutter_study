@@ -1,6 +1,6 @@
 ---
 name: project-simplification
-description: Simplifies Flutter projects by analyzing structure, cleaning redundant docs, merging configs, refactoring large files, and running validation tests. Use when optimizing project structure, removing technical debt, or improving code organization.
+description: Simplifies Flutter projects by analyzing structure, cleaning redundant docs, merging configs, refactoring large files, generating module documentation, and running validation tests. Use when optimizing project structure, removing technical debt, improving code organization, or creating project documentation.
 allowed-tools: Read, Grep, Glob, Bash(*), Edit, Write
 model: claude-sonnet-4-5-20250929
 ---
@@ -17,17 +17,20 @@ Tell Claude:
 - "Clean up redundant documentation"
 - "Merge duplicate configuration files"
 - "Refactor large files"
+- "Generate README files for all modules"
+- "Create module documentation"
 - "Validate and test the project"
 
 ## Workflow Overview
 
-The project simplification process consists of five sequential phases:
+The project simplification process consists of six sequential phases:
 
 1. **Analyze Project Structure** - Understand codebase layout and identify issues
 2. **Clean Redundant Docs** - Remove duplicate documentation files
 3. **Merge Configuration Files** - Consolidate duplicate configs
 4. **Refactor Large Files** - Break up oversized files
-5. **Validate and Test** - Ensure all changes work correctly
+5. **Generate Documentation** - Create module and root README files
+6. **Validate and Test** - Ensure all changes work correctly
 
 ## Phase 1: Analyze Project Structure
 
@@ -118,7 +121,90 @@ Refactoring strategies:
 - **Large Services**: Split by functionality domains
 - **Large Models**: Separate validation, serialization, display logic
 
-## Phase 5: Validate and Test
+## Phase 5: Generate Documentation
+
+Automatically generate comprehensive README files for all modules and the project root:
+
+### Step 5.1: Generate Module Descriptions
+
+Analyze all modules and extract information:
+
+```bash
+python .claude/skills/project-simplification/scripts/generate_module_descriptions.py
+```
+
+This script:
+- Scans all modules in `lib/` directory
+- Extracts descriptions from comments
+- Identifies pages, widgets, models, services
+- Counts files and lines of code
+- Detects dependencies
+- Generates `module_descriptions.json`
+
+### Step 5.2: Generate Module READMEs
+
+Create individual README for each module:
+
+```bash
+python .claude/skills/project-simplification/scripts/generate_module_readmes.py
+```
+
+Each module README includes:
+- Module overview and description
+- Feature list
+- Project structure tree
+- Main files description
+- Usage examples
+- Code samples
+- Tech stack
+- File statistics
+- Dependencies
+- Test information
+
+Output: `lib/<module_name>/README.md` for each module
+
+### Step 5.3: Generate Root README
+
+Create comprehensive project README:
+
+```bash
+python .claude/skills/project-simplification/scripts/generate_root_readme.py
+```
+
+Root README includes:
+- Project overview and statistics
+- Complete module list with links
+- Module categorization (UI/Async/Arch/Network)
+- Learning paths (beginner/advanced)
+- Quick start guide
+- Project structure
+- Tech stack
+- Development tools
+- Contributing guide
+
+Output: `README.md` at project root
+
+### One-Command Generation
+
+Generate all documentation at once:
+
+```bash
+python .claude/skills/project-simplification/scripts/generate_module_descriptions.py && \
+python .claude/skills/project-simplification/scripts/generate_module_readmes.py && \
+python .claude/skills/project-simplification/scripts/generate_root_readme.py
+```
+
+### Documentation Best Practices
+
+1. **Regular Updates**: Regenerate after adding/modifying modules
+2. **Manual Review**: Check generated content for accuracy
+3. **Custom Descriptions**: Add detailed comments in module entry files
+4. **Code Examples**: Enhance with practical examples
+5. **Keep Links Valid**: Verify all internal links work
+
+For detailed guidance, see [readme-generation.md](readme-generation.md)
+
+## Phase 6: Validate and Test
 
 Run comprehensive validation to ensure quality:
 
@@ -168,7 +254,19 @@ python .claude/skills/project-simplification/scripts/find_large_files.py
 # Refactor identified files (manual or assisted)
 ```
 
-### Step 5: Comprehensive Validation (20 mins)
+### Step 5: Generate Documentation (15 mins)
+```bash
+# Generate all documentation
+python .claude/skills/project-simplification/scripts/generate_module_descriptions.py && \
+python .claude/skills/project-simplification/scripts/generate_module_readmes.py && \
+python .claude/skills/project-simplification/scripts/generate_root_readme.py
+
+# Review generated READMEs
+ls lib/*/README.md
+cat README.md
+```
+
+### Step 6: Comprehensive Validation (20 mins)
 ```bash
 # Run all validation checks
 python .claude/skills/project-simplification/scripts/validate_project.py
@@ -233,6 +331,7 @@ The script uses heuristics. Manually review files over 400 lines.
 - For detailed structure analysis: [analysis.md](analysis.md)
 - For configuration examples: [config-merge.md](config-merge.md)
 - For refactoring patterns: [refactoring-patterns.md](refactoring-patterns.md)
+- For README generation guide: [readme-generation.md](readme-generation.md)
 - Helper scripts: `scripts/` directory
 
 ## Summary
@@ -243,6 +342,23 @@ This Skill automates the discovery and execution of project simplification tasks
 ✓ Guides documentation cleanup
 ✓ Consolidates configurations
 ✓ Refactors oversized files
+✓ Generates comprehensive documentation
 ✓ Validates all changes
 ✓ Provides step-by-step guidance
 ✓ Offers configuration options
+
+## Available Scripts
+
+### Analysis & Discovery
+- `analyze_structure.py` - Analyze project structure and metrics
+- `find_redundant_docs.py` - Find duplicate documentation
+- `find_large_files.py` - Identify files needing refactoring
+- `find_duplicate_configs.py` - Find duplicate configurations
+
+### Documentation Generation
+- `generate_module_descriptions.py` - Extract module information
+- `generate_module_readmes.py` - Create module README files
+- `generate_root_readme.py` - Create project root README
+
+### Validation
+- `validate_project.py` - Run comprehensive quality checks
