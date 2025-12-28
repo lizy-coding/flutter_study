@@ -27,6 +27,8 @@ class ScrollTable extends StatelessWidget {
       child: TableView.builder(
         diagonalDragBehavior: DiagonalDragBehavior.weightedEvent,
         cellBuilder: _buildCell,
+        pinnedColumnCount: 1,
+        pinnedRowCount: 1,
         columnCount: columnHeaders.length + 1, // +1 for row headers
         rowCount: data.length + 1, // +1 for column headers
         columnBuilder: _buildColumn,
@@ -35,7 +37,7 @@ class ScrollTable extends StatelessWidget {
     );
   }
 
-  Widget _buildCell(BuildContext context, TableVicinity vicinity) {
+  TableViewCell _buildCell(BuildContext context, TableVicinity vicinity) {
     final bool isColumnHeader = vicinity.row == 0;
     final bool isRowHeader = vicinity.column == 0;
     final bool isCornerCell = vicinity.row == 0 && vicinity.column == 0;
@@ -66,22 +68,24 @@ class ScrollTable extends StatelessWidget {
       textStyle = const TextStyle();
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        border: Border(
-          right: BorderSide(color: Colors.grey.shade300, width: 0.5),
-          bottom: BorderSide(color: Colors.grey.shade300, width: 0.5),
+    return TableViewCell(
+      child: Container(
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          border: Border(
+            right: BorderSide(color: Colors.grey.shade300, width: 0.5),
+            bottom: BorderSide(color: Colors.grey.shade300, width: 0.5),
+          ),
         ),
-      ),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            text,
-            style: textStyle,
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              text,
+              style: textStyle,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
       ),
@@ -91,16 +95,12 @@ class ScrollTable extends StatelessWidget {
   TableSpan _buildColumn(int index) {
     return TableSpan(
       extent: FixedTableSpanExtent(cellWidth),
-      // 固定第一列（行头）
-      recognizerFactories: index == 0 ? <Type, GestureRecognizerFactory>{} : null,
     );
   }
 
   TableSpan _buildRow(int index) {
     return TableSpan(
       extent: FixedTableSpanExtent(cellHeight),
-      // 固定第一行（列头）
-      recognizerFactories: index == 0 ? <Type, GestureRecognizerFactory>{} : null,
     );
   }
 }

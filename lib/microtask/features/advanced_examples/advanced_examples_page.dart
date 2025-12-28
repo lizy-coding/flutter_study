@@ -19,7 +19,7 @@ class _AdvancedExamplesPageState extends State<AdvancedExamplesPage> with Single
   late TabController _tabController;
   
   final Map<String, String> _codeExamples = {
-    'async/await': '''
+    'async/await': r'''
 Future<void> example() async {
   print('函数开始');
   
@@ -39,7 +39,7 @@ Future<void> example() async {
   // 第二个await之后的代码也会被包装成微任务
   print('第二个await之后的代码');
 }''',
-    'Future.value': '''
+    'Future.value': r'''
 // Future.value会立即完成并将then回调添加到微任务队列
 Future.value('immediate value').then((value) {
   print('Future.value微任务: $value');
@@ -51,7 +51,7 @@ Future(() {
 }).then((value) {
   print('普通Future: $value');
 });''',
-    'Future链式调用': '''
+    'Future链式调用': r'''
 Future(() => print('初始Future'))
     .then((_) => print('第一个then微任务'))
     .then((_) {
@@ -59,7 +59,7 @@ Future(() => print('初始Future'))
       return Future(() => print('嵌套事件任务'));
     })
     .then((_) => print('第三个then微任务'));''',
-    'Zone': '''
+    'Zone': r'''
 import 'dart:async';
 
 // Zone可以拦截和修改异步操作
