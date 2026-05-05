@@ -213,6 +213,8 @@ class _WithoutIsolatePageState extends State<WithoutIsolatePage>
     for (int number = 2; number <= max; number++) {
       if (sieve[number]) {
         // 增加一些额外的计算
+        // 增加一些额外的计算以延长执行时间
+        // ignore: unused_local_variable, no_leading_underscores_for_local_identifiers
         double sum = 0;
         for (int j = 0; j < 2000; j++) {
           sum += sin(j * 0.01) * cos(j * 0.01) * tan(j * 0.005);

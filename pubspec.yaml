@@ -21,5 +21,8 @@ dependencies:
   usb_serial: ^0.5.0
   device_info_plus: ^10.1.2
 
+dev_dependencies:
+  flutter_lints: ^4.0.0
+
 flutter:
   uses-material-design: true
