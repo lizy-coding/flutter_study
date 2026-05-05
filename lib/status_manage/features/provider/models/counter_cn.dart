@@ -35,4 +35,3 @@ class CounterCN extends ChangeNotifier implements CounterModel {
     notifyListeners();
   }
 }
-

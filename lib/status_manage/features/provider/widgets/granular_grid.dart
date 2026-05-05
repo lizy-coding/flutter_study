@@ -29,7 +29,8 @@ class GranularGrid extends StatelessWidget {
 enum _GranularSelector { value, leafTaps }
 
 class GranularCard extends StatelessWidget {
-  const GranularCard({super.key, 
+  const GranularCard({
+    super.key,
     required this.title,
     required this.desc,
     required this.selector,

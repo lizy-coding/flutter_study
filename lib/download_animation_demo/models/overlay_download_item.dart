@@ -8,12 +8,12 @@ class OverlayDownloadItem {
   final Offset startPosition;
   final Offset endPosition;
   final OverlayEntry overlayEntry;
-  
+
   AnimationController? animationController;
   Animation<Offset>? positionAnimation;
   Animation<double>? scaleAnimation;
   Animation<double>? opacityAnimation;
-  
+
   OverlayDownloadItem({
     required this.id,
     required this.fileName,
@@ -22,7 +22,7 @@ class OverlayDownloadItem {
     required this.endPosition,
     required this.overlayEntry,
   });
-  
+
   /// 清理资源
   void dispose() {
     animationController?.dispose();

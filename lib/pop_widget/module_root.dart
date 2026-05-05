@@ -7,8 +7,10 @@ const List<String> kChainDialogIds = <String>['A', 'B', 'C'];
 // 统一的数据管理：链式弹窗顺序
 class ChainOrderStore {
   ChainOrderStore({List<String>? initial})
-      : openOrder = ValueNotifier<List<String>>(List.of(initial ?? kChainDialogIds)),
-        closeOrder = ValueNotifier<List<String>>(List.of((initial ?? kChainDialogIds).reversed));
+      : openOrder =
+            ValueNotifier<List<String>>(List.of(initial ?? kChainDialogIds)),
+        closeOrder = ValueNotifier<List<String>>(
+            List.of((initial ?? kChainDialogIds).reversed));
 
   final ValueNotifier<List<String>> openOrder;
   final ValueNotifier<List<String>> closeOrder;
@@ -170,7 +172,8 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
                   const SizedBox(height: 6),
                   ValueListenableBuilder<List<String>>(
                     valueListenable: _orderStore.openOrder,
-                    builder: (_, open, __) => ValueListenableBuilder<List<String>>(
+                    builder: (_, open, __) =>
+                        ValueListenableBuilder<List<String>>(
                       valueListenable: _orderStore.closeOrder,
                       builder: (_, close, __) => Text(
                         '示例：打开 ${open.join('→')}；关闭 ${close.join('→')}（使用 OverlayEntry）',
@@ -213,8 +216,7 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
         floatingActionButton: FloatingActionButton.extended(
           onPressed: _togglePersistentBottomSheet,
           icon: const Icon(Icons.vertical_align_top),
-          label:
-              Text(_bottomSheetController == null ? '显示底部工具条' : '关闭底部工具条'),
+          label: Text(_bottomSheetController == null ? '显示底部工具条' : '关闭底部工具条'),
         ),
       ),
     );
@@ -337,24 +339,30 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
 
   Future<void> _demoOpenChain() async {
     await _openDialogsInOrder([
-      MapEntry('A', _buildChainDialog(
-        id: 'A',
-        title: '弹窗 A',
-        body: '链式对话框（Navigator）',
-        onClose: () => _closeDialogById('A'),
-      )),
-      MapEntry('B', _buildChainDialog(
-        id: 'B',
-        title: '弹窗 B',
-        body: 'iOS 风格（Navigator）',
-        onClose: () => _closeDialogById('B'),
-      )),
-      MapEntry('C', _buildChainDialog(
-        id: 'C',
-        title: '弹窗 C',
-        body: '自定义对话框（Navigator）',
-        onClose: () => _closeDialogById('C'),
-      )),
+      MapEntry(
+          'A',
+          _buildChainDialog(
+            id: 'A',
+            title: '弹窗 A',
+            body: '链式对话框（Navigator）',
+            onClose: () => _closeDialogById('A'),
+          )),
+      MapEntry(
+          'B',
+          _buildChainDialog(
+            id: 'B',
+            title: '弹窗 B',
+            body: 'iOS 风格（Navigator）',
+            onClose: () => _closeDialogById('B'),
+          )),
+      MapEntry(
+          'C',
+          _buildChainDialog(
+            id: 'C',
+            title: '弹窗 C',
+            body: '自定义对话框（Navigator）',
+            onClose: () => _closeDialogById('C'),
+          )),
     ]);
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
@@ -373,7 +381,8 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
   // ---- Overlay 版本：使用 OverlayEntry 管理多个弹窗 ----
   // 统一顺序存储
   final ChainOrderStore _orderStore = ChainOrderStore(initial: kChainDialogIds);
-  final Map<String, List<OverlayEntry>> _overlayEntries = <String, List<OverlayEntry>>{};
+  final Map<String, List<OverlayEntry>> _overlayEntries =
+      <String, List<OverlayEntry>>{};
   bool _overlayOpening = false;
   bool _overlayClosing = false;
 
@@ -381,7 +390,8 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
 
   List<OverlayEntry> _buildOverlayEntries(Widget dialog) {
     final barrier = OverlayEntry(
-      builder: (_) => const ModalBarrier(dismissible: false, color: Colors.black54),
+      builder: (_) =>
+          const ModalBarrier(dismissible: false, color: Colors.black54),
     );
     final content = OverlayEntry(
       builder: (context) => Center(
@@ -440,12 +450,14 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
   Future<void> _demoOpenOverlayChain() async {
     final order = List<String>.from(_orderStore.openOrder.value);
     final items = order.map((id) {
-      return MapEntry(id, _buildChainDialog(
-        id: id,
-        title: 'Overlay 弹窗 $id',
-        body: '通过 OverlayEntry 打开',
-        onClose: () => _closeOverlayById(id),
-      ));
+      return MapEntry(
+          id,
+          _buildChainDialog(
+            id: id,
+            title: 'Overlay 弹窗 $id',
+            body: '通过 OverlayEntry 打开',
+            onClose: () => _closeOverlayById(id),
+          ));
     }).toList();
     await _openOverlayInOrder(items);
     if (!mounted) return;
@@ -458,15 +470,17 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
     final order = List<String>.from(_orderStore.closeOrder.value);
     await _closeOverlayInOrder(order);
     if (!mounted) return;
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('Overlay 已按顺序关闭：${order.join(' → ')}')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Overlay 已按顺序关闭：${order.join(' → ')}')));
   }
 
   void _closeDialogById(String id) {
     final nav = Navigator.of(context, rootNavigator: true);
     final route = _chainRoutes.remove(id);
     if (route != null) {
-      try { nav.removeRoute(route); } catch (_) {}
+      try {
+        nav.removeRoute(route);
+      } catch (_) {}
     }
   }
 
@@ -477,7 +491,9 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
         entries[1].remove();
         entries[0].remove();
       } else {
-        for (final e in entries) { e.remove(); }
+        for (final e in entries) {
+          e.remove();
+        }
       }
     }
   }
@@ -504,7 +520,8 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('编辑 Overlay 打开顺序', style: Theme.of(context).textTheme.titleMedium),
+                        Text('编辑 Overlay 打开顺序',
+                            style: Theme.of(context).textTheme.titleMedium),
                         const SizedBox(height: 8),
                         ReorderableListView(
                           shrinkWrap: true,
@@ -527,7 +544,8 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
                           ],
                         ),
                         const SizedBox(height: 12),
-                        Text('编辑 Overlay 关闭顺序', style: Theme.of(context).textTheme.titleMedium),
+                        Text('编辑 Overlay 关闭顺序',
+                            style: Theme.of(context).textTheme.titleMedium),
                         const SizedBox(height: 8),
                         ReorderableListView(
                           shrinkWrap: true,
@@ -560,7 +578,8 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
                               onPressed: () {
                                 setSheet(() {
                                   curOpen = List<String>.from(kChainDialogIds);
-                                  curClose = List<String>.from(kChainDialogIds.reversed);
+                                  curClose = List<String>.from(
+                                      kChainDialogIds.reversed);
                                 });
                               },
                               child: const Text('重置'),
@@ -569,7 +588,8 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
                             ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  _orderStore.setOrders(open: curOpen, close: curClose);
+                                  _orderStore.setOrders(
+                                      open: curOpen, close: curClose);
                                   _overlayApplyVisibleOrder(curOpen);
                                 });
                                 Navigator.pop(context);
@@ -591,7 +611,8 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
   }
 
   // 以固定位置插入 Overlay 弹窗：可指定在某个 id 之上/之下
-  void _overlayOpenAtPosition(String id, Widget dialog, {String? aboveId, String? belowId}) {
+  void _overlayOpenAtPosition(String id, Widget dialog,
+      {String? aboveId, String? belowId}) {
     final overlay = _overlayOf();
     // 移除已存在
     final existed = _overlayEntries.remove(id);
@@ -714,8 +735,7 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
       context: context,
       barrierDismissible: false,
       builder: (context) => Dialog(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(

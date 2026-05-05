@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../routes.dart';
+import '../module_routes.dart';
 
 /// 主页列出所有示例入口，便于在调试时快速跳转。
 class DemoHomePage extends StatelessWidget {
@@ -13,24 +13,24 @@ class DemoHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     const demos = <_DemoLink>[
       _DemoLink(
-        title: 'Basic Widgets Demo',
-        subtitle: 'StatelessWidget vs StatefulWidget rebuild行为',
-        routeName: DemoRoutes.basicWidgets,
+        title: '基础 Widget 重建',
+        subtitle: 'StatelessWidget vs StatefulWidget 重建行为',
+        routeName: TreeStateRoutes.basicWidgets,
       ),
       _DemoLink(
-        title: 'State Lifecycle Demo',
+        title: 'State 生命周期',
         subtitle: 'StatefulWidget 生命周期 + setState',
-        routeName: DemoRoutes.stateLifecycle,
+        routeName: TreeStateRoutes.stateLifecycle,
       ),
       _DemoLink(
-        title: 'Painter Demo',
+        title: 'CustomPainter 渲染',
         subtitle: 'CustomPainter 渲染阶段日志',
-        routeName: DemoRoutes.painterDemo,
+        routeName: TreeStateRoutes.painterDemo,
       ),
       _DemoLink(
-        title: 'RepaintBoundary Demo',
+        title: 'RepaintBoundary',
         subtitle: '局部重绘与 RenderObject 隔离',
-        routeName: DemoRoutes.repaintBoundary,
+        routeName: TreeStateRoutes.repaintBoundary,
       ),
     ];
 

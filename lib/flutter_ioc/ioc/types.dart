@@ -10,7 +10,8 @@ typedef Factory<T> = FutureOr<T> Function(ContainerResolver resolver);
 typedef Condition = bool Function(ContainerResolver resolver);
 
 /// Hook to inject dependencies into already created instances.
-typedef PropertyInjector<T> = void Function(T instance, ContainerResolver resolver);
+typedef PropertyInjector<T> = void Function(
+    T instance, ContainerResolver resolver);
 
 /// Registers a bundle of services.
 abstract class AutoRegistrar {
@@ -50,7 +51,8 @@ abstract class IoCContainer implements ContainerResolver {
 
   void autoRegister(List<AutoRegistrar> registrars);
 
-  IoCContainer createScope({Map<String, Object?> environmentOverrides = const {}});
+  IoCContainer createScope(
+      {Map<String, Object?> environmentOverrides = const {}});
 }
 
 /// Base error type for the container.

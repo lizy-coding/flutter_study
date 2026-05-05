@@ -62,13 +62,16 @@ class PainterDemoPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    debugPrint('[PainterDemoPainter] paint, radius=${radius.toStringAsFixed(1)}, size=$size');
+    debugPrint(
+        '[PainterDemoPainter] paint, radius=${radius.toStringAsFixed(1)}, size=$size');
     final center = size.center(Offset.zero);
     final axisPaint = Paint()
       ..color = Colors.grey
       ..strokeWidth = 1;
-    canvas.drawLine(Offset(center.dx, 0), Offset(center.dx, size.height), axisPaint);
-    canvas.drawLine(Offset(0, center.dy), Offset(size.width, center.dy), axisPaint);
+    canvas.drawLine(
+        Offset(center.dx, 0), Offset(center.dx, size.height), axisPaint);
+    canvas.drawLine(
+        Offset(0, center.dy), Offset(size.width, center.dy), axisPaint);
 
     final fillPaint = Paint()
       ..color = Colors.blueAccent.withValues(alpha: 0.3)

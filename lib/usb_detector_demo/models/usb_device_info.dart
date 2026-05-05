@@ -27,7 +27,9 @@ class UsbDeviceInfo {
     return 'USB Device (${vendorId.toRadixString(16).toUpperCase()}:${productId.toRadixString(16).toUpperCase()})';
   }
 
-  String get deviceId => '${vendorId.toRadixString(16).padLeft(4, '0')}:${productId.toRadixString(16).padLeft(4, '0')}'.toUpperCase();
+  String get deviceId =>
+      '${vendorId.toRadixString(16).padLeft(4, '0')}:${productId.toRadixString(16).padLeft(4, '0')}'
+          .toUpperCase();
 
   @override
   String toString() {
@@ -35,12 +37,7 @@ class UsbDeviceInfo {
   }
 }
 
-enum UsbDeviceStatus {
-  connected,
-  disconnected,
-  error,
-  unknown
-}
+enum UsbDeviceStatus { connected, disconnected, error, unknown }
 
 extension UsbDeviceStatusExtension on UsbDeviceStatus {
   String get displayName {

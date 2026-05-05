@@ -10,17 +10,18 @@ class WithIsolatePage extends StatefulWidget {
   State<WithIsolatePage> createState() => _WithIsolatePageState();
 }
 
-class _WithIsolatePageState extends State<WithIsolatePage> with SingleTickerProviderStateMixin {
+class _WithIsolatePageState extends State<WithIsolatePage>
+    with SingleTickerProviderStateMixin {
   bool _isCalculating = false;
   String _result = '';
   double _progress = 0.0;
   Stopwatch _stopwatch = Stopwatch();
-  
+
   // 添加动画控制器和动画值
   late AnimationController _animationController;
   late Animation<double> _animation;
   int _counter = 0;
-  
+
   @override
   void initState() {
     super.initState();
@@ -29,17 +30,17 @@ class _WithIsolatePageState extends State<WithIsolatePage> with SingleTickerProv
       vsync: this,
       duration: const Duration(milliseconds: 1500),
     )..repeat(reverse: true);
-    
+
     // 创建动画
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
   }
-  
+
   @override
   void dispose() {
     _animationController.dispose();
     super.dispose();
   }
-  
+
   // 增加计数器
   void _incrementCounter() {
     setState(() {
@@ -74,7 +75,7 @@ class _WithIsolatePageState extends State<WithIsolatePage> with SingleTickerProv
               child: Text(_isCalculating ? '计算中...' : '开始计算'),
             ),
             const SizedBox(height: 10),
-            
+
             // 添加计数器和按钮来测试UI响应
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -87,9 +88,9 @@ class _WithIsolatePageState extends State<WithIsolatePage> with SingleTickerProv
                 Text('计数: $_counter', style: const TextStyle(fontSize: 18)),
               ],
             ),
-            
+
             const SizedBox(height: 20),
-            
+
             // 添加动画元素
             AnimatedBuilder(
               animation: _animation,
@@ -112,7 +113,7 @@ class _WithIsolatePageState extends State<WithIsolatePage> with SingleTickerProv
                 );
               },
             ),
-            
+
             const SizedBox(height: 20),
             AnimatedContainer(
               duration: const Duration(milliseconds: 500),
@@ -205,7 +206,7 @@ class _WithIsolatePageState extends State<WithIsolatePage> with SingleTickerProv
           _progress = 1.0;
           _result += '\n计算完成! 耗时: ${_stopwatch.elapsedMilliseconds / 1000} 秒';
         });
-        
+
         // 关闭端口
         receivePort.close();
         errorPort.close();
@@ -223,7 +224,7 @@ void _isolateEntryPoint(_IsolateMessage message) {
   for (int i = 0; i < iterations; i++) {
     // 计算素数
     List<int> primes = _calculatePrimes(maxNumber);
-    
+
     // 发送进度消息
     message.sendPort.send(_ProgressMessage(
       iteration: i + 1,
@@ -239,11 +240,11 @@ void _isolateEntryPoint(_IsolateMessage message) {
 // 计算素数的方法 - 与不使用 isolate 的版本相同
 List<int> _calculatePrimes(int max) {
   List<int> primes = [];
-  
+
   // 埃拉托斯特尼筛法 (Sieve of Eratosthenes)
   List<bool> sieve = List.filled(max + 1, true);
   sieve[0] = sieve[1] = false;
-  
+
   for (int i = 2; i <= sqrt(max).floor(); i++) {
     if (sieve[i]) {
       for (int j = i * i; j <= max; j += i) {
@@ -251,7 +252,7 @@ List<int> _calculatePrimes(int max) {
       }
     }
   }
-  
+
   // 额外增加更多计算量，使计算更耗时
   for (int number = 2; number <= max; number++) {
     if (sieve[number]) {
@@ -263,7 +264,7 @@ List<int> _calculatePrimes(int max) {
       primes.add(number);
     }
   }
-  
+
   return primes;
 }
 
@@ -294,4 +295,4 @@ class _ProgressMessage {
 }
 
 // 结果消息
-class _ResultMessage {} 
+class _ResultMessage {}

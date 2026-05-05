@@ -175,7 +175,8 @@ class _RouteCategoryCard extends StatelessWidget {
                       const SizedBox(height: 6),
                       Text(
                         category.description,
-                        style: theme.textTheme.bodyMedium?.copyWith(color: Colors.black54),
+                        style: theme.textTheme.bodyMedium
+                            ?.copyWith(color: Colors.black54),
                       ),
                     ],
                   ),

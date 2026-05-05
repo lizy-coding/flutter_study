@@ -37,6 +37,7 @@ class _LiftingCN extends ChangeNotifier {
     value++;
     notifyListeners();
   }
+
   void reset() {
     value = 0;
     notifyListeners();
@@ -60,9 +61,15 @@ class _LControls extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        FilledButton.icon(onPressed: s.inc, icon: const Icon(Icons.exposure_plus_1), label: const Text('加 1')),
+        FilledButton.icon(
+            onPressed: s.inc,
+            icon: const Icon(Icons.exposure_plus_1),
+            label: const Text('加 1')),
         const SizedBox(width: 12),
-        OutlinedButton.icon(onPressed: s.reset, icon: const Icon(Icons.restart_alt), label: const Text('重置')),
+        OutlinedButton.icon(
+            onPressed: s.reset,
+            icon: const Icon(Icons.restart_alt),
+            label: const Text('重置')),
       ],
     );
   }

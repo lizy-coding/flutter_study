@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class RiverpodLiftingRoute extends ConsumerWidget {
   const RiverpodLiftingRoute({super.key});
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -54,9 +53,15 @@ class _LControls extends ConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        FilledButton.icon(onPressed: n.inc, icon: const Icon(Icons.exposure_plus_1), label: const Text('加 1')),
+        FilledButton.icon(
+            onPressed: n.inc,
+            icon: const Icon(Icons.exposure_plus_1),
+            label: const Text('加 1')),
         const SizedBox(width: 12),
-        OutlinedButton.icon(onPressed: n.reset, icon: const Icon(Icons.restart_alt), label: const Text('重置')),
+        OutlinedButton.icon(
+            onPressed: n.reset,
+            icon: const Icon(Icons.restart_alt),
+            label: const Text('重置')),
       ],
     );
   }

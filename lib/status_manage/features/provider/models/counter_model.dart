@@ -8,4 +8,3 @@ abstract class CounterModel extends Listenable {
   void leafIncrement();
   void reset();
 }
-

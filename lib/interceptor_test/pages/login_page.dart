@@ -14,42 +14,42 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  
+
   bool _isLoading = false;
   String? _errorMessage;
-  
+
   final ApiService _apiService = ApiService();
-  
+
   @override
   void dispose() {
     _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
-  
+
   /// 处理登录
   Future<void> _login() async {
     // 表单验证
     if (!_formKey.currentState!.validate()) {
       return;
     }
-    
+
     final username = _usernameController.text.trim();
     final password = _passwordController.text.trim();
-    
+
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
-    
+
     try {
       final result = await _apiService.login(username, password);
-      
+
       if (result['success'] == true && result['data'] != null) {
         // 登录成功，保存token
         final token = result['data']['token'] as String;
         AuthInterceptor.setToken(token);
-        
+
         if (mounted) {
           // 关闭登录页并返回成功状态
           Navigator.pop(context, true);
@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: const TextStyle(color: Colors.red),
                   ),
                 ),
-              
+
               // 用户名
               TextFormField(
                 controller: _usernameController,
@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                 enabled: !_isLoading,
               ),
               const SizedBox(height: 16),
-              
+
               // 密码
               TextFormField(
                 controller: _passwordController,
@@ -136,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                 enabled: !_isLoading,
               ),
               const SizedBox(height: 24),
-              
+
               // 登录按钮
               ElevatedButton(
                 onPressed: _isLoading ? null : _login,
@@ -150,9 +150,9 @@ class _LoginPageState extends State<LoginPage> {
                       )
                     : const Text('登录'),
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // 提示信息
               const Text(
                 '提示: 用户名: admin 或 user，密码: password123 或 user123',
@@ -165,4 +165,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-} 
+}

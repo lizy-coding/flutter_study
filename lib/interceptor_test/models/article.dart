@@ -5,7 +5,7 @@ class Article {
   final String content;
   final String author;
   final DateTime createdAt;
-  
+
   Article({
     required this.id,
     required this.title,
@@ -13,7 +13,7 @@ class Article {
     required this.author,
     required this.createdAt,
   });
-  
+
   /// 从JSON创建文章对象
   factory Article.fromJson(Map<String, dynamic> json) {
     return Article(
@@ -24,7 +24,7 @@ class Article {
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
   }
-  
+
   /// 将文章对象转换为JSON
   Map<String, dynamic> toJson() {
     return {
@@ -35,9 +35,9 @@ class Article {
       'createdAt': createdAt.toIso8601String(),
     };
   }
-  
+
   @override
   String toString() {
     return 'Article{id: $id, title: $title, author: $author}';
   }
-} 
+}

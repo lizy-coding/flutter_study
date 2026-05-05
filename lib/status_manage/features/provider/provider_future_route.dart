@@ -14,7 +14,8 @@ class ProviderFutureRoute extends StatelessWidget {
           child: Consumer<_UserModel>(
             builder: (_, m, __) => m.name == null
                 ? const CircularProgressIndicator()
-                : Text(m.name!, style: Theme.of(context).textTheme.headlineSmall),
+                : Text(m.name!,
+                    style: Theme.of(context).textTheme.headlineSmall),
           ),
         ),
       ),

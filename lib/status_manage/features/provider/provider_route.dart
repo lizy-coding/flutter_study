@@ -6,7 +6,6 @@ import 'models/counter_cn.dart';
 import 'widgets/provider_perks.dart';
 import 'widgets/granular_grid.dart';
 
-
 class ProviderRoute extends StatelessWidget {
   const ProviderRoute({super.key});
 

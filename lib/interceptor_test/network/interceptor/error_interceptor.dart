@@ -10,7 +10,7 @@ class ErrorInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     // 错误信息
     String errorMessage = "未知错误";
-    
+
     switch (err.type) {
       case DioExceptionType.connectionTimeout:
         errorMessage = "连接超时";
@@ -53,7 +53,7 @@ class ErrorInterceptor extends Interceptor {
             errorMessage = "响应错误: ${statusCode ?? '未知状态码'}";
             break;
         }
-        
+
         // 尝试获取服务器返回的错误信息
         if (err.response?.data != null && err.response?.data is Map) {
           final data = err.response!.data as Map;
@@ -79,7 +79,7 @@ class ErrorInterceptor extends Interceptor {
         errorMessage = "证书验证失败";
         break;
     }
-    
+
     if (kDebugMode) {
       print('ErrorInterceptor - 捕获到错误: $errorMessage');
       print('URL: ${err.requestOptions.uri}');
@@ -91,10 +91,10 @@ class ErrorInterceptor extends Interceptor {
         print('QueryParams: ${err.requestOptions.queryParameters}');
       }
     }
-    
+
     // 可以在这里统一显示错误提示，或者发送错误日志到服务器
-    
+
     // 错误继续传递
     handler.next(err);
   }
-} 
+}

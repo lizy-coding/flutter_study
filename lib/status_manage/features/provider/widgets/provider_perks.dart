@@ -22,7 +22,8 @@ class ProviderPerks extends StatelessWidget {
         const SizedBox(height: 12),
         const DeepTree(),
         const SizedBox(height: 18),
-        Text('颗粒度刷新（Selector / context.select）', style: theme.textTheme.titleMedium),
+        Text('颗粒度刷新（Selector / context.select）',
+            style: theme.textTheme.titleMedium),
         const SizedBox(height: 6),
         Text(
           '不同区域只监听自己关心的字段：点击叶子不会让顶部数值重建，反之亦然。控制台日志可看到哪些 build() 被触发。',
@@ -82,7 +83,10 @@ class TreeLevelTwo extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.4),
+        color: Theme.of(context)
+            .colorScheme
+            .primaryContainer
+            .withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -104,16 +108,23 @@ class TreeLeaf extends StatelessWidget {
   Widget build(BuildContext context) {
     final leafTaps = context.select<CounterCN, int>((s) => s.leafTaps);
     final ancestorValue = context.select<CounterCN, int>((s) => s.value);
-    debugPrint('[Provider] 最深叶子 build：leafTaps=$leafTaps, ancestor value=$ancestorValue');
+    debugPrint(
+        '[Provider] 最深叶子 build：leafTaps=$leafTaps, ancestor value=$ancestorValue');
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onPrimaryContainer.withValues(alpha: 0.04),
+        color: Theme.of(context)
+            .colorScheme
+            .onPrimaryContainer
+            .withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: Theme.of(context).colorScheme.onPrimaryContainer.withValues(alpha: 0.12),
+          color: Theme.of(context)
+              .colorScheme
+              .onPrimaryContainer
+              .withValues(alpha: 0.12),
         ),
       ),
       child: Column(

@@ -35,7 +35,7 @@ class _EventQueuePageState extends State<EventQueuePage> {
 
   void _addLog(String message, EventType type) {
     if (!_isRunning) return;
-    
+
     setState(() {
       _logs.add(EventLog(
         message: message,
@@ -43,7 +43,7 @@ class _EventQueuePageState extends State<EventQueuePage> {
         id: _logs.length + 1,
       ));
     });
-    
+
     // 使用微任务来确保在当前帧渲染后滚动到底部
     scheduleMicrotask(_scrollToBottom);
   }
@@ -58,37 +58,37 @@ class _EventQueuePageState extends State<EventQueuePage> {
     if (_isRunning) return;
     _isRunning = true;
     _clearLogs();
-    
+
     _addLog('开始事件队列测试', EventType.info);
     _addLog('代码开始执行', EventType.sync);
-    
+
     // 使用Future()添加到事件队列
     Future(() {
       _addLog('Future() 执行', EventType.event);
     });
-    
+
     // 使用Future.delayed添加到事件队列，延迟0.5秒
     Future.delayed(const Duration(milliseconds: 500), () {
       _addLog('Future.delayed 0.5秒后执行', EventType.event);
     });
-    
+
     // 使用Future.delayed添加到事件队列，延迟1秒
     Future.delayed(const Duration(seconds: 1), () {
       _addLog('Future.delayed 1秒后执行', EventType.event);
     });
-    
+
     // 使用Future.delayed添加到事件队列，延迟2秒
     Future.delayed(const Duration(seconds: 2), () {
       _addLog('Future.delayed 2秒后执行', EventType.event);
     });
-    
+
     // 使用Timer.run添加到事件队列
     Timer.run(() {
       _addLog('Timer.run 执行', EventType.event);
     });
-    
+
     _addLog('代码结束执行', EventType.sync);
-    
+
     // 给测试一个结束标记
     Future.delayed(const Duration(seconds: 3), () {
       _addLog('事件队列测试结束', EventType.info);
@@ -100,14 +100,14 @@ class _EventQueuePageState extends State<EventQueuePage> {
     if (_isRunning) return;
     _isRunning = true;
     _clearLogs();
-    
+
     _addLog('开始IO事件测试', EventType.info);
     _addLog('代码开始执行', EventType.sync);
-    
+
     // 模拟网络请求或IO操作
     Future(() {
       _addLog('模拟IO操作开始', EventType.event);
-      
+
       // 模拟IO操作处理时间
       return Future.delayed(const Duration(seconds: 1), () {
         return '数据加载完成';
@@ -115,7 +115,7 @@ class _EventQueuePageState extends State<EventQueuePage> {
     }).then((result) {
       _addLog('IO操作结果: $result', EventType.event);
     });
-    
+
     // 模拟多个并发IO操作
     Future.wait([
       Future.delayed(const Duration(milliseconds: 800), () {
@@ -129,9 +129,9 @@ class _EventQueuePageState extends State<EventQueuePage> {
     ]).then((results) {
       _addLog('所有并发操作完成: $results', EventType.event);
     });
-    
+
     _addLog('代码结束执行', EventType.sync);
-    
+
     // 给测试一个结束标记
     Future.delayed(const Duration(seconds: 3), () {
       _addLog('IO事件测试结束', EventType.info);

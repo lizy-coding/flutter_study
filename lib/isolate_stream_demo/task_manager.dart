@@ -100,7 +100,8 @@ class TaskManager {
         task.isolateSendPort = data;
       } else if (data is Map<String, dynamic>) {
         final int taskId = data['taskId'];
-        final Task? updatedTask = _tasks.firstWhereOrNull((t) => t.id == taskId);
+        final Task? updatedTask =
+            _tasks.firstWhereOrNull((t) => t.id == taskId);
 
         if (updatedTask != null) {
           if (data.containsKey('progress')) {

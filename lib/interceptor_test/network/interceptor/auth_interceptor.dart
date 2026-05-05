@@ -6,22 +6,22 @@ import 'package:flutter/foundation.dart';
 class AuthInterceptor extends Interceptor {
   /// 模拟的本地存储token
   static String? _token;
-  
+
   /// 设置token
   static void setToken(String token) {
     _token = token;
   }
-  
+
   /// 清除token
   static void clearToken() {
     _token = null;
   }
-  
+
   /// 获取token
   static String? getToken() {
     return _token;
   }
-  
+
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     // 如果存在token，则添加到请求头中
@@ -31,11 +31,11 @@ class AuthInterceptor extends Interceptor {
         print('AuthInterceptor - 添加认证信息: Bearer $_token');
       }
     }
-    
+
     // 请求继续
     handler.next(options);
   }
-  
+
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     // 检查响应中是否包含新的token
@@ -49,11 +49,11 @@ class AuthInterceptor extends Interceptor {
         }
       }
     }
-    
+
     // 响应继续
     handler.next(response);
   }
-  
+
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     // 401表示未授权，可能是token过期
@@ -61,15 +61,15 @@ class AuthInterceptor extends Interceptor {
       if (kDebugMode) {
         print('AuthInterceptor - 认证失败: ${err.message}');
       }
-      
+
       // 清除token
       _token = null;
-      
+
       // 这里可以跳转到登录页面或者自动刷新token
       // 如果要实现token刷新，应该在这里尝试刷新token并重试请求
     }
-    
+
     // 错误继续传递
     handler.next(err);
   }
-} 
+}

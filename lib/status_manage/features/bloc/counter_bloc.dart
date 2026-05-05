@@ -11,7 +11,8 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     on<ResetPressed>(_onReset);
   }
 
-  Future<void> _onLoadInitial(LoadInitial event, Emitter<CounterState> emit) async {
+  Future<void> _onLoadInitial(
+      LoadInitial event, Emitter<CounterState> emit) async {
     emit(state.copyWith(status: CounterStatus.loading));
     try {
       await Future<void>.delayed(const Duration(milliseconds: 200));
@@ -29,4 +30,3 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     emit(state.copyWith(value: 0, status: CounterStatus.success));
   }
 }
-

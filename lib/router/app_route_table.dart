@@ -4,34 +4,23 @@ import 'package:go_router/go_router.dart';
 import '../adsorption_line/module_entry.dart';
 import '../debounce_throttle/module_entry.dart';
 import '../download_animation_demo/module_entry.dart';
-import '../download_animation_demo/models/animation_config.dart';
-import '../download_animation_demo/pages/download_animation_page.dart';
-import '../download_animation_demo/pages/download_comparison_page.dart';
-import '../download_animation_demo/pages/paint_animation_page.dart';
+import '../download_animation_demo/module_routes.dart';
 import '../flutter_ioc/module_entry.dart';
 import '../interceptor_test/module_entry.dart';
-import '../interceptor_test/pages/login_page.dart';
+import '../interceptor_test/module_routes.dart';
 import '../isolate_stream_demo/module_entry.dart';
 import '../isolate_test/module_entry.dart';
-import '../isolate_test/with_isolate_page.dart';
-import '../isolate_test/without_isolate_page.dart';
+import '../isolate_test/module_routes.dart';
 import '../microtask/module_entry.dart';
-import '../microtask/features/advanced_examples/advanced_examples_page.dart';
-import '../microtask/features/event_queue/event_queue_page.dart';
-import '../microtask/features/microtask_queue/microtask_queue_page.dart';
+import '../microtask/module_routes.dart';
 import '../pop_widget/module_entry.dart';
 import '../scroll_table/module_entry.dart';
 import '../status_manage/app/app_routes.dart';
 import '../status_manage/module_entry.dart';
 import '../stream_subscription/module_entry.dart';
-import '../stream_subscription/pages/broadcast_demo/broadcast_demo_page.dart';
-import '../stream_subscription/pages/stream_demo_page.dart';
-import '../tree_state/pages/basic_widgets_page.dart';
-import '../tree_state/pages/painter_demo_page.dart';
-import '../tree_state/pages/repaint_boundary_demo_page.dart';
-import '../tree_state/pages/state_lifecycle_page.dart';
-import '../tree_state/routes.dart';
+import '../stream_subscription/module_routes.dart';
 import '../tree_state/module_entry.dart';
+import '../tree_state/module_routes.dart';
 import '../usb_detector_demo/module_entry.dart';
 
 // ==================== 枚举定义 ====================
@@ -68,105 +57,16 @@ enum ModuleStatus {
   final String label;
 }
 
-// ==================== 子路由定义 ====================
+// ==================== 状态管理子路由（模块内部已定义映射） ====================
 
-final List<GoRoute> _statusManageRoutes = AppRoutes.routes.entries
+List<GoRoute> _buildStatusManageRoutes() => AppRoutes.routes.entries
     .map(
       (entry) => GoRoute(
-        path: _stripLeadingSlash(entry.key),
+        path: entry.key.startsWith('/') ? entry.key.substring(1) : entry.key,
         builder: (context, state) => entry.value(context),
       ),
     )
     .toList();
-
-final List<GoRoute> _treeStateRoutes = [
-  GoRoute(
-    path: _stripLeadingSlash(DemoRoutes.basicWidgets),
-    builder: (context, state) => const BasicWidgetsPage(),
-  ),
-  GoRoute(
-    path: _stripLeadingSlash(DemoRoutes.stateLifecycle),
-    builder: (context, state) => const StateLifecyclePage(),
-  ),
-  GoRoute(
-    path: _stripLeadingSlash(DemoRoutes.painterDemo),
-    builder: (context, state) => const PainterDemoPage(),
-  ),
-  GoRoute(
-    path: _stripLeadingSlash(DemoRoutes.repaintBoundary),
-    builder: (context, state) => const RepaintBoundaryDemoPage(),
-  ),
-];
-
-const AnimationConfig _downloadAnimationConfig = AnimationConfig(
-  animationDuration: 2000,
-  flyingItemOffset: 30,
-  flyingItemPadding: 8,
-  flyingItemRadius: 8,
-);
-
-final List<GoRoute> _streamSubscriptionRoutes = [
-  GoRoute(
-    path: _stripLeadingSlash('/stream-demo'),
-    builder: (context, state) => const StreamDemoPage(),
-  ),
-  GoRoute(
-    path: _stripLeadingSlash('/broadcast-demo'),
-    builder: (context, state) => const BroadcastDemoPage(),
-  ),
-];
-
-final List<GoRoute> _microtaskRoutes = [
-  GoRoute(
-    path: _stripLeadingSlash('/event-queue'),
-    builder: (context, state) => const EventQueuePage(),
-  ),
-  GoRoute(
-    path: _stripLeadingSlash('/microtask-queue'),
-    builder: (context, state) => const MicrotaskQueuePage(),
-  ),
-  GoRoute(
-    path: _stripLeadingSlash('/advanced'),
-    builder: (context, state) => const AdvancedExamplesPage(),
-  ),
-];
-
-final List<GoRoute> _isolateTestRoutes = [
-  GoRoute(
-    path: _stripLeadingSlash('/without-isolate'),
-    builder: (context, state) => const WithoutIsolatePage(),
-  ),
-  GoRoute(
-    path: _stripLeadingSlash('/with-isolate'),
-    builder: (context, state) => const WithIsolatePage(),
-  ),
-];
-
-final List<GoRoute> _downloadAnimationRoutes = [
-  GoRoute(
-    path: _stripLeadingSlash('/custom-view'),
-    builder: (context, state) => const DownloadAnimationPage(
-      animationConfig: _downloadAnimationConfig,
-    ),
-  ),
-  GoRoute(
-    path: _stripLeadingSlash('/paint'),
-    builder: (context, state) => const PaintAnimationPage(
-      animationConfig: _downloadAnimationConfig,
-    ),
-  ),
-  GoRoute(
-    path: _stripLeadingSlash('/comparison'),
-    builder: (context, state) => const DownloadComparisonPage(),
-  ),
-];
-
-final List<GoRoute> _interceptorTestRoutes = [
-  GoRoute(
-    path: _stripLeadingSlash('/login'),
-    builder: (context, state) => const LoginPage(),
-  ),
-];
 
 // ==================== 模块注册 ====================
 
@@ -182,7 +82,7 @@ final List<ModuleEntry> _modules = [
     estimatedMinutes: 30,
     status: ModuleStatus.recommended,
     builder: (context) => const TreeStateEntry(),
-    routes: _treeStateRoutes,
+    routes: TreeStateRoutes.routes,
   ),
   ModuleEntry(
     title: '事件循环与微任务',
@@ -194,7 +94,7 @@ final List<ModuleEntry> _modules = [
     estimatedMinutes: 25,
     status: ModuleStatus.recommended,
     builder: (context) => const MicrotaskEntry(),
-    routes: _microtaskRoutes,
+    routes: MicrotaskRoutes.routes,
   ),
   ModuleEntry(
     title: '防抖与节流',
@@ -219,7 +119,7 @@ final List<ModuleEntry> _modules = [
     estimatedMinutes: 30,
     status: ModuleStatus.recommended,
     builder: (context) => const StreamSubscriptionEntry(),
-    routes: _streamSubscriptionRoutes,
+    routes: StreamSubscriptionRoutes.routes,
   ),
   ModuleEntry(
     title: 'Isolate 并发对比',
@@ -231,7 +131,7 @@ final List<ModuleEntry> _modules = [
     estimatedMinutes: 20,
     status: ModuleStatus.ready,
     builder: (context) => const IsolateTestEntry(),
-    routes: _isolateTestRoutes,
+    routes: IsolateTestRoutes.routes,
   ),
   ModuleEntry(
     title: '多任务 Isolate 管理器',
@@ -256,7 +156,7 @@ final List<ModuleEntry> _modules = [
     estimatedMinutes: 45,
     status: ModuleStatus.recommended,
     builder: (context) => const StatusManageEntry(),
-    routes: _statusManageRoutes,
+    routes: _buildStatusManageRoutes(),
   ),
   ModuleEntry(
     title: 'Flutter IoC 容器',
@@ -292,7 +192,7 @@ final List<ModuleEntry> _modules = [
     estimatedMinutes: 30,
     status: ModuleStatus.ready,
     builder: (context) => const DownloadAnimationEntry(),
-    routes: _downloadAnimationRoutes,
+    routes: DownloadAnimationRoutes.routes,
   ),
   ModuleEntry(
     title: '弹窗合集',
@@ -328,7 +228,7 @@ final List<ModuleEntry> _modules = [
     estimatedMinutes: 35,
     status: ModuleStatus.ready,
     builder: (context) => const InterceptorTestEntry(),
-    routes: _interceptorTestRoutes,
+    routes: InterceptorTestRoutes.routes,
   ),
   ModuleEntry(
     title: 'USB 设备检测',
@@ -343,7 +243,7 @@ final List<ModuleEntry> _modules = [
   ),
 ];
 
-// ==================== 路由表 ====================
+// ==================== 路由聚合 ====================
 
 final List<GoRoute> _routes = [
   GoRoute(
@@ -411,9 +311,8 @@ class ModuleHomePage extends StatelessWidget {
         itemCount: categories.length,
         itemBuilder: (context, index) {
           final category = categories[index];
-          final categoryModules = modules
-              .where((m) => m.category == category)
-              .toList();
+          final categoryModules =
+              modules.where((m) => m.category == category).toList();
 
           if (categoryModules.isEmpty) return const SizedBox.shrink();
 
@@ -425,14 +324,12 @@ class ModuleHomePage extends StatelessWidget {
                 child: Text(
                   category.label,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                 ),
               ),
-              ...categoryModules.map(
-                (module) => ModuleCard(module: module),
-              ),
+              ...categoryModules.map((module) => ModuleCard(module: module)),
               const Divider(height: 1),
             ],
           );
@@ -464,7 +361,8 @@ class ModuleCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             decoration: BoxDecoration(
-              color: _difficultyColor(module.difficulty).withValues(alpha: 0.15),
+              color:
+                  _difficultyColor(module.difficulty).withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
@@ -487,16 +385,19 @@ class ModuleCard extends StatelessWidget {
           Wrap(
             spacing: 4,
             runSpacing: 4,
-            children: module.concepts.map(
-              (c) => Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(c, style: const TextStyle(fontSize: 10)),
-              ),
-            ).toList(),
+            children: module.concepts
+                .map(
+                  (c) => Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(c, style: const TextStyle(fontSize: 10)),
+                  ),
+                )
+                .toList(),
           ),
           const SizedBox(height: 4),
           Text(
@@ -509,11 +410,4 @@ class ModuleCard extends StatelessWidget {
       onTap: () => context.push(module.path),
     );
   }
-}
-
-String _stripLeadingSlash(String path) {
-  if (path.startsWith('/')) {
-    return path.substring(1);
-  }
-  return path;
 }
