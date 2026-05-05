@@ -1,13 +1,48 @@
 # Flutter 学习项目集合
 
-当前目录下每个示例都可单独运行，涵盖网络、异步、UI 动效、状态管理等常见场景。
+本项目是一个统一的 Flutter 学习仓库，所有示例模块位于 `lib/` 目录下，通过路由切换进入不同模块。涵盖网络、异步、UI 动效、状态管理等常见场景。
+
+## 支持平台
+
+- macOS
+- Windows
+- 移动端（iOS / Android）
 
 ## 环境与快速开始
-- Flutter 3.x / Dart 3.x，按各示例的平台支持运行（移动/桌面/Web）
-- 示例互不共享依赖，首次运行请在目标子目录执行：
-  - `flutter pub get` 拉取依赖
-  - `flutter run [-d <device>]` 运行示例
-  - `flutter analyze`、`flutter test`、`dart format .` 进行检查与格式化
+
+- Flutter 3.x / Dart 3.x
+- 根目录执行：
+  ```bash
+  flutter pub get
+  flutter run [-d <device>]
+  ```
+- 代码检查与格式化：
+  ```bash
+  flutter analyze
+  dart format .
+  ```
+
+## 项目结构
+
+```
+lib/
+├── main.dart              # 入口
+├── app.dart               # 应用主壳
+├── router/                # 路由配置
+├── adsorption_line/       # 智能吸附线画板
+├── debounce_throttle/     # 防抖与节流
+├── download_animation_demo/ # 下载飞入动效
+├── flutter_ioc/           # IoC 容器示例
+├── interceptor_test/      # Dio 拦截器链路 + Mock Server
+├── isolate_stream_demo/   # Isolate 任务管理器
+├── isolate_test/          # 主线程 vs Isolate 对比
+├── microtask/             # 事件循环演示
+├── pop_widget/            # 弹窗合集
+├── scroll_table/          # 二维滚动表格
+├── status_manage/         # 状态管理演进
+├── stream_subscription/   # Stream 示例
+└── tree_state/            # 三棵树与生命周期
+```
 
 ## 示例索引（按主题）
 
