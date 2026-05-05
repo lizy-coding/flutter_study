@@ -5,7 +5,7 @@ import '../../core/widgets/event_log_view.dart';
 import '../../core/widgets/code_snippet_view.dart';
 
 class MicrotaskQueuePage extends StatefulWidget {
-  const MicrotaskQueuePage({Key? key}) : super(key: key);
+  const MicrotaskQueuePage({super.key});
 
   @override
   State<MicrotaskQueuePage> createState() => _MicrotaskQueuePageState();
@@ -255,7 +255,7 @@ class _MicrotaskQueuePageState extends State<MicrotaskQueuePage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            CodeSnippetView(
+            const CodeSnippetView(
               title: 'Microtask Queue 示例代码',
               code: '''
 // 使用scheduleMicrotask添加微任务

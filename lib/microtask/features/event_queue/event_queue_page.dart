@@ -5,7 +5,7 @@ import '../../core/widgets/event_log_view.dart';
 import '../../core/widgets/code_snippet_view.dart';
 
 class EventQueuePage extends StatefulWidget {
-  const EventQueuePage({Key? key}) : super(key: key);
+  const EventQueuePage({super.key});
 
   @override
   State<EventQueuePage> createState() => _EventQueuePageState();
@@ -206,7 +206,7 @@ class _EventQueuePageState extends State<EventQueuePage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            CodeSnippetView(
+            const CodeSnippetView(
               title: 'Event Queue 示例代码',
               code: '''
 // 使用Future()添加到事件队列

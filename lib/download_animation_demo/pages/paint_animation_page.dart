@@ -50,11 +50,12 @@ class _PaintAnimationPageState extends State<PaintAnimationPage>
 
   void _startDownload(String fileName, String fileSize, Offset startPosition) {
     if (_downloadAreaPosition == null) {
-      print('下载区域位置未初始化');
+      debugPrint('下载区域位置未初始化');
       return;
     }
 
-    print('开始下载动画: $fileName, 起点: $startPosition, 终点: $_downloadAreaPosition');
+    debugPrint(
+        '开始下载动画: $fileName, 起点: $startPosition, 终点: $_downloadAreaPosition');
 
     final controller = AnimationController(
       duration: Duration(
@@ -458,7 +459,7 @@ class FlyingAnimationPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    print('CustomPaint paint 被调用，items 数量: ${items.length}');
+    debugPrint('CustomPaint paint 被调用，items 数量: ${items.length}');
     for (var item in items) {
       _drawFlyingItem(canvas, item);
     }
@@ -523,7 +524,7 @@ class FlyingAnimationPainter extends CustomPainter {
 
   void _drawMainCircle(Canvas canvas, double opacity) {
     // 渐变圆圈
-    final rect = const Rect.fromLTRB(-25, -25, 25, 25);
+    const rect = Rect.fromLTRB(-25, -25, 25, 25);
     final gradient = RadialGradient(
       colors: [
         Colors.blue.shade400.withValues(alpha: opacity),

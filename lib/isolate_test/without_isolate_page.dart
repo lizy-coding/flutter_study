@@ -13,7 +13,7 @@ class _WithoutIsolatePageState extends State<WithoutIsolatePage>
   bool _isCalculating = false;
   String _result = '';
   double _progress = 0.0;
-  Stopwatch _stopwatch = Stopwatch();
+  final Stopwatch _stopwatch = Stopwatch();
 
   // 添加动画控制器和动画值
   late AnimationController _animationController;
@@ -97,7 +97,7 @@ class _WithoutIsolatePageState extends State<WithoutIsolatePage>
                   height: 50,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Colors.blue, Colors.purple],
+                      colors: const [Colors.blue, Colors.purple],
                       stops: [0, _animation.value],
                     ),
                     borderRadius: BorderRadius.circular(8),
@@ -163,8 +163,8 @@ class _WithoutIsolatePageState extends State<WithoutIsolatePage>
 
   void _findPrimes() async {
     // 增加迭代次数和计算范围
-    final int iterations = 20;
-    final int maxNumber = 500000;
+    const int iterations = 20;
+    const int maxNumber = 500000;
     List<int> primes = [];
 
     for (int i = 0; i < iterations; i++) {

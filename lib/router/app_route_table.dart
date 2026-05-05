@@ -300,7 +300,7 @@ class ModuleHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categories = ModuleCategory.values;
+    const categories = ModuleCategory.values;
 
     return Scaffold(
       appBar: AppBar(

@@ -5,7 +5,7 @@ import '../../core/widgets/event_log_view.dart';
 import '../../core/widgets/code_snippet_view.dart';
 
 class AdvancedExamplesPage extends StatefulWidget {
-  const AdvancedExamplesPage({Key? key}) : super(key: key);
+  const AdvancedExamplesPage({super.key});
 
   @override
   State<AdvancedExamplesPage> createState() => _AdvancedExamplesPageState();

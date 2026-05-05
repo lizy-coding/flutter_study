@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+
 /// 提供Stream相关服务
 class StreamService {
   /// 单例模式实现
@@ -20,15 +22,15 @@ class StreamService {
   /// 初始化服务
   void initialize() {
     _singleController = StreamController<String>(
-      onListen: () => print('单订阅Stream - 有人开始监听'),
-      onPause: () => print('单订阅Stream - 订阅被暂停'),
-      onResume: () => print('单订阅Stream - 订阅被恢复'),
-      onCancel: () => print('单订阅Stream - 订阅被取消'),
+      onListen: () => debugPrint('单订阅Stream - 有人开始监听'),
+      onPause: () => debugPrint('单订阅Stream - 订阅被暂停'),
+      onResume: () => debugPrint('单订阅Stream - 订阅被恢复'),
+      onCancel: () => debugPrint('单订阅Stream - 订阅被取消'),
     );
 
     _broadcastController = StreamController<String>.broadcast(
-      onListen: () => print('广播Stream - 有人开始监听'),
-      onCancel: () => print('广播Stream - 有人取消监听'),
+      onListen: () => debugPrint('广播Stream - 有人开始监听'),
+      onCancel: () => debugPrint('广播Stream - 有人取消监听'),
     );
   }
 

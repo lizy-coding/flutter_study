@@ -201,14 +201,15 @@ class MockServer {
       // 生成一个新的token
       final token = _generateToken();
       final refreshToken = _generateToken(prefix: 'refresh');
-      final expiresIn = 3600; // 1小时过期
+      const expiresIn = 3600; // 1小时过期
 
       // 存储token信息
       _tokens[token] = {
         'username': username,
         'refreshToken': refreshToken,
-        'expiresAt':
-            DateTime.now().add(Duration(seconds: expiresIn)).toIso8601String(),
+        'expiresAt': DateTime.now()
+            .add(const Duration(seconds: expiresIn))
+            .toIso8601String(),
       };
 
       request.response.statusCode = HttpStatus.ok;
@@ -293,14 +294,15 @@ class MockServer {
       // 生成新的token
       final newToken = _generateToken();
       final newRefreshToken = _generateToken(prefix: 'refresh');
-      final expiresIn = 3600; // 1小时过期
+      const expiresIn = 3600; // 1小时过期
 
       // 存储新的token信息
       _tokens[newToken] = {
         'username': username,
         'refreshToken': newRefreshToken,
-        'expiresAt':
-            DateTime.now().add(Duration(seconds: expiresIn)).toIso8601String(),
+        'expiresAt': DateTime.now()
+            .add(const Duration(seconds: expiresIn))
+            .toIso8601String(),
       };
 
       request.response.statusCode = HttpStatus.ok;

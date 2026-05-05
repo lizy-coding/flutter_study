@@ -14,29 +14,29 @@ class LoggingInterceptor extends Interceptor {
         DateTime.now().millisecondsSinceEpoch;
 
     if (kDebugMode) {
-      print(
+      debugPrint(
           '┌────────────────────────────────────────────────────────────────────────────────────────────────────');
-      print('│ 请求 [${options.method}] → ${options.uri}');
+      debugPrint('│ 请求 [${options.method}] → ${options.uri}');
 
       if (options.headers.isNotEmpty) {
-        print('│ Headers:');
+        debugPrint('│ Headers:');
         options.headers.forEach((key, value) {
-          print('│   $key: $value');
+          debugPrint('│   $key: $value');
         });
       }
 
       if (options.data != null) {
-        print('│ Body: ${options.data}');
+        debugPrint('│ Body: ${options.data}');
       }
 
       if (options.queryParameters.isNotEmpty) {
-        print('│ QueryParameters:');
+        debugPrint('│ QueryParameters:');
         options.queryParameters.forEach((key, value) {
-          print('│   $key: $value');
+          debugPrint('│   $key: $value');
         });
       }
 
-      print(
+      debugPrint(
           '└────────────────────────────────────────────────────────────────────────────────────────────────────');
     }
 
@@ -55,25 +55,26 @@ class LoggingInterceptor extends Interceptor {
     _requestStartTime.remove(requestUrl);
 
     if (kDebugMode) {
-      print(
+      debugPrint(
           '┌────────────────────────────────────────────────────────────────────────────────────────────────────');
-      print('│ 响应 [${response.statusCode}] ← ${response.requestOptions.uri}');
+      debugPrint(
+          '│ 响应 [${response.statusCode}] ← ${response.requestOptions.uri}');
 
       if (duration != null) {
-        print('│ 耗时: ${duration}ms');
+        debugPrint('│ 耗时: ${duration}ms');
       }
 
       if (response.headers.isEmpty == false) {
-        print('│ Headers:');
+        debugPrint('│ Headers:');
         response.headers.forEach((key, values) {
-          print('│   $key: ${values.join(', ')}');
+          debugPrint('│   $key: ${values.join(', ')}');
         });
       }
 
-      print('│ 响应数据:');
+      debugPrint('│ 响应数据:');
       printWrapped(response.data.toString());
 
-      print(
+      debugPrint(
           '└────────────────────────────────────────────────────────────────────────────────────────────────────');
     }
 
@@ -92,24 +93,24 @@ class LoggingInterceptor extends Interceptor {
     _requestStartTime.remove(requestUrl);
 
     if (kDebugMode) {
-      print(
+      debugPrint(
           '┌────────────────────────────────────────────────────────────────────────────────────────────────────');
-      print(
+      debugPrint(
           '│ 错误 [${err.response?.statusCode ?? "未知状态码"}] ← ${err.requestOptions.uri}');
-      print('│ 类型: ${err.type}');
+      debugPrint('│ 类型: ${err.type}');
 
       if (duration != null) {
-        print('│ 耗时: ${duration}ms');
+        debugPrint('│ 耗时: ${duration}ms');
       }
 
-      print('│ 消息: ${err.message}');
+      debugPrint('│ 消息: ${err.message}');
 
       if (err.response != null) {
-        print('│ 响应数据:');
+        debugPrint('│ 响应数据:');
         printWrapped(err.response.toString());
       }
 
-      print(
+      debugPrint(
           '└────────────────────────────────────────────────────────────────────────────────────────────────────');
     }
 
@@ -123,7 +124,7 @@ class LoggingInterceptor extends Interceptor {
 
     pattern.allMatches(text).forEach((match) {
       if (kDebugMode) {
-        print('│   ${match.group(0)}');
+        debugPrint('│   ${match.group(0)}');
       }
     });
   }

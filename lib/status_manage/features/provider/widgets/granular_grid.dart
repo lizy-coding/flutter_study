@@ -3,30 +3,30 @@ import 'package:provider/provider.dart';
 import '../models/counter_cn.dart';
 
 class GranularGrid extends StatelessWidget {
-  const GranularGrid();
+  const GranularGrid({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
+    return const Wrap(
       spacing: 12,
       runSpacing: 12,
-      children: const [
+      children: [
         GranularCard(
           title: '只监听 value',
           desc: '点击顶部「加 1」会触发重建，叶子按钮不会。',
-          selector: _GranularSelector.value,
+          selector: GranularSelector.value,
         ),
         GranularCard(
           title: '只监听 leafTaps',
           desc: '只有叶子按钮触发，展示 Provider 的依赖分割。',
-          selector: _GranularSelector.leafTaps,
+          selector: GranularSelector.leafTaps,
         ),
       ],
     );
   }
 }
 
-enum _GranularSelector { value, leafTaps }
+enum GranularSelector { value, leafTaps }
 
 class GranularCard extends StatelessWidget {
   const GranularCard({
@@ -38,15 +38,15 @@ class GranularCard extends StatelessWidget {
 
   final String title;
   final String desc;
-  final _GranularSelector selector;
+  final GranularSelector selector;
 
   @override
   Widget build(BuildContext context) {
     final selected = context.select<CounterCN, int>((s) {
       switch (selector) {
-        case _GranularSelector.value:
+        case GranularSelector.value:
           return s.value;
-        case _GranularSelector.leafTaps:
+        case GranularSelector.leafTaps:
           return s.leafTaps;
       }
     });

@@ -13,11 +13,11 @@ class ProviderLiftingRoute extends StatelessWidget {
         body: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 520),
-            child: Padding(
-              padding: const EdgeInsets.all(24),
+            child: const Padding(
+              padding: EdgeInsets.all(24),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   _LDisplay(),
                   SizedBox(height: 16),
                   _LControls(),

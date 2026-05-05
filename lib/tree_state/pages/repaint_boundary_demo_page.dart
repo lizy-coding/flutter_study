@@ -33,14 +33,14 @@ class _RepaintBoundaryDemoPageState extends State<RepaintBoundaryDemoPage> {
           Expanded(
             child: Row(
               children: [
-                Expanded(
+                const Expanded(
                   child: Column(
                     children: [
-                      const Text('无 RepaintBoundary'),
+                      Text('无 RepaintBoundary'),
                       Expanded(
                         child: CustomPaint(
-                          painter: const NoBoundaryPainter(),
-                          child: const SizedBox.expand(),
+                          painter: NoBoundaryPainter(),
+                          child: SizedBox.expand(),
                         ),
                       ),
                     ],

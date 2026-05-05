@@ -61,7 +61,7 @@ class _BasicWidgetsPageState extends State<BasicWidgetsPage> {
         const ConceptChips(
           concepts: ['Widget', 'Element', 'State', 'build', 'setState'],
         ),
-        CodeSnippetCard(
+        const CodeSnippetCard(
           title: 'setState 与数据传递',
           code: '''// 父组件触发重建
 void _rebuild() {

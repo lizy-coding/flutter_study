@@ -69,15 +69,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           Container(
             padding: const EdgeInsets.all(16),
             color: Colors.grey[100],
-            child: Column(
+            child: const Column(
               children: [
-                const Text(
+                Text(
                   '防抖(Debounce)：在一段时间内多次触发事件，只执行最后一次。',
                   style:
                       TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
                 ),
-                const SizedBox(height: 8),
-                const Text(
+                SizedBox(height: 8),
+                Text(
                   '节流(Throttle)：在一段时间内多次触发事件，只执行第一次。',
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.blue),
@@ -119,9 +119,9 @@ class _ButtonSceneState extends State<ButtonScene>
   int _normalCount = 0;
 
   // 普通事件、防抖事件和节流事件的处理次数
-  List<int> _normalEvents = [];
-  List<int> _debounceEvents = [];
-  List<int> _throttleEvents = [];
+  final List<int> _normalEvents = [];
+  final List<int> _debounceEvents = [];
+  final List<int> _throttleEvents = [];
 
   // 用于展示事件触发的动画控制器
   late AnimationController _normalAnim;
@@ -329,11 +329,11 @@ class _ButtonSceneState extends State<ButtonScene>
                 reverse: true,
                 itemBuilder: (context, index) {
                   final timestamp = events[index];
-                  return Container(
-                    // 添加时间戳格式化显示
-                    child: Text(
-                        '${DateTime.fromMillisecondsSinceEpoch(timestamp).toString().substring(11, 19)}',
-                        style: TextStyle(color: color.withValues(alpha: 0.8))),
+                  return Text(
+                    DateTime.fromMillisecondsSinceEpoch(timestamp)
+                        .toString()
+                        .substring(11, 19),
+                    style: TextStyle(color: color.withValues(alpha: 0.8)),
                   );
                 },
               ),

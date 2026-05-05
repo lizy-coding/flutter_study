@@ -39,10 +39,10 @@ class _BroadcastDemoPageState extends State<BroadcastDemoPage> {
   void _initBroadcastStream() {
     _broadcastController = StreamController<String>.broadcast(
       onListen: () {
-        print('有人开始监听广播Stream');
+        debugPrint('有人开始监听广播Stream');
       },
       onCancel: () {
-        print('有人取消监听广播Stream');
+        debugPrint('有人取消监听广播Stream');
       },
     );
   }
@@ -358,8 +358,8 @@ class _BroadcastDemoPageState extends State<BroadcastDemoPage> {
             ),
             const SizedBox(height: 8),
             Text(
-              '状态: ${_isPushingActive ? "推送中" : "已停止"} | ' +
-                  '订阅者数量: ${_subscribers.length}',
+              '状态: ${_isPushingActive ? "推送中" : "已停止"} | '
+              '订阅者数量: ${_subscribers.length}',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.bold,

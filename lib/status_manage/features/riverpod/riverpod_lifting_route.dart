@@ -11,11 +11,11 @@ class RiverpodLiftingRoute extends ConsumerWidget {
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 520),
-          child: Padding(
-            padding: const EdgeInsets.all(24),
+          child: const Padding(
+            padding: EdgeInsets.all(24),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 _LDisplay(),
                 SizedBox(height: 16),
                 _LControls(),
@@ -37,7 +37,7 @@ class _LiftRP extends StateNotifier<int> {
 }
 
 class _LDisplay extends ConsumerWidget {
-  const _LDisplay({super.key});
+  const _LDisplay();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final v = ref.watch(_liftProvider.select((v) => v));
@@ -46,7 +46,7 @@ class _LDisplay extends ConsumerWidget {
 }
 
 class _LControls extends ConsumerWidget {
-  const _LControls({super.key});
+  const _LControls();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final n = ref.read(_liftProvider.notifier);

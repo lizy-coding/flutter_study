@@ -40,10 +40,16 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          return;
+        }
         final shouldPop = await _showExitConfirmDialog(context);
-        return shouldPop ?? false;
+        if ((shouldPop ?? false) && context.mounted) {
+          Navigator.of(context).pop();
+        }
       },
       child: Scaffold(
         key: _scaffoldKey,
@@ -244,8 +250,8 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
   bool _chainOpening = false;
   bool _chainClosing = false;
 
-  Widget _noBack(Widget child) => WillPopScope(
-        onWillPop: () async => false,
+  Widget _noBack(Widget child) => PopScope(
+        canPop: false,
         child: child,
       );
 
@@ -610,32 +616,6 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
     );
   }
 
-  // 以固定位置插入 Overlay 弹窗：可指定在某个 id 之上/之下
-  void _overlayOpenAtPosition(String id, Widget dialog,
-      {String? aboveId, String? belowId}) {
-    final overlay = _overlayOf();
-    // 移除已存在
-    final existed = _overlayEntries.remove(id);
-    if (existed != null) {
-      for (final e in existed) e.remove();
-    }
-    final entries = _buildOverlayEntries(_noBack(dialog));
-    OverlayEntry? above;
-    OverlayEntry? below;
-    if (aboveId != null && _overlayEntries[aboveId] != null) {
-      // 以目标内容为锚点，先插入遮罩到其上，再把内容插到遮罩上方
-      above = _overlayEntries[aboveId]![1];
-    } else if (belowId != null && _overlayEntries[belowId] != null) {
-      // 以目标遮罩为锚点，将新对话框插入其下方
-      below = _overlayEntries[belowId]![0];
-    }
-
-    // 先插入遮罩，再插入内容（保证遮罩在下、内容在上）
-    overlay.insert(entries[0], above: above, below: below);
-    overlay.insert(entries[1], above: entries[0]);
-    _overlayEntries[id] = entries;
-  }
-
   // 使用 Overlay.rearrange 对当前可见弹窗重排，避免维护持久顺序表
   void _overlayApplyVisibleOrder(List<String> order) {
     final overlay = _overlayOf();
@@ -757,7 +737,7 @@ class _PopDemoHomePageState extends State<PopDemoHomePage> {
               ),
               const Text('这里可以放置任意自定义 Widget，例如输入框、进度等。'),
               const SizedBox(height: 12),
-              TextField(decoration: const InputDecoration(labelText: '输入一些内容')),
+              const TextField(decoration: InputDecoration(labelText: '输入一些内容')),
               const SizedBox(height: 12),
               Align(
                 alignment: Alignment.centerRight,
