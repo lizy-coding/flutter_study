@@ -41,7 +41,7 @@ class StateFlowHome extends StatelessWidget {
         description: '基于 InheritedWidget + ChangeNotifier，侧重依赖收集与粒度刷新',
         badge: 'Widget 树驱动',
         icon: Icons.extension,
-        routes: const [
+        routes: [
           _HomeCardData(
             title: '基础 / 粒度刷新',
             flow: '事件 → notifyListeners → Selector 仅重建依赖字段',
@@ -77,7 +77,7 @@ class StateFlowHome extends StatelessWidget {
         description: '容器化 Provider 图谱，无需 context，自动依赖追踪',
         badge: '声明式',
         icon: Icons.sync_alt,
-        routes: const [
+        routes: [
           _HomeCardData(
             title: 'StateNotifier 基础',
             flow: '事件 → state=new → 容器广播 → 重建',
@@ -113,7 +113,7 @@ class StateFlowHome extends StatelessWidget {
         description: '事件流驱动：Event → Bloc → emit(State)',
         badge: '事件驱动',
         icon: Icons.scatter_plot,
-        routes: const [
+        routes: [
           _HomeCardData(
             title: 'flutter_bloc 基础',
             flow: 'Event → Bloc → emit(State) → 重建',
@@ -175,7 +175,8 @@ class _RouteCategoryCard extends StatelessWidget {
                       const SizedBox(height: 6),
                       Text(
                         category.description,
-                        style: theme.textTheme.bodyMedium?.copyWith(color: Colors.black54),
+                        style: theme.textTheme.bodyMedium
+                            ?.copyWith(color: Colors.black54),
                       ),
                     ],
                   ),

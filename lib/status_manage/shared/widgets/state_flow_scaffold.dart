@@ -24,10 +24,9 @@ class StateFlowScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final animatedColor =
-        value.isEven
-            ? colorScheme.primaryContainer.withValues(alpha: 0.4)
-            : colorScheme.secondaryContainer.withValues(alpha: 0.4);
+    final animatedColor = value.isEven
+        ? colorScheme.primaryContainer.withValues(alpha: 0.4)
+        : colorScheme.secondaryContainer.withValues(alpha: 0.4);
 
     return Scaffold(
       appBar: AppBar(title: Text(pageTitle), centerTitle: true),
@@ -73,9 +72,8 @@ class StateFlowScaffold extends StatelessWidget {
                     const Divider(height: 32),
                     AnimatedSwitcher(
                       duration: const Duration(milliseconds: 260),
-                      transitionBuilder:
-                          (child, animation) =>
-                              ScaleTransition(scale: animation, child: child),
+                      transitionBuilder: (child, animation) =>
+                          ScaleTransition(scale: animation, child: child),
                       child: Text(
                         '$value',
                         key: ValueKey(value),
@@ -83,9 +81,9 @@ class StateFlowScaffold extends StatelessWidget {
                         style: Theme.of(
                           context,
                         ).textTheme.displayLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.5,
-                        ),
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.5,
+                            ),
                       ),
                     ),
                     const SizedBox(height: 12),

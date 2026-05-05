@@ -5,7 +5,7 @@ import '../../core/widgets/event_log_view.dart';
 import '../../core/widgets/code_snippet_view.dart';
 
 class MicrotaskQueuePage extends StatefulWidget {
-  const MicrotaskQueuePage({Key? key}) : super(key: key);
+  const MicrotaskQueuePage({super.key});
 
   @override
   State<MicrotaskQueuePage> createState() => _MicrotaskQueuePageState();
@@ -35,7 +35,7 @@ class _MicrotaskQueuePageState extends State<MicrotaskQueuePage> {
 
   void _addLog(String message, EventType type) {
     if (!_isRunning) return;
-    
+
     setState(() {
       _logs.add(EventLog(
         message: message,
@@ -43,7 +43,7 @@ class _MicrotaskQueuePageState extends State<MicrotaskQueuePage> {
         id: _logs.length + 1,
       ));
     });
-    
+
     // 使用微任务来确保在当前帧渲染后滚动到底部
     scheduleMicrotask(_scrollToBottom);
   }
@@ -58,37 +58,37 @@ class _MicrotaskQueuePageState extends State<MicrotaskQueuePage> {
     if (_isRunning) return;
     _isRunning = true;
     _clearLogs();
-    
+
     _addLog('开始微任务队列测试', EventType.info);
     _addLog('代码开始执行', EventType.sync);
-    
+
     // 添加事件任务
     Future(() {
       _addLog('事件任务执行', EventType.event);
     });
-    
+
     // 使用scheduleMicrotask添加微任务
     scheduleMicrotask(() {
       _addLog('scheduleMicrotask 微任务1执行', EventType.microtask);
     });
-    
+
     // 使用Future.microtask添加微任务
     Future.microtask(() {
       _addLog('Future.microtask 微任务2执行', EventType.microtask);
     });
-    
+
     // 再添加一个事件任务
     Future(() {
       _addLog('另一个事件任务执行', EventType.event);
     });
-    
+
     // 再添加一个微任务
     scheduleMicrotask(() {
       _addLog('scheduleMicrotask 微任务3执行', EventType.microtask);
     });
-    
+
     _addLog('代码结束执行', EventType.sync);
-    
+
     // 给测试一个结束标记
     Future.delayed(const Duration(seconds: 2), () {
       _addLog('微任务队列测试结束', EventType.info);
@@ -100,10 +100,10 @@ class _MicrotaskQueuePageState extends State<MicrotaskQueuePage> {
     if (_isRunning) return;
     _isRunning = true;
     _clearLogs();
-    
+
     _addLog('开始Future.then微任务测试', EventType.info);
     _addLog('代码开始执行', EventType.sync);
-    
+
     // Future.then 会将回调注册为微任务
     Future(() {
       _addLog('Future事件任务执行', EventType.event);
@@ -112,18 +112,18 @@ class _MicrotaskQueuePageState extends State<MicrotaskQueuePage> {
     }).then((_) {
       _addLog('Future.then微任务2执行', EventType.microtask);
     });
-    
+
     // 另外添加一个事件任务和微任务，观察执行顺序
     Future(() {
       _addLog('另一个事件任务执行', EventType.event);
     });
-    
+
     scheduleMicrotask(() {
       _addLog('scheduleMicrotask 微任务执行', EventType.microtask);
     });
-    
+
     _addLog('代码结束执行', EventType.sync);
-    
+
     // 给测试一个结束标记
     Future.delayed(const Duration(seconds: 2), () {
       _addLog('Future.then微任务测试结束', EventType.info);
@@ -135,44 +135,44 @@ class _MicrotaskQueuePageState extends State<MicrotaskQueuePage> {
     if (_isRunning) return;
     _isRunning = true;
     _clearLogs();
-    
+
     _addLog('开始嵌套微任务测试', EventType.info);
     _addLog('代码开始执行', EventType.sync);
-    
+
     // 外层微任务中嵌套其他微任务
     scheduleMicrotask(() {
       _addLog('外层微任务1执行', EventType.microtask);
-      
+
       // 在微任务中添加新的微任务
       scheduleMicrotask(() {
         _addLog('嵌套微任务1执行', EventType.microtask);
       });
-      
+
       // 添加另一个嵌套微任务
       scheduleMicrotask(() {
         _addLog('嵌套微任务2执行', EventType.microtask);
-        
+
         // 再嵌套一层微任务
         scheduleMicrotask(() {
           _addLog('二层嵌套微任务执行', EventType.microtask);
         });
       });
-      
+
       _addLog('外层微任务1继续执行', EventType.microtask);
     });
-    
+
     // 添加另一个外层微任务
     scheduleMicrotask(() {
       _addLog('外层微任务2执行', EventType.microtask);
     });
-    
+
     // 添加一个事件任务
     Future(() {
       _addLog('事件任务执行', EventType.event);
     });
-    
+
     _addLog('代码结束执行', EventType.sync);
-    
+
     // 给测试一个结束标记
     Future.delayed(const Duration(seconds: 2), () {
       _addLog('嵌套微任务测试结束', EventType.info);
@@ -255,7 +255,7 @@ class _MicrotaskQueuePageState extends State<MicrotaskQueuePage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            CodeSnippetView(
+            const CodeSnippetView(
               title: 'Microtask Queue 示例代码',
               code: '''
 // 使用scheduleMicrotask添加微任务

@@ -46,12 +46,13 @@ class _DownloadAnimationPageState extends State<DownloadAnimationPage>
   }
 
   void _getDownloadAreaPosition() {
-    final RenderBox? renderBox = 
+    final RenderBox? renderBox =
         _downloadAreaKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox != null) {
       final position = renderBox.localToGlobal(Offset.zero);
       setState(() {
-        _downloadAreaPosition = position + Offset(renderBox.size.width / 2, renderBox.size.height / 2);
+        _downloadAreaPosition = position +
+            Offset(renderBox.size.width / 2, renderBox.size.height / 2);
       });
     }
   }
@@ -74,7 +75,10 @@ class _DownloadAnimationPageState extends State<DownloadAnimationPage>
 
   void _animateDownload(DownloadItem item) {
     final animationController = AnimationController(
-      duration: Duration(milliseconds: (animationConfig.animationDuration / animationConfig.flyingSpeed).round()),
+      duration: Duration(
+          milliseconds:
+              (animationConfig.animationDuration / animationConfig.flyingSpeed)
+                  .round()),
       vsync: this,
     );
 
@@ -290,7 +294,8 @@ class _DownloadAnimationPageState extends State<DownloadAnimationPage>
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('飞入速度: ${animationConfig.flyingSpeed.toStringAsFixed(1)}x'),
+                Text(
+                    '飞入速度: ${animationConfig.flyingSpeed.toStringAsFixed(1)}x'),
                 Slider(
                   value: animationConfig.flyingSpeed,
                   min: 0.5,
@@ -314,7 +319,11 @@ class _DownloadAnimationPageState extends State<DownloadAnimationPage>
 
   Widget _buildFileList() {
     final files = [
-      {'name': 'Flutter开发指南.pdf', 'size': '15.2 MB', 'icon': Icons.picture_as_pdf},
+      {
+        'name': 'Flutter开发指南.pdf',
+        'size': '15.2 MB',
+        'icon': Icons.picture_as_pdf
+      },
       {'name': '项目源码.zip', 'size': '89.5 MB', 'icon': Icons.folder_zip},
       {'name': '设计稿.psd', 'size': '234.7 MB', 'icon': Icons.image},
       {'name': '演示视频.mp4', 'size': '156.3 MB', 'icon': Icons.video_file},
@@ -335,7 +344,8 @@ class _DownloadAnimationPageState extends State<DownloadAnimationPage>
               borderRadius: BorderRadius.circular(12),
             ),
             child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               leading: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
@@ -384,7 +394,8 @@ class _DownloadAnimationPageState extends State<DownloadAnimationPage>
                       );
                     },
                     child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -482,7 +493,8 @@ class _DownloadAnimationPageState extends State<DownloadAnimationPage>
                 padding: EdgeInsets.all(animationConfig.flyingItemPadding + 4),
                 decoration: BoxDecoration(
                   color: Colors.blue.shade600,
-                  borderRadius: BorderRadius.circular(animationConfig.flyingItemRadius + 2),
+                  borderRadius: BorderRadius.circular(
+                      animationConfig.flyingItemRadius + 2),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.blue.shade300,

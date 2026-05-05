@@ -8,17 +8,18 @@ class WithoutIsolatePage extends StatefulWidget {
   State<WithoutIsolatePage> createState() => _WithoutIsolatePageState();
 }
 
-class _WithoutIsolatePageState extends State<WithoutIsolatePage> with SingleTickerProviderStateMixin {
+class _WithoutIsolatePageState extends State<WithoutIsolatePage>
+    with SingleTickerProviderStateMixin {
   bool _isCalculating = false;
   String _result = '';
   double _progress = 0.0;
-  Stopwatch _stopwatch = Stopwatch();
-  
+  final Stopwatch _stopwatch = Stopwatch();
+
   // 添加动画控制器和动画值
   late AnimationController _animationController;
   late Animation<double> _animation;
   int _counter = 0;
-  
+
   @override
   void initState() {
     super.initState();
@@ -27,17 +28,17 @@ class _WithoutIsolatePageState extends State<WithoutIsolatePage> with SingleTick
       vsync: this,
       duration: const Duration(milliseconds: 1500),
     )..repeat(reverse: true);
-    
+
     // 创建动画
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
   }
-  
+
   @override
   void dispose() {
     _animationController.dispose();
     super.dispose();
   }
-  
+
   // 增加计数器
   void _incrementCounter() {
     setState(() {
@@ -72,7 +73,7 @@ class _WithoutIsolatePageState extends State<WithoutIsolatePage> with SingleTick
               child: Text(_isCalculating ? '计算中...' : '开始计算'),
             ),
             const SizedBox(height: 10),
-            
+
             // 添加计数器和按钮来测试UI响应
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -85,9 +86,9 @@ class _WithoutIsolatePageState extends State<WithoutIsolatePage> with SingleTick
                 Text('计数: $_counter', style: const TextStyle(fontSize: 18)),
               ],
             ),
-            
+
             const SizedBox(height: 20),
-            
+
             // 添加动画元素
             AnimatedBuilder(
               animation: _animation,
@@ -96,7 +97,7 @@ class _WithoutIsolatePageState extends State<WithoutIsolatePage> with SingleTick
                   height: 50,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Colors.blue, Colors.purple],
+                      colors: const [Colors.blue, Colors.purple],
                       stops: [0, _animation.value],
                     ),
                     borderRadius: BorderRadius.circular(8),
@@ -110,7 +111,7 @@ class _WithoutIsolatePageState extends State<WithoutIsolatePage> with SingleTick
                 );
               },
             ),
-            
+
             const SizedBox(height: 20),
             AnimatedContainer(
               duration: const Duration(milliseconds: 500),
@@ -162,8 +163,8 @@ class _WithoutIsolatePageState extends State<WithoutIsolatePage> with SingleTick
 
   void _findPrimes() async {
     // 增加迭代次数和计算范围
-    final int iterations = 20;
-    final int maxNumber = 500000;
+    const int iterations = 20;
+    const int maxNumber = 500000;
     List<int> primes = [];
 
     for (int i = 0; i < iterations; i++) {
@@ -195,11 +196,11 @@ class _WithoutIsolatePageState extends State<WithoutIsolatePage> with SingleTick
 
   List<int> _calculatePrimes(int max) {
     List<int> primes = [];
-    
+
     // 埃拉托斯特尼筛法 (Sieve of Eratosthenes)
     List<bool> sieve = List.filled(max + 1, true);
     sieve[0] = sieve[1] = false;
-    
+
     for (int i = 2; i <= sqrt(max).floor(); i++) {
       if (sieve[i]) {
         for (int j = i * i; j <= max; j += i) {
@@ -207,11 +208,13 @@ class _WithoutIsolatePageState extends State<WithoutIsolatePage> with SingleTick
         }
       }
     }
-    
+
     // 额外增加更多计算量，使计算更耗时
     for (int number = 2; number <= max; number++) {
       if (sieve[number]) {
         // 增加一些额外的计算
+        // 增加一些额外的计算以延长执行时间
+        // ignore: unused_local_variable, no_leading_underscores_for_local_identifiers
         double sum = 0;
         for (int j = 0; j < 2000; j++) {
           sum += sin(j * 0.01) * cos(j * 0.01) * tan(j * 0.005);
@@ -219,7 +222,7 @@ class _WithoutIsolatePageState extends State<WithoutIsolatePage> with SingleTick
         primes.add(number);
       }
     }
-    
+
     return primes;
   }
-} 
+}

@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class RiverpodTodoRoute extends ConsumerWidget {
   const RiverpodTodoRoute({super.key});
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -29,13 +28,15 @@ class _TodoRP extends StateNotifier<List<_Todo>> {
     l[i].done = !l[i].done;
     state = l;
   }
+
   void remove(int i) {
     final l = [...state]..removeAt(i);
     state = l;
   }
 }
 
-final _todoProvider = StateNotifierProvider<_TodoRP, List<_Todo>>((ref) => _TodoRP());
+final _todoProvider =
+    StateNotifierProvider<_TodoRP, List<_Todo>>((ref) => _TodoRP());
 
 class _TodoBody extends ConsumerWidget {
   const _TodoBody();
@@ -51,7 +52,9 @@ class _TodoBody extends ConsumerWidget {
         return ListTile(
           title: Text(item.title),
           leading: Checkbox(value: item.done, onChanged: (_) => n.toggle(i)),
-          trailing: IconButton(icon: const Icon(Icons.delete_outline), onPressed: () => n.remove(i)),
+          trailing: IconButton(
+              icon: const Icon(Icons.delete_outline),
+              onPressed: () => n.remove(i)),
         );
       },
     );

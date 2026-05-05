@@ -4,8 +4,6 @@ import 'package:provider/provider.dart';
 import '../../shared/widgets/state_flow_scaffold.dart';
 import 'models/counter_cn.dart';
 import 'widgets/provider_perks.dart';
-import 'widgets/granular_grid.dart';
-
 
 class ProviderRoute extends StatelessWidget {
   const ProviderRoute({super.key});

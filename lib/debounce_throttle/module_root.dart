@@ -31,17 +31,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: _currentPageIndex == 0 
-                        ? Theme.of(context).colorScheme.primaryContainer 
-                        : null,
+                      backgroundColor: _currentPageIndex == 0
+                          ? Theme.of(context).colorScheme.primaryContainer
+                          : null,
                     ),
                     onPressed: () {
                       setState(() => _currentPageIndex = 0);
-                      _pageController.animateToPage(
-                        0, 
-                        duration: const Duration(milliseconds: 300), 
-                        curve: Curves.easeInOut
-                      );
+                      _pageController.animateToPage(0,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut);
                     },
                     child: const Text('按钮点击场景'),
                   ),
@@ -50,17 +48,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: _currentPageIndex == 1 
-                        ? Theme.of(context).colorScheme.primaryContainer 
-                        : null,
+                      backgroundColor: _currentPageIndex == 1
+                          ? Theme.of(context).colorScheme.primaryContainer
+                          : null,
                     ),
                     onPressed: () {
                       setState(() => _currentPageIndex = 1);
-                      _pageController.animateToPage(
-                        1, 
-                        duration: const Duration(milliseconds: 300), 
-                        curve: Curves.easeInOut
-                      );
+                      _pageController.animateToPage(1,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut);
                     },
                     child: const Text('滚动场景'),
                   ),
@@ -68,26 +64,28 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               ],
             ),
           ),
-          
+
           // 防抖节流描述
           Container(
             padding: const EdgeInsets.all(16),
             color: Colors.grey[100],
-            child: Column(
+            child: const Column(
               children: [
-                const Text(
+                Text(
                   '防抖(Debounce)：在一段时间内多次触发事件，只执行最后一次。',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
                 ),
-                const SizedBox(height: 8),
-                const Text(
+                SizedBox(height: 8),
+                Text(
                   '节流(Throttle)：在一段时间内多次触发事件，只执行第一次。',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.blue),
                 ),
               ],
             ),
           ),
-          
+
           // 场景内容
           Expanded(
             child: PageView(
@@ -114,24 +112,27 @@ class ButtonScene extends StatefulWidget {
   State<ButtonScene> createState() => _ButtonSceneState();
 }
 
-class _ButtonSceneState extends State<ButtonScene> with TickerProviderStateMixin {
+class _ButtonSceneState extends State<ButtonScene>
+    with TickerProviderStateMixin {
   int _debounceCount = 0;
   int _throttleCount = 0;
   int _normalCount = 0;
-  
+
   // 普通事件、防抖事件和节流事件的处理次数
-  List<int> _normalEvents = [];
-  List<int> _debounceEvents = [];
-  List<int> _throttleEvents = [];
-  
+  final List<int> _normalEvents = [];
+  final List<int> _debounceEvents = [];
+  final List<int> _throttleEvents = [];
+
   // 用于展示事件触发的动画控制器
   late AnimationController _normalAnim;
   late AnimationController _debounceAnim;
   late AnimationController _throttleAnim;
-  
+
   // 防抖和节流实例
-  final Debouncer _debouncer = Debouncer(delay: const Duration(milliseconds: 500));
-  final Throttle _throttler = Throttle(limit: const Duration(milliseconds: 500));
+  final Debouncer _debouncer =
+      Debouncer(delay: const Duration(milliseconds: 500));
+  final Throttle _throttler =
+      Throttle(limit: const Duration(milliseconds: 500));
 
   @override
   void initState() {
@@ -205,7 +206,7 @@ class _ButtonSceneState extends State<ButtonScene> with TickerProviderStateMixin
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
-          
+
           // 按钮区域
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -230,9 +231,9 @@ class _ButtonSceneState extends State<ButtonScene> with TickerProviderStateMixin
               ),
             ],
           ),
-          
+
           const SizedBox(height: 20),
-          
+
           // 计数器显示
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -242,11 +243,12 @@ class _ButtonSceneState extends State<ButtonScene> with TickerProviderStateMixin
               _buildCounter('节流:', _throttleCount, Colors.blue),
             ],
           ),
-          
+
           const SizedBox(height: 30),
-          const Text('事件触发可视化:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text('事件触发可视化:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 10),
-          
+
           // 事件触发可视化区域
           Expanded(
             child: Row(
@@ -265,11 +267,7 @@ class _ButtonSceneState extends State<ButtonScene> with TickerProviderStateMixin
 
   // 创建带动画的按钮
   Widget _buildAnimatedButton(
-    String text, 
-    Color color, 
-    VoidCallback onTap, 
-    AnimationController anim
-  ) {
+      String text, Color color, VoidCallback onTap, AnimationController anim) {
     return Column(
       children: [
         ScaleTransition(
@@ -284,10 +282,11 @@ class _ButtonSceneState extends State<ButtonScene> with TickerProviderStateMixin
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             ),
             onPressed: () {
-              anim.forward(from: 0.0);  // 添加按钮点击动画触发
-              onTap();                  // 触发点击回调
+              anim.forward(from: 0.0); // 添加按钮点击动画触发
+              onTap(); // 触发点击回调
             },
-            child: Text(text, style: const TextStyle(fontWeight: FontWeight.bold)),
+            child:
+                Text(text, style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
       ],
@@ -301,8 +300,8 @@ class _ButtonSceneState extends State<ButtonScene> with TickerProviderStateMixin
         Text(
           '$prefix $count',
           style: TextStyle(
-            fontSize: 18, 
-            fontWeight: FontWeight.bold, 
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
             color: color,
           ),
         ),
@@ -321,7 +320,8 @@ class _ButtonSceneState extends State<ButtonScene> with TickerProviderStateMixin
         ),
         child: Column(
           children: [
-            Text(title, style: TextStyle(color: color, fontWeight: FontWeight.bold)),
+            Text(title,
+                style: TextStyle(color: color, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
@@ -329,11 +329,11 @@ class _ButtonSceneState extends State<ButtonScene> with TickerProviderStateMixin
                 reverse: true,
                 itemBuilder: (context, index) {
                   final timestamp = events[index];
-                  return Container(
-                    // 添加时间戳格式化显示
-                    child: Text('${DateTime.fromMillisecondsSinceEpoch(timestamp).toString().substring(11, 19)}',
-                      style: TextStyle(color: color.withValues(alpha: 0.8))
-                    ),
+                  return Text(
+                    DateTime.fromMillisecondsSinceEpoch(timestamp)
+                        .toString()
+                        .substring(11, 19),
+                    style: TextStyle(color: color.withValues(alpha: 0.8)),
                   );
                 },
               ),
@@ -352,16 +352,19 @@ class ScrollScene extends StatefulWidget {
   State<ScrollScene> createState() => _ScrollSceneState();
 }
 
-class _ScrollSceneState extends State<ScrollScene> with SingleTickerProviderStateMixin {
+class _ScrollSceneState extends State<ScrollScene>
+    with SingleTickerProviderStateMixin {
   double _scrollPosition = 0;
   double _debouncePosition = 0;
   double _throttlePosition = 0;
-  
+
   final ScrollController _scrollController = ScrollController();
   late AnimationController _positionAnimController;
-  
-  final Debouncer _debouncer = Debouncer(delay: const Duration(milliseconds: 500));
-  final Throttle _throttler = Throttle(limit: const Duration(milliseconds: 500));
+
+  final Debouncer _debouncer =
+      Debouncer(delay: const Duration(milliseconds: 500));
+  final Throttle _throttler =
+      Throttle(limit: const Duration(milliseconds: 500));
 
   @override
   void initState() {
@@ -370,17 +373,17 @@ class _ScrollSceneState extends State<ScrollScene> with SingleTickerProviderStat
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-    
+
     // 滚动监听
     _scrollController.addListener(() {
       setState(() => _scrollPosition = _scrollController.offset);
-      
+
       // 防抖处理滚动位置
       _debouncer.run(() {
         setState(() => _debouncePosition = _scrollController.offset);
         _positionAnimController.forward(from: 0);
       });
-      
+
       // 节流处理滚动位置
       _throttler.run(() {
         setState(() => _throttlePosition = _scrollController.offset);
@@ -406,31 +409,26 @@ class _ScrollSceneState extends State<ScrollScene> with SingleTickerProviderStat
           color: Colors.grey[200],
           child: Column(
             children: [
-              _buildPositionIndicator('实时位置', _scrollPosition, Colors.grey[800]!),
+              _buildPositionIndicator(
+                  '实时位置', _scrollPosition, Colors.grey[800]!),
               const SizedBox(height: 10),
               Row(
                 children: [
                   Expanded(
                     child: _buildAnimatedPositionIndicator(
-                      '防抖位置', 
-                      _debouncePosition, 
-                      Colors.red
-                    ),
+                        '防抖位置', _debouncePosition, Colors.red),
                   ),
                   const SizedBox(width: 20),
                   Expanded(
                     child: _buildAnimatedPositionIndicator(
-                      '节流位置', 
-                      _throttlePosition, 
-                      Colors.blue
-                    ),
+                        '节流位置', _throttlePosition, Colors.blue),
                   ),
                 ],
               ),
             ],
           ),
         ),
-        
+
         // 可滚动列表
         Expanded(
           child: ListView.builder(
@@ -447,9 +445,7 @@ class _ScrollSceneState extends State<ScrollScene> with SingleTickerProviderStat
                       Text(
                         '列表项 #$index',
                         style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16
-                        ),
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       const SizedBox(height: 8),
                       _buildPositionVisualization(index),
@@ -487,7 +483,11 @@ class _ScrollSceneState extends State<ScrollScene> with SingleTickerProviderStat
             ),
             child: FractionallySizedBox(
               alignment: Alignment.centerLeft,
-              widthFactor: (position / (_scrollController.hasClients ? _scrollController.position.maxScrollExtent : 1)).clamp(0.0, 1.0),
+              widthFactor: (position /
+                      (_scrollController.hasClients
+                          ? _scrollController.position.maxScrollExtent
+                          : 1))
+                  .clamp(0.0, 1.0),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
@@ -511,7 +511,8 @@ class _ScrollSceneState extends State<ScrollScene> with SingleTickerProviderStat
   }
 
   // 创建带动画的位置指示器
-  Widget _buildAnimatedPositionIndicator(String title, double position, Color color) {
+  Widget _buildAnimatedPositionIndicator(
+      String title, double position, Color color) {
     return Row(
       children: [
         SizedBox(
@@ -541,7 +542,12 @@ class _ScrollSceneState extends State<ScrollScene> with SingleTickerProviderStat
                 ),
                 child: Container(
                   height: 12,
-                  width: (position / (_scrollController.hasClients ? _scrollController.position.maxScrollExtent : 1)) * MediaQuery.of(context).size.width * 0.5,
+                  width: (position /
+                          (_scrollController.hasClients
+                              ? _scrollController.position.maxScrollExtent
+                              : 1)) *
+                      MediaQuery.of(context).size.width *
+                      0.5,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(6),
                     color: color,
@@ -570,7 +576,7 @@ class _ScrollSceneState extends State<ScrollScene> with SingleTickerProviderStat
     final bool isNearReal = (_scrollPosition - itemPosition).abs() < 200;
     final bool isNearDebounce = (_debouncePosition - itemPosition).abs() < 200;
     final bool isNearThrottle = (_throttlePosition - itemPosition).abs() < 200;
-    
+
     return Row(
       children: [
         _buildPositionDot('实时', isNearReal, Colors.grey[800]!),

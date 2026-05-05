@@ -18,36 +18,38 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
     with TickerProviderStateMixin {
   List<DownloadItem> downloadItems = [];
   final OverlayDownloadService _overlayService = OverlayDownloadService();
-  
+
   final GlobalKey _downloadAreaKey = GlobalKey();
   Offset? _downloadAreaPosition;
-  
+
   late AnimationConfig animationConfig;
   bool showControlPanel = false;
-  
+
   @override
   void initState() {
     super.initState();
     animationConfig = const AnimationConfig();
-    
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _getDownloadAreaPosition();
     });
   }
-  
+
   void _getDownloadAreaPosition() {
-    final RenderBox? renderBox = 
+    final RenderBox? renderBox =
         _downloadAreaKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox != null) {
       final position = renderBox.localToGlobal(Offset.zero);
       setState(() {
-        _downloadAreaPosition = position + Offset(renderBox.size.width / 2, renderBox.size.height / 2);
+        _downloadAreaPosition = position +
+            Offset(renderBox.size.width / 2, renderBox.size.height / 2);
       });
     }
   }
-  
+
   /// 使用自定义 View 方式开始下载
-  void _startCustomViewDownload(String fileName, String fileSize, Offset startPosition) {
+  void _startCustomViewDownload(
+      String fileName, String fileSize, Offset startPosition) {
     final downloadItem = DownloadItem(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       fileName: fileName,
@@ -55,18 +57,19 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
       startPosition: startPosition,
       endPosition: _downloadAreaPosition ?? const Offset(200, 600),
     );
-    
+
     setState(() {
       downloadItems.add(downloadItem);
     });
-    
+
     _animateCustomViewDownload(downloadItem);
   }
-  
+
   /// 使用 Overlay 方式开始下载
-  void _startOverlayDownload(String fileName, String fileSize, Offset startPosition) {
+  void _startOverlayDownload(
+      String fileName, String fileSize, Offset startPosition) {
     if (_downloadAreaPosition == null) return;
-    
+
     _overlayService.startDownload(
       context: context,
       fileName: fileName,
@@ -79,23 +82,26 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
       },
     );
   }
-  
+
   void _animateCustomViewDownload(DownloadItem item) {
     final animationController = AnimationController(
-      duration: Duration(milliseconds: (animationConfig.animationDuration / animationConfig.flyingSpeed).round()),
+      duration: Duration(
+          milliseconds:
+              (animationConfig.animationDuration / animationConfig.flyingSpeed)
+                  .round()),
       vsync: this,
     );
-    
+
     final curveAnimation = CurvedAnimation(
       parent: animationController,
       curve: Curves.easeInOut,
     );
-    
+
     final positionAnimation = Tween<Offset>(
       begin: item.startPosition,
       end: item.endPosition,
     ).animate(curveAnimation);
-    
+
     final scaleAnimation = Tween<double>(
       begin: 1.2,
       end: 0.2,
@@ -103,7 +109,7 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
       parent: animationController,
       curve: const Interval(0.7, 1.0, curve: Curves.easeIn),
     ));
-    
+
     final opacityAnimation = Tween<double>(
       begin: 1.0,
       end: 0.0,
@@ -111,27 +117,27 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
       parent: animationController,
       curve: const Interval(0.8, 1.0, curve: Curves.easeIn),
     ));
-    
+
     item.positionAnimation = positionAnimation;
     item.scaleAnimation = scaleAnimation;
     item.opacityAnimation = opacityAnimation;
     item.animationController = animationController;
-    
+
     animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         setState(() {
           downloadItems.removeWhere((element) => element.id == item.id);
         });
         animationController.dispose();
-        
+
         HapticFeedback.lightImpact();
         _showDownloadComplete(item.fileName, 'Custom View');
       }
     });
-    
+
     animationController.forward();
   }
-  
+
   void _showDownloadComplete(String fileName, String type) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -141,7 +147,7 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
       ),
     );
   }
-  
+
   @override
   void dispose() {
     for (var item in downloadItems) {
@@ -150,7 +156,7 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
     _overlayService.clearAll();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -188,7 +194,7 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
       ),
     );
   }
-  
+
   /// 构建对比说明
   Widget _buildComparisonInfo() {
     return Container(
@@ -241,7 +247,7 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
       ),
     );
   }
-  
+
   Widget _buildComparisonCard({
     required String title,
     required Color color,
@@ -283,7 +289,7 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
       ),
     );
   }
-  
+
   /// 构建动画参数控制面板
   Widget _buildControlPanel() {
     return Card(
@@ -305,7 +311,7 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
               ),
             ),
             const SizedBox(height: 16),
-            
+
             // 动画持续时间滑块
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -331,7 +337,8 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('飞入速度: ${animationConfig.flyingSpeed.toStringAsFixed(1)}x'),
+                Text(
+                    '飞入速度: ${animationConfig.flyingSpeed.toStringAsFixed(1)}x'),
                 Slider(
                   value: animationConfig.flyingSpeed,
                   min: 0.5,
@@ -352,15 +359,19 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
       ),
     );
   }
-  
+
   Widget _buildFileList() {
     final files = [
-      {'name': 'Flutter开发指南.pdf', 'size': '15.2 MB', 'icon': Icons.picture_as_pdf},
+      {
+        'name': 'Flutter开发指南.pdf',
+        'size': '15.2 MB',
+        'icon': Icons.picture_as_pdf
+      },
       {'name': '项目源码.zip', 'size': '89.5 MB', 'icon': Icons.folder_zip},
       {'name': '设计稿.psd', 'size': '234.7 MB', 'icon': Icons.image},
       {'name': '演示视频.mp4', 'size': '156.3 MB', 'icon': Icons.video_file},
     ];
-    
+
     return Expanded(
       child: ListView.builder(
         padding: const EdgeInsets.all(16),
@@ -374,7 +385,8 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
               borderRadius: BorderRadius.circular(12),
             ),
             child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               leading: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
@@ -424,11 +436,13 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
                           );
                         },
                         child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.download, color: Colors.white, size: 14),
+                              Icon(Icons.download,
+                                  color: Colors.white, size: 14),
                               SizedBox(width: 4),
                               Text(
                                 'View',
@@ -465,11 +479,13 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
                           );
                         },
                         child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.cloud_download, color: Colors.white, size: 14),
+                              Icon(Icons.cloud_download,
+                                  color: Colors.white, size: 14),
                               SizedBox(width: 4),
                               Text(
                                 'Overlay',
@@ -493,7 +509,7 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
       ),
     );
   }
-  
+
   Widget _buildDownloadArea() {
     return Container(
       key: _downloadAreaKey,
@@ -546,7 +562,7 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
       ),
     );
   }
-  
+
   Widget _buildFlyingItem(DownloadItem item) {
     return AnimatedBuilder(
       animation: item.animationController!,
@@ -554,7 +570,7 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
         final position = item.positionAnimation!.value;
         final scale = item.scaleAnimation!.value;
         final opacity = item.opacityAnimation!.value;
-        
+
         return Positioned(
           left: position.dx - animationConfig.flyingItemOffset,
           top: position.dy - animationConfig.flyingItemOffset,
@@ -563,34 +579,35 @@ class _DownloadComparisonPageState extends State<DownloadComparisonPage>
             child: Opacity(
               opacity: math.max(0.0, opacity),
               child: Container(
-                  padding: EdgeInsets.all(animationConfig.flyingItemPadding + 4),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.shade600,
-                    borderRadius: BorderRadius.circular(animationConfig.flyingItemRadius + 2),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.blue.shade300,
-                        blurRadius: 12,
-                        spreadRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                      BoxShadow(
-                        color: Colors.blue.shade600.withValues(alpha: 0.3),
-                        blurRadius: 20,
-                        spreadRadius: 8,
-                      ),
-                    ],
-                  ),
-                  child: SvgPicture.asset(
-                    'assets/icons/paper_plane.svg',
-                    width: 32,
-                    height: 32,
-                    colorFilter: const ColorFilter.mode(
-                      Colors.white,
-                      BlendMode.srcIn,
+                padding: EdgeInsets.all(animationConfig.flyingItemPadding + 4),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade600,
+                  borderRadius: BorderRadius.circular(
+                      animationConfig.flyingItemRadius + 2),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.shade300,
+                      blurRadius: 12,
+                      spreadRadius: 4,
+                      offset: const Offset(0, 2),
                     ),
+                    BoxShadow(
+                      color: Colors.blue.shade600.withValues(alpha: 0.3),
+                      blurRadius: 20,
+                      spreadRadius: 8,
+                    ),
+                  ],
+                ),
+                child: SvgPicture.asset(
+                  'assets/icons/paper_plane.svg',
+                  width: 32,
+                  height: 32,
+                  colorFilter: const ColorFilter.mode(
+                    Colors.white,
+                    BlendMode.srcIn,
                   ),
                 ),
+              ),
             ),
           ),
         );

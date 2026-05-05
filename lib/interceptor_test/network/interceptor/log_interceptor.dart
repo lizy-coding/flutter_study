@@ -6,37 +6,40 @@ import 'package:flutter/foundation.dart';
 class LoggingInterceptor extends Interceptor {
   // 记录请求开始时间
   final Map<String, int> _requestStartTime = {};
-  
+
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     // 记录请求开始时间
-    _requestStartTime[options.uri.toString()] = DateTime.now().millisecondsSinceEpoch;
-    
+    _requestStartTime[options.uri.toString()] =
+        DateTime.now().millisecondsSinceEpoch;
+
     if (kDebugMode) {
-      print('┌────────────────────────────────────────────────────────────────────────────────────────────────────');
-      print('│ 请求 [${options.method}] → ${options.uri}');
-      
+      debugPrint(
+          '┌────────────────────────────────────────────────────────────────────────────────────────────────────');
+      debugPrint('│ 请求 [${options.method}] → ${options.uri}');
+
       if (options.headers.isNotEmpty) {
-        print('│ Headers:');
+        debugPrint('│ Headers:');
         options.headers.forEach((key, value) {
-          print('│   $key: $value');
+          debugPrint('│   $key: $value');
         });
       }
-      
+
       if (options.data != null) {
-        print('│ Body: ${options.data}');
+        debugPrint('│ Body: ${options.data}');
       }
-      
+
       if (options.queryParameters.isNotEmpty) {
-        print('│ QueryParameters:');
+        debugPrint('│ QueryParameters:');
         options.queryParameters.forEach((key, value) {
-          print('│   $key: $value');
+          debugPrint('│   $key: $value');
         });
       }
-      
-      print('└────────────────────────────────────────────────────────────────────────────────────────────────────');
+
+      debugPrint(
+          '└────────────────────────────────────────────────────────────────────────────────────────────────────');
     }
-    
+
     handler.next(options);
   }
 
@@ -47,31 +50,34 @@ class LoggingInterceptor extends Interceptor {
     final startTime = _requestStartTime[requestUrl];
     final endTime = DateTime.now().millisecondsSinceEpoch;
     final duration = startTime != null ? endTime - startTime : null;
-    
+
     // 请求完成后清除记录
     _requestStartTime.remove(requestUrl);
-    
+
     if (kDebugMode) {
-      print('┌────────────────────────────────────────────────────────────────────────────────────────────────────');
-      print('│ 响应 [${response.statusCode}] ← ${response.requestOptions.uri}');
-      
+      debugPrint(
+          '┌────────────────────────────────────────────────────────────────────────────────────────────────────');
+      debugPrint(
+          '│ 响应 [${response.statusCode}] ← ${response.requestOptions.uri}');
+
       if (duration != null) {
-        print('│ 耗时: ${duration}ms');
+        debugPrint('│ 耗时: ${duration}ms');
       }
-      
+
       if (response.headers.isEmpty == false) {
-        print('│ Headers:');
+        debugPrint('│ Headers:');
         response.headers.forEach((key, values) {
-          print('│   $key: ${values.join(', ')}');
+          debugPrint('│   $key: ${values.join(', ')}');
         });
       }
-      
-      print('│ 响应数据:');
+
+      debugPrint('│ 响应数据:');
       printWrapped(response.data.toString());
-      
-      print('└────────────────────────────────────────────────────────────────────────────────────────────────────');
+
+      debugPrint(
+          '└────────────────────────────────────────────────────────────────────────────────────────────────────');
     }
-    
+
     handler.next(response);
   }
 
@@ -82,41 +88,44 @@ class LoggingInterceptor extends Interceptor {
     final startTime = _requestStartTime[requestUrl];
     final endTime = DateTime.now().millisecondsSinceEpoch;
     final duration = startTime != null ? endTime - startTime : null;
-    
+
     // 请求完成后清除记录
     _requestStartTime.remove(requestUrl);
-    
+
     if (kDebugMode) {
-      print('┌────────────────────────────────────────────────────────────────────────────────────────────────────');
-      print('│ 错误 [${err.response?.statusCode ?? "未知状态码"}] ← ${err.requestOptions.uri}');
-      print('│ 类型: ${err.type}');
-      
+      debugPrint(
+          '┌────────────────────────────────────────────────────────────────────────────────────────────────────');
+      debugPrint(
+          '│ 错误 [${err.response?.statusCode ?? "未知状态码"}] ← ${err.requestOptions.uri}');
+      debugPrint('│ 类型: ${err.type}');
+
       if (duration != null) {
-        print('│ 耗时: ${duration}ms');
+        debugPrint('│ 耗时: ${duration}ms');
       }
-      
-      print('│ 消息: ${err.message}');
-      
+
+      debugPrint('│ 消息: ${err.message}');
+
       if (err.response != null) {
-        print('│ 响应数据:');
+        debugPrint('│ 响应数据:');
         printWrapped(err.response.toString());
       }
-      
-      print('└────────────────────────────────────────────────────────────────────────────────────────────────────');
+
+      debugPrint(
+          '└────────────────────────────────────────────────────────────────────────────────────────────────────');
     }
-    
+
     handler.next(err);
   }
-  
+
   /// 格式化打印较长的内容
   void printWrapped(String text) {
     const int maxLength = 100;
     final pattern = RegExp('.{1,$maxLength}');
-    
+
     pattern.allMatches(text).forEach((match) {
       if (kDebugMode) {
-        print('│   ${match.group(0)}');
+        debugPrint('│   ${match.group(0)}');
       }
     });
   }
-} 
+}

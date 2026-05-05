@@ -86,17 +86,15 @@ class _StreamDemoPageState extends State<StreamDemoPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ElevatedButton(
-                            onPressed:
-                                !controller.isSubscribed
-                                    ? null
-                                    : controller.unsubscribe,
+                            onPressed: !controller.isSubscribed
+                                ? null
+                                : controller.unsubscribe,
                             child: const Text('订阅'),
                           ),
                           ElevatedButton(
-                            onPressed:
-                                controller.isSubscribed
-                                    ? null
-                                    : controller.subscribe,
+                            onPressed: controller.isSubscribed
+                                ? null
+                                : controller.subscribe,
                             child: const Text('取消订阅'),
                           ),
                         ],
@@ -122,13 +120,12 @@ class _StreamDemoPageState extends State<StreamDemoPage> {
                           const Text('推送间隔: '),
                           DropdownButton<int>(
                             value: controller.interval,
-                            items:
-                                [1, 2, 3, 5].map((value) {
-                                  return DropdownMenuItem<int>(
-                                    value: value,
-                                    child: Text('$value秒'),
-                                  );
-                                }).toList(),
+                            items: [1, 2, 3, 5].map((value) {
+                              return DropdownMenuItem<int>(
+                                value: value,
+                                child: Text('$value秒'),
+                              );
+                            }).toList(),
                             onChanged: (value) {
                               if (value != null) controller.setInterval(value);
                             },
@@ -147,19 +144,18 @@ class _StreamDemoPageState extends State<StreamDemoPage> {
               const SizedBox(height: 8),
               Expanded(
                 child: Card(
-                  child:
-                      controller.messages.isEmpty
-                          ? const Center(child: Text('暂无消息'))
-                          : ListView.builder(
-                            controller: _scrollController,
-                            itemCount: controller.messages.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                leading: const Icon(Icons.message),
-                                title: Text(controller.messages[index]),
-                              );
-                            },
-                          ),
+                  child: controller.messages.isEmpty
+                      ? const Center(child: Text('暂无消息'))
+                      : ListView.builder(
+                          controller: _scrollController,
+                          itemCount: controller.messages.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: const Icon(Icons.message),
+                              title: Text(controller.messages[index]),
+                            );
+                          },
+                        ),
                 ),
               ),
               const SizedBox(height: 8),

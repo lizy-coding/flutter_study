@@ -7,11 +7,11 @@ class CodeSnippetView extends StatelessWidget {
   final String language;
 
   const CodeSnippetView({
-    Key? key,
+    super.key,
     required this.code,
     required this.title,
     this.language = 'dart',
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

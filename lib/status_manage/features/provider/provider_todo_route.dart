@@ -31,10 +31,12 @@ class _TodoStore extends ChangeNotifier {
     list.add(_Todo(t));
     notifyListeners();
   }
+
   void toggle(int i) {
     list[i].done = !list[i].done;
     notifyListeners();
   }
+
   void remove(int i) {
     list.removeAt(i);
     notifyListeners();
@@ -53,8 +55,11 @@ class _TodoBody extends StatelessWidget {
         final item = store.list[i];
         return ListTile(
           title: Text(item.title),
-          leading: Checkbox(value: item.done, onChanged: (_) => store.toggle(i)),
-          trailing: IconButton(icon: const Icon(Icons.delete_outline), onPressed: () => store.remove(i)),
+          leading:
+              Checkbox(value: item.done, onChanged: (_) => store.toggle(i)),
+          trailing: IconButton(
+              icon: const Icon(Icons.delete_outline),
+              onPressed: () => store.remove(i)),
         );
       },
     );

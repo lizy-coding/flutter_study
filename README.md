@@ -1,6 +1,16 @@
-# Flutter 学习项目集合
+# Flutter 学习实验室
 
-本项目是一个统一的 Flutter 学习仓库，所有示例模块位于 `lib/` 目录下，通过路由切换进入不同模块。涵盖网络、异步、UI 动效、状态管理等常见场景。
+本项目是面向 Flutter 初学者的学习项目集合，所有示例模块位于 `lib/` 目录下，通过路由切换进入不同模块。涵盖三棵树、事件循环、状态管理、UI 动效、网络拦截等核心知识点。
+
+## 推荐学习顺序
+
+1. **三棵树与生命周期** - 理解 Flutter 渲染基础
+2. **事件循环与微任务** - 掌握异步执行顺序
+3. **Stream 订阅机制** - 学习流式数据处理
+4. **Isolate 并发** - 理解多线程与性能优化
+5. **状态管理演进** - 对比 Provider/Riverpod/Bloc
+6. **UI 动效与绘制** - 学习动画与自定义绘制
+7. **网络与平台能力** - 实战拦截器、USB 设备等
 
 ## 支持平台
 
@@ -29,6 +39,7 @@ lib/
 ├── main.dart              # 入口
 ├── app.dart               # 应用主壳
 ├── router/                # 路由配置
+├── shared/                # 共享组件（教学模板等）
 ├── adsorption_line/       # 智能吸附线画板
 ├── debounce_throttle/     # 防抖与节流
 ├── download_animation_demo/ # 下载飞入动效
@@ -41,7 +52,8 @@ lib/
 ├── scroll_table/          # 二维滚动表格
 ├── status_manage/         # 状态管理演进
 ├── stream_subscription/   # Stream 示例
-└── tree_state/            # 三棵树与生命周期
+├── tree_state/            # 三棵树与生命周期
+└── usb_detector_demo/     # USB 设备检测
 ```
 
 ## 示例索引（按主题）

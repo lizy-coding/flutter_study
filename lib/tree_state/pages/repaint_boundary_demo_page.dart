@@ -5,7 +5,8 @@ class RepaintBoundaryDemoPage extends StatefulWidget {
   const RepaintBoundaryDemoPage({super.key});
 
   @override
-  State<RepaintBoundaryDemoPage> createState() => _RepaintBoundaryDemoPageState();
+  State<RepaintBoundaryDemoPage> createState() =>
+      _RepaintBoundaryDemoPageState();
 }
 
 class _RepaintBoundaryDemoPageState extends State<RepaintBoundaryDemoPage> {
@@ -32,14 +33,14 @@ class _RepaintBoundaryDemoPageState extends State<RepaintBoundaryDemoPage> {
           Expanded(
             child: Row(
               children: [
-                Expanded(
+                const Expanded(
                   child: Column(
                     children: [
-                      const Text('无 RepaintBoundary'),
+                      Text('无 RepaintBoundary'),
                       Expanded(
                         child: CustomPaint(
-                          painter: const NoBoundaryPainter(),
-                          child: const SizedBox.expand(),
+                          painter: NoBoundaryPainter(),
+                          child: SizedBox.expand(),
                         ),
                       ),
                     ],
@@ -72,7 +73,8 @@ class _RepaintBoundaryDemoPageState extends State<RepaintBoundaryDemoPage> {
                 setState(() {
                   _colorIndex++;
                 });
-                debugPrint('[RepaintBoundaryDemoPage] changeColor -> index=$_colorIndex');
+                debugPrint(
+                    '[RepaintBoundaryDemoPage] changeColor -> index=$_colorIndex');
               },
               child: const Text('只改变右侧颜色'),
             ),
@@ -119,7 +121,8 @@ class BoundaryPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant BoundaryPainter oldDelegate) {
     final should = oldDelegate.color != color;
-    debugPrint('[BoundaryPainter] shouldRepaint old=${oldDelegate.color}, new=$color, should=$should');
+    debugPrint(
+        '[BoundaryPainter] shouldRepaint old=${oldDelegate.color}, new=$color, should=$should');
     return should;
   }
 }

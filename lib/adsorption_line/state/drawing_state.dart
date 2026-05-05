@@ -7,16 +7,16 @@ class DrawingState extends ChangeNotifier {
   DrawingElement? _selectedElement;
   bool _isDragging = false;
   Offset? _dragOffset;
-  
+
   List<DrawingElement> get elements => List.unmodifiable(_elements);
   DrawingElement? get selectedElement => _selectedElement;
   bool get isDragging => _isDragging;
-  
+
   void addElement(DrawingElement element) {
     _elements.add(element);
     notifyListeners();
   }
-  
+
   void removeElement(String elementId) {
     _elements.removeWhere((element) => element.id == elementId);
     if (_selectedElement?.id == elementId) {
@@ -24,9 +24,10 @@ class DrawingState extends ChangeNotifier {
     }
     notifyListeners();
   }
-  
+
   void updateElement(DrawingElement updatedElement) {
-    final index = _elements.indexWhere((element) => element.id == updatedElement.id);
+    final index =
+        _elements.indexWhere((element) => element.id == updatedElement.id);
     if (index != -1) {
       _elements[index] = updatedElement;
       if (_selectedElement?.id == updatedElement.id) {
@@ -35,43 +36,43 @@ class DrawingState extends ChangeNotifier {
       notifyListeners();
     }
   }
-  
+
   void selectElement(String? elementId) {
     _selectedElement = elementId != null
         ? _elements.firstWhere((element) => element.id == elementId)
         : null;
     notifyListeners();
   }
-  
+
   void clearSelection() {
     _selectedElement = null;
     notifyListeners();
   }
-  
+
   void startDrag(Offset position) {
     _isDragging = true;
     _dragOffset = position;
     notifyListeners();
   }
-  
+
   void updateDrag(Offset position) {
     if (_isDragging && _selectedElement != null && _dragOffset != null) {
       final delta = position - _dragOffset!;
       final newPosition = _selectedElement!.position + delta;
-      
+
       final updatedElement = _selectedElement!.copyWith(position: newPosition);
       updateElement(updatedElement);
-      
+
       _dragOffset = position;
     }
   }
-  
+
   void endDrag() {
     _isDragging = false;
     _dragOffset = null;
     notifyListeners();
   }
-  
+
   DrawingElement? findElementAt(Offset position) {
     for (int i = _elements.length - 1; i >= 0; i--) {
       if (_elements[i].containsPoint(position)) {
@@ -80,7 +81,7 @@ class DrawingState extends ChangeNotifier {
     }
     return null;
   }
-  
+
   void clear() {
     _elements.clear();
     _selectedElement = null;

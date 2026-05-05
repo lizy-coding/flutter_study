@@ -7,11 +7,11 @@ class EventLogView extends StatelessWidget {
   final ScrollController? scrollController;
 
   const EventLogView({
-    Key? key,
+    super.key,
     required this.logs,
     this.showTimestamp = false,
     this.scrollController,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

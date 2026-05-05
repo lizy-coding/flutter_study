@@ -21,29 +21,30 @@ class _HomePageState extends State<HomePage> {
   int _currentPage = 1;
   int _totalPages = 1;
   String? _errorMessage;
-  
+
   @override
   void initState() {
     super.initState();
     _loadArticles();
   }
-  
+
   /// 加载文章列表
   Future<void> _loadArticles() async {
     if (_isLoading) return;
-    
+
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
-    
+
     try {
       final result = await _apiService.getArticles(page: _currentPage);
-      
+
       if (result['success'] == true && result['data'] != null) {
         final articlesData = result['data']['articles'] as List;
-        final articles = articlesData.map((json) => Article.fromJson(json)).toList();
-        
+        final articles =
+            articlesData.map((json) => Article.fromJson(json)).toList();
+
         setState(() {
           _articles = articles;
           _totalPages = result['data']['totalPages'] as int;
@@ -62,13 +63,13 @@ class _HomePageState extends State<HomePage> {
       });
     }
   }
-  
+
   /// 刷新文章列表
   Future<void> _refreshArticles() async {
     _currentPage = 1;
     await _loadArticles();
   }
-  
+
   /// 加载下一页
   Future<void> _loadNextPage() async {
     if (_currentPage < _totalPages) {
@@ -78,7 +79,7 @@ class _HomePageState extends State<HomePage> {
       await _loadArticles();
     }
   }
-  
+
   /// 加载上一页
   Future<void> _loadPreviousPage() async {
     if (_currentPage > 1) {
@@ -88,17 +89,17 @@ class _HomePageState extends State<HomePage> {
       await _loadArticles();
     }
   }
-  
+
   /// 打开登录页面
   void _openLoginPage() async {
     final result = await context.push<bool>('$_baseRoute/login');
-    
+
     if (result == true) {
       // 登录成功，刷新文章列表
       await _refreshArticles();
     }
   }
-  
+
   /// 退出登录
   void _logout() {
     AuthInterceptor.clearToken();
@@ -107,11 +108,11 @@ class _HomePageState extends State<HomePage> {
     );
     _refreshArticles();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final isLoggedIn = AuthInterceptor.getToken() != null;
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('文章列表'),
@@ -140,13 +141,13 @@ class _HomePageState extends State<HomePage> {
           : null,
     );
   }
-  
+
   /// 构建页面主体
   Widget _buildBody() {
     if (_isLoading && _articles.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
-    
+
     if (_errorMessage != null && _articles.isEmpty) {
       return Center(
         child: Column(
@@ -166,11 +167,11 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     }
-    
+
     if (_articles.isEmpty) {
       return const Center(child: Text('没有文章'));
     }
-    
+
     return Column(
       children: [
         Expanded(
@@ -206,7 +207,7 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-  
+
   /// 构建分页控件
   Widget _buildPagination() {
     return Padding(
@@ -229,14 +230,14 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-  
+
   /// 显示添加文章对话框
   void _showAddArticleDialog() {
     final titleController = TextEditingController();
     final contentController = TextEditingController();
     // Store the scaffold messenger context
     final scaffoldMessenger = ScaffoldMessenger.of(context);
-    
+
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
@@ -271,27 +272,27 @@ class _HomePageState extends State<HomePage> {
             onPressed: () async {
               final title = titleController.text.trim();
               final content = contentController.text.trim();
-              
+
               if (title.isEmpty || content.isEmpty) {
                 scaffoldMessenger.showSnackBar(
                   const SnackBar(content: Text('标题和内容不能为空')),
                 );
                 return;
               }
-              
+
               Navigator.pop(dialogContext);
-              
+
               // 显示加载指示器
               setState(() {
                 _isLoading = true;
               });
-              
+
               try {
                 final result = await _apiService.createArticle(title, content);
-                
+
                 // Check if the widget is still mounted before updating UI
                 if (!mounted) return;
-                
+
                 if (result['success'] == true) {
                   scaffoldMessenger.showSnackBar(
                     const SnackBar(content: Text('文章创建成功')),
@@ -308,7 +309,7 @@ class _HomePageState extends State<HomePage> {
               } catch (e) {
                 // Check if the widget is still mounted before updating UI
                 if (!mounted) return;
-                
+
                 scaffoldMessenger.showSnackBar(
                   SnackBar(content: Text('创建失败: $e')),
                 );
@@ -323,9 +324,9 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-  
+
   /// 格式化日期
   String _formatDate(DateTime date) {
     return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
   }
-} 
+}

@@ -102,7 +102,8 @@ class HomePage extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.info_outline, color: Colors.blue.shade600, size: 20),
+                      Icon(Icons.info_outline,
+                          color: Colors.blue.shade600, size: 20),
                       const SizedBox(width: 8),
                       Text(
                         '实现说明',

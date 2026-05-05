@@ -85,7 +85,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     Row(
                       children: [
                         Icon(
-                          _isInitialized ? Icons.check_circle : Icons.error_outline,
+                          _isInitialized
+                              ? Icons.check_circle
+                              : Icons.error_outline,
                           color: _isInitialized ? Colors.green : Colors.red,
                         ),
                         const SizedBox(width: 8),
@@ -133,9 +135,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           const SizedBox(height: 16),
                           Text(
                             _isInitialized ? '未检测到USB设备' : 'USB服务未初始化',
-                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                  color: Colors.grey[600],
-                                ),
+                            style:
+                                Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                      color: Colors.grey[600],
+                                    ),
                           ),
                         ],
                       ),
@@ -169,7 +172,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 vertical: 4,
                               ),
                               decoration: BoxDecoration(
-                                color: _getStatusColor(device.status).withValues(alpha: 0.1),
+                                color: _getStatusColor(device.status)
+                                    .withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
                                   color: _getStatusColor(device.status),

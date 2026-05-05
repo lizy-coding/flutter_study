@@ -39,10 +39,10 @@ class _BroadcastDemoPageState extends State<BroadcastDemoPage> {
   void _initBroadcastStream() {
     _broadcastController = StreamController<String>.broadcast(
       onListen: () {
-        print('有人开始监听广播Stream');
+        debugPrint('有人开始监听广播Stream');
       },
       onCancel: () {
-        print('有人取消监听广播Stream');
+        debugPrint('有人取消监听广播Stream');
       },
     );
   }
@@ -272,13 +272,12 @@ class _BroadcastDemoPageState extends State<BroadcastDemoPage> {
                         const Text('推送间隔: '),
                         DropdownButton<int>(
                           value: _interval,
-                          items:
-                              [1, 2, 3, 5].map((value) {
-                                return DropdownMenuItem<int>(
-                                  value: value,
-                                  child: Text('$value秒'),
-                                );
-                              }).toList(),
+                          items: [1, 2, 3, 5].map((value) {
+                            return DropdownMenuItem<int>(
+                              value: value,
+                              child: Text('$value秒'),
+                            );
+                          }).toList(),
                           onChanged: (value) {
                             if (value != null) _changeInterval(value);
                           },
@@ -296,76 +295,71 @@ class _BroadcastDemoPageState extends State<BroadcastDemoPage> {
             ),
             const SizedBox(height: 8),
             Expanded(
-              child:
-                  _subscribers.isEmpty
-                      ? const Center(child: Text('暂无订阅者，请添加'))
-                      : ListView.builder(
-                        itemCount: _subscribers.length,
-                        itemBuilder: (context, index) {
-                          final subscriber = _subscribers[index];
-                          return Card(
-                            margin: const EdgeInsets.only(bottom: 8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ListTile(
-                                  title: Text(subscriber.name),
-                                  trailing: IconButton(
-                                    icon: const Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                    ),
-                                    onPressed:
-                                        () => _removeSubscriber(subscriber.id),
+              child: _subscribers.isEmpty
+                  ? const Center(child: Text('暂无订阅者，请添加'))
+                  : ListView.builder(
+                      itemCount: _subscribers.length,
+                      itemBuilder: (context, index) {
+                        final subscriber = _subscribers[index];
+                        return Card(
+                          margin: const EdgeInsets.only(bottom: 8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ListTile(
+                                title: Text(subscriber.name),
+                                trailing: IconButton(
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
                                   ),
+                                  onPressed: () =>
+                                      _removeSubscriber(subscriber.id),
                                 ),
-                                const Divider(),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    '收到的消息 (${subscriber.messages.length}):',
-                                  ),
+                              ),
+                              const Divider(),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  '收到的消息 (${subscriber.messages.length}):',
                                 ),
-                                SizedBox(
-                                  height: 100,
-                                  child:
-                                      subscriber.messages.isEmpty
-                                          ? const Center(child: Text('暂无消息'))
-                                          : ListView.builder(
-                                            itemCount:
-                                                subscriber.messages.length,
-                                            itemBuilder: (
-                                              context,
-                                              messageIndex,
-                                            ) {
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                      horizontal: 16.0,
-                                                      vertical: 4.0,
-                                                    ),
-                                                child: Text(
-                                                  subscriber
-                                                      .messages[messageIndex],
-                                                  style: TextStyle(
-                                                    color: Colors.blue.shade700,
-                                                    fontSize: 12,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                              ),
+                              SizedBox(
+                                height: 100,
+                                child: subscriber.messages.isEmpty
+                                    ? const Center(child: Text('暂无消息'))
+                                    : ListView.builder(
+                                        itemCount: subscriber.messages.length,
+                                        itemBuilder: (
+                                          context,
+                                          messageIndex,
+                                        ) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 16.0,
+                                              vertical: 4.0,
+                                            ),
+                                            child: Text(
+                                              subscriber.messages[messageIndex],
+                                              style: TextStyle(
+                                                color: Colors.blue.shade700,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
             ),
             const SizedBox(height: 8),
             Text(
-              '状态: ${_isPushingActive ? "推送中" : "已停止"} | ' +
-                  '订阅者数量: ${_subscribers.length}',
+              '状态: ${_isPushingActive ? "推送中" : "已停止"} | '
+              '订阅者数量: ${_subscribers.length}',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.bold,

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 /// 应用主页
 class HomePage extends StatelessWidget {
   /// 构造函数
-  const  HomePage({super.key});
+  const HomePage({super.key});
 
   static const String _baseRoute = '/stream-subscription';
 
@@ -151,4 +151,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-} 
+}

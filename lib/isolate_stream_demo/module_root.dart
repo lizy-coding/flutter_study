@@ -141,7 +141,9 @@ class _MultiTaskIsolatePageState extends State<MultiTaskIsolatePage> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               IconButton(
-                                icon: Icon(task.isPaused ? Icons.play_arrow : Icons.pause),
+                                icon: Icon(task.isPaused
+                                    ? Icons.play_arrow
+                                    : Icons.pause),
                                 onPressed: task.isPaused
                                     ? () => _resumeTask(task)
                                     : () => _pauseTask(task),
