@@ -154,26 +154,26 @@ class DrawingCanvasPainter extends CustomPainter {
         // 计算垂直线的合理范围
         double minY = double.infinity;
         double maxY = double.negativeInfinity;
-        
+
         for (final element in elements) {
           final bounds = element.bounds;
           minY = math.min(minY, bounds.top - 20);
           maxY = math.max(maxY, bounds.bottom + 20);
         }
-        
+
         start = Offset(snapLine.start.dx, math.max(0, minY));
         end = Offset(snapLine.start.dx, math.min(canvasSize.height, maxY));
       } else if (snapLine.type == SnapType.horizontal) {
         // 计算水平线的合理范围
         double minX = double.infinity;
         double maxX = double.negativeInfinity;
-        
+
         for (final element in elements) {
           final bounds = element.bounds;
           minX = math.min(minX, bounds.left - 20);
           maxX = math.max(maxX, bounds.right + 20);
         }
-        
+
         start = Offset(math.max(0, minX), snapLine.start.dy);
         end = Offset(math.min(canvasSize.width, maxX), snapLine.start.dy);
       }
@@ -184,9 +184,8 @@ class DrawingCanvasPainter extends CustomPainter {
 
   /// 绘制虚线矩形
   void _drawDashedRect(Canvas canvas, Rect rect, Paint paint) {
-    final path = Path()
-      ..addRect(rect);
-    
+    final path = Path()..addRect(rect);
+
     _drawDashedPath(canvas, path, paint);
   }
 
@@ -194,14 +193,14 @@ class DrawingCanvasPainter extends CustomPainter {
   void _drawDashedLine(Canvas canvas, Offset start, Offset end, Paint paint) {
     const dashWidth = 5.0;
     const dashSpace = 3.0;
-    
+
     final distance = (end - start).distance;
     final dashCount = (distance / (dashWidth + dashSpace)).floor();
-    
+
     if (dashCount == 0) return;
-    
+
     final direction = (end - start) / distance;
-    
+
     for (int i = 0; i < dashCount; i++) {
       final dashStart = start + direction * (i * (dashWidth + dashSpace));
       final dashEnd = dashStart + direction * dashWidth;
@@ -213,21 +212,21 @@ class DrawingCanvasPainter extends CustomPainter {
   void _drawDashedPath(Canvas canvas, Path path, Paint paint) {
     const dashWidth = 5.0;
     const dashSpace = 3.0;
-    
+
     final metrics = path.computeMetrics();
     for (final metric in metrics) {
       double distance = 0.0;
       bool draw = true;
-      
+
       while (distance < metric.length) {
         final length = draw ? dashWidth : dashSpace;
         final end = math.min(distance + length, metric.length);
-        
+
         if (draw) {
           final extractPath = metric.extractPath(distance, end);
           canvas.drawPath(extractPath, paint);
         }
-        
+
         distance = end;
         draw = !draw;
       }
@@ -237,6 +236,6 @@ class DrawingCanvasPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant DrawingCanvasPainter oldDelegate) {
     return elements != oldDelegate.elements ||
-           selectedElement != oldDelegate.selectedElement;
+        selectedElement != oldDelegate.selectedElement;
   }
 }

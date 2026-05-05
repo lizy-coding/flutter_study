@@ -35,10 +35,6 @@ class AdsorptionManager {
   /// 最后一次吸附的线条
   static List<SnapLine> _lastSnapLines = [];
 
-
-
-
-
   /// 获取可见的吸附线（带延迟隐藏机制）
   static List<SnapLine> getVisibleSnapLines(
     List<DrawingElement> elements,
@@ -191,11 +187,10 @@ class AdsorptionManager {
   }
 
   /// 清理延迟隐藏计时器（在页面销毁时调用）
-    static void dispose() {
-      _hideTimer?.cancel();
-      _hideTimer = null;
-      _lastSnapLines.clear();
-      _isSnapped = false;
-
-    }
+  static void dispose() {
+    _hideTimer?.cancel();
+    _hideTimer = null;
+    _lastSnapLines.clear();
+    _isSnapped = false;
+  }
 }
