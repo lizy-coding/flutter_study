@@ -44,6 +44,7 @@ lib/
 ├── debounce_throttle/     # 防抖与节流
 ├── download_animation_demo/ # 下载飞入动效
 ├── flutter_ioc/           # IoC 容器示例
+├── gcode_visualizer/      # G-code 解析与轨迹动画
 ├── interceptor_test/      # Dio 拦截器链路 + Mock Server
 ├── isolate_stream_demo/   # Isolate 任务管理器
 ├── isolate_test/          # 主线程 vs Isolate 对比
@@ -61,6 +62,7 @@ lib/
 ### UI 与动效
 - `adsorption_line`：智能吸附线画板，矩形/圆形/线条创建与拖拽，对齐辅助线、工具栏和快捷键。
 - `download_animation_demo`：下载飞入动效三种实现（自定义 View / CustomPaint / Overlay），带参数调节面板。
+- `gcode_visualizer`：G-code 解析与轨迹动画，支持 G0/G1 指令解析、刀路轨迹绘制、播放进度控制与指令高亮，使用 `LearningScaffold` 教学模板。
 - `pop_widget`：常见弹窗合集，包含顺序链式 Overlay 演示与多种触发方式。
 - `scroll_table`：二维滚动表格，固定表头/行头，基于 `two_dimensional_scrollables`。
 - `tree_state`：Widget/Element/RenderObject 三棵树与生命周期、CustomPainter、RepaintBoundary 重绘范围示例。
