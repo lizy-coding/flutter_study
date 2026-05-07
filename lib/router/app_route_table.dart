@@ -6,6 +6,7 @@ import '../debounce_throttle/module_entry.dart';
 import '../download_animation_demo/module_entry.dart';
 import '../download_animation_demo/module_routes.dart';
 import '../flutter_ioc/module_entry.dart';
+import '../gcode_visualizer/module_entry.dart';
 import '../interceptor_test/module_entry.dart';
 import '../interceptor_test/module_routes.dart';
 import '../isolate_stream_demo/module_entry.dart';
@@ -171,6 +172,17 @@ final List<ModuleEntry> _modules = [
   ),
 
   // UI 与动效
+  ModuleEntry(
+    title: 'G-code 解析与轨迹动画',
+    path: '/gcode-visualizer',
+    subtitle: '解析 G-code 指令，绘制刀路轨迹并用动画展示执行过程',
+    category: ModuleCategory.ui,
+    difficulty: Difficulty.advanced,
+    concepts: ['G-code', 'Parser', 'CustomPaint', 'PathMetric', '动画控制'],
+    estimatedMinutes: 45,
+    status: ModuleStatus.ready,
+    builder: (context) => const GcodeVisualizerEntry(),
+  ),
   ModuleEntry(
     title: '智能吸附线画板',
     path: '/adsorption-line',
