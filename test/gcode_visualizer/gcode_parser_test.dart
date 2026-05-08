@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:main_app/gcode_visualizer/parser/gcode_parser.dart';
+import 'package:main_app/modules/ui/gcode_visualizer/parser/gcode_parser.dart';
 
 void main() {
   group('GcodeParser', () {
