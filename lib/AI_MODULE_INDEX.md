@@ -11,13 +11,13 @@
 | download_animation | `modules/ui/download_animation` | /download-animation | StatefulWidget | 中 | `modules/ui/download_animation/AI_ANALYSIS.md` |
 | flutter_ioc | `modules/state/flutter_ioc` | /flutter-ioc | 自研 IoC + Provider | 中 | `modules/state/flutter_ioc/AI_ANALYSIS.md` |
 | gcode_visualizer | `modules/ui/gcode_visualizer` | /gcode-visualizer | ChangeNotifier + AnimationController | 高 | `modules/ui/gcode_visualizer/AI_ANALYSIS.md` |
-| dio_interceptor | `modules/platform/dio_interceptor` | /interceptor-test | 无（Dio 拦截器） | 中 | `modules/platform/dio_interceptor/AI_ANALYSIS.md` |
+| dio_interceptor | `modules/platform/dio_interceptor` | /dio-interceptor | 无（Dio 拦截器） | 中 | `modules/platform/dio_interceptor/AI_ANALYSIS.md` |
 | isolate_task_manager | `modules/async/isolate_task_manager` | /isolate-stream | StatefulWidget | 中 | `modules/async/isolate_task_manager/AI_ANALYSIS.md` |
-| isolate_basic | `modules/async/isolate_basic` | /isolate-test | StatefulWidget | 低 | `modules/async/isolate_basic/AI_ANALYSIS.md` |
+| isolate_basic | `modules/async/isolate_basic` | /isolate-basic | StatefulWidget | 低 | `modules/async/isolate_basic/AI_ANALYSIS.md` |
 | microtask | `modules/basic/microtask` | /microtask | StatefulWidget | 低 | `modules/basic/microtask/AI_ANALYSIS.md` |
-| popup_widgets | `modules/ui/popup_widgets` | /pop-widget | StatefulWidget | 中 | `modules/ui/popup_widgets/AI_ANALYSIS.md` |
+| popup_widgets | `modules/ui/popup_widgets` | /popup-widgets | StatefulWidget | 中 | `modules/ui/popup_widgets/AI_ANALYSIS.md` |
 | scroll_table | `modules/ui/scroll_table` | /scroll-table | 无 | 低 | `modules/ui/scroll_table/AI_ANALYSIS.md` |
-| status_management | `modules/state/status_management` | /status-manage | Provider/Riverpod/Bloc | 高 | `modules/state/status_management/AI_ANALYSIS.md` |
+| status_management | `modules/state/status_management` | /status-management | Provider/Riverpod/Bloc | 高 | `modules/state/status_management/AI_ANALYSIS.md` |
 | stream_subscription | `modules/async/stream_subscription` | /stream-subscription | StreamController | 中 | `modules/async/stream_subscription/AI_ANALYSIS.md` |
 | tree_state | `modules/basic/tree_state` | /tree-state | StatefulWidget | 低 | `modules/basic/tree_state/AI_ANALYSIS.md` |
 | usb_detector | `modules/platform/usb_detector` | /usb-detector | StreamController | 中 | `modules/platform/usb_detector/AI_ANALYSIS.md` |

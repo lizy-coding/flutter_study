@@ -15,7 +15,7 @@ Regenerate the categorized module listings in README.md
    - ModuleCategory.async → 异步并发
    - ModuleCategory.state → 状态管理
    - ModuleCategory.ui → UI 与动效
-   - ModuleCategory.network → 网络与平台
+   - ModuleCategory.platform → 网络与平台
 
 3. **Generate markdown**:
    For each category:

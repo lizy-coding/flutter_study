@@ -96,7 +96,7 @@ final List<ModuleEntry> _modules = [
   ),
   ModuleEntry(
     title: 'Isolate 并发对比',
-    path: '/isolate-test',
+    path: '/isolate-basic',
     subtitle: '对比主线程与 Isolate 执行耗时计算对 UI 流畅度的影响',
     category: ModuleCategory.async,
     difficulty: Difficulty.intermediate,
@@ -121,7 +121,7 @@ final List<ModuleEntry> _modules = [
   // 状态管理
   ModuleEntry(
     title: '状态管理演进',
-    path: '/status-manage',
+    path: '/status-management',
     subtitle: '串联 setState、Provider、Riverpod、Bloc，对比不同方案',
     category: ModuleCategory.state,
     difficulty: Difficulty.intermediate,
@@ -180,7 +180,7 @@ final List<ModuleEntry> _modules = [
   ),
   ModuleEntry(
     title: '弹窗合集',
-    path: '/pop-widget',
+    path: '/popup-widgets',
     subtitle: '全面展示 Flutter 中的对话框、底部抽屉、菜单等弹窗类型',
     category: ModuleCategory.ui,
     difficulty: Difficulty.beginner,
@@ -204,9 +204,9 @@ final List<ModuleEntry> _modules = [
   // 网络与平台
   ModuleEntry(
     title: 'Dio 拦截器链路',
-    path: '/interceptor-test',
+    path: '/dio-interceptor',
     subtitle: 'Auth/Error/Retry/Log 拦截器 + 本地 Mock Server 实战',
-    category: ModuleCategory.network,
+    category: ModuleCategory.platform,
     difficulty: Difficulty.intermediate,
     concepts: ['Dio', '拦截器', 'Token 刷新', 'Mock Server', '重试机制'],
     estimatedMinutes: 35,
@@ -218,7 +218,7 @@ final List<ModuleEntry> _modules = [
     title: 'USB 设备检测',
     path: '/usb-detector',
     subtitle: '跨平台 USB 设备检测与状态监控',
-    category: ModuleCategory.network,
+    category: ModuleCategory.platform,
     difficulty: Difficulty.intermediate,
     concepts: ['usb_serial', 'device_info_plus', 'Stream 广播', '设备扫描'],
     estimatedMinutes: 25,
@@ -335,8 +335,7 @@ class ModuleCard extends StatelessWidget {
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (module.subtitle != null)
-            Text(module.subtitle!, style: const TextStyle(fontSize: 12)),
+          Text(module.subtitle, style: const TextStyle(fontSize: 12)),
           const SizedBox(height: 6),
           Wrap(
             spacing: 4,

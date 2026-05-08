@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'app_routes.dart';
 import 'route_paths.dart';
 
-const String _statusManageBaseRoute = '/status-manage';
+const String _statusManageBaseRoute = '/status-management';
 
 /// 根部 MaterialApp，集中声明路由，避免示例全部堆在 main.dart 中。
 class StateFlowApp extends StatelessWidget {

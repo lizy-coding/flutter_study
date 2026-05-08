@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  static const String _baseRoute = '/isolate-test';
+  static const String _baseRoute = '/isolate-basic';
 
   @override
   Widget build(BuildContext context) {

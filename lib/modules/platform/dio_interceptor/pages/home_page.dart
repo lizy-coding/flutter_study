@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static const String _baseRoute = '/interceptor-test';
+  static const String _baseRoute = '/dio-interceptor';
 
   final ApiService _apiService = ApiService();
   bool _isLoading = false;

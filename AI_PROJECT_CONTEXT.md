@@ -11,7 +11,7 @@
 
 ## 架构模式
 
-- **路由**: go_roller 统一管理，首页为模块列表，点击后 push 到对应模块
+- **路由**: go_router 统一管理，首页为模块列表，点击后 push 到对应模块
 - **状态管理**: 项目实验多种方案（Provider, Riverpod, Bloc, ChangeNotifier, 自研 IoC）
 - **模块组织**: 每个功能模块位于 `lib/modules/<category>/<module_name>/` 下，通过 `module_entry.dart` 暴露入口 Widget
 
