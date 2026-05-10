@@ -26,7 +26,7 @@ modules/ui/gcode_visualizer/
 ├── widgets/
 │   ├── command_timeline.dart      # 指令列表，高亮当前执行行
 │   ├── gcode_canvas.dart          # CustomPaint 轨迹画布
-│   ├── gcode_editor_panel.dart    # 多行文本编辑器 + 解析/示例按钮
+│   ├── gcode_editor_panel.dart    # 多行文本编辑器 + 解析/示例按钮 (StatefulWidget, _HoverGestureWrapper 封装悬浮+按压+长按手势识别)
 │   └── playback_controls.dart     # 播放/暂停/重置/进度/速度控制
 └── pages/
     └── gcode_visualizer_page.dart # 教学页面 (LearningScaffold)

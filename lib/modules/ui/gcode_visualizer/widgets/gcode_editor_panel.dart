@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class GcodeEditorPanel extends StatelessWidget {
+class GcodeEditorPanel extends StatefulWidget {
   const GcodeEditorPanel({
     super.key,
     required this.controller,
@@ -19,7 +19,19 @@ class GcodeEditorPanel extends StatelessWidget {
   final bool hasParsed;
 
   @override
+  State<GcodeEditorPanel> createState() => _GcodeEditorPanelState();
+}
+
+class _GcodeEditorPanelState extends State<GcodeEditorPanel> {
+  bool _resetPressed = false;
+  bool _parsePressed = false;
+  bool _resetHovered = false;
+  bool _parseHovered = false;
+
+  @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey.shade50,
@@ -30,36 +42,59 @@ class GcodeEditorPanel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+            padding: const EdgeInsets.fromLTRB(12, 8, 2, 8),
             child: Row(
               children: [
                 Text(
                   'G-code 编辑器',
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const Spacer(),
-                TextButton.icon(
-                  onPressed: onResetSample,
-                  icon: const Icon(Icons.refresh, size: 16),
-                  label: const Text('示例', style: TextStyle(fontSize: 12)),
-                  style: TextButton.styleFrom(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                FilledButton.icon(
-                  onPressed: onParse,
-                  icon: const Icon(Icons.play_arrow, size: 16),
-                  label: const Text('解析', style: TextStyle(fontSize: 12)),
-                  style: FilledButton.styleFrom(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                const Spacer(),
+                _buildGestureButton(
+                  hovered: _resetHovered,
+                  pressed: _resetPressed,
+                  onHoverChanged: (v) => setState(() => _resetHovered = v),
+                  onPressedChanged: (v) => setState(() => _resetPressed = v),
+                  onTap: widget.onResetSample,
+                  borderRadius: 6,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.refresh,
+                          size: 16, color: theme.colorScheme.primary),
+                      const SizedBox(width: 4),
+                      Text('示例',
+                          style: TextStyle(
+                              fontSize: 12, color: theme.colorScheme.primary)),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 4),
+                _buildGestureButton(
+                  hovered: _parseHovered,
+                  pressed: _parsePressed,
+                  onHoverChanged: (v) => setState(() => _parseHovered = v),
+                  onPressedChanged: (v) => setState(() => _parsePressed = v),
+                  onTap: widget.onParse,
+                  borderRadius: 6,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  background: theme.colorScheme.primary,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.play_arrow,
+                          size: 16, color: theme.colorScheme.onPrimary),
+                      const SizedBox(width: 4),
+                      Text('解析',
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: theme.colorScheme.onPrimary)),
+                    ],
                   ),
                 ),
               ],
@@ -69,7 +104,7 @@ class GcodeEditorPanel extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8),
             child: TextField(
-              controller: controller,
+              controller: widget.controller,
               maxLines: 8,
               style: const TextStyle(
                 fontFamily: 'monospace',
@@ -85,7 +120,7 @@ class GcodeEditorPanel extends StatelessWidget {
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(6),
                   borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.primary,
+                    color: theme.colorScheme.primary,
                   ),
                 ),
                 filled: true,
@@ -93,7 +128,7 @@ class GcodeEditorPanel extends StatelessWidget {
               ),
             ),
           ),
-          if (hasParsed)
+          if (widget.hasParsed)
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
               child: Row(
@@ -106,7 +141,7 @@ class GcodeEditorPanel extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
-                      '$commandCount 指令',
+                      '${widget.commandCount} 指令',
                       style: const TextStyle(
                         fontSize: 11,
                         color: Colors.blue,
@@ -114,7 +149,7 @@ class GcodeEditorPanel extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (errorCount > 0) ...[
+                  if (widget.errorCount > 0) ...[
                     const SizedBox(width: 6),
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -124,7 +159,7 @@ class GcodeEditorPanel extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
-                        '$errorCount 错误',
+                        '${widget.errorCount} 错误',
                         style: const TextStyle(
                           fontSize: 11,
                           color: Colors.red,
@@ -137,6 +172,59 @@ class GcodeEditorPanel extends StatelessWidget {
               ),
             ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildGestureButton({
+    required bool hovered,
+    required bool pressed,
+    required ValueChanged<bool> onHoverChanged,
+    required ValueChanged<bool> onPressedChanged,
+    required VoidCallback onTap,
+    required double borderRadius,
+    required EdgeInsetsGeometry padding,
+    Color? background,
+    required Widget child,
+  }) {
+    final isFilled = background != null;
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(borderRadius),
+        child: Ink(
+          decoration: BoxDecoration(
+            color: background ?? Colors.transparent,
+            borderRadius: BorderRadius.circular(borderRadius),
+          ),
+          child: InkWell(
+            onTap: onTap,
+            onHover: onHoverChanged,
+            onTapDown: (_) => onPressedChanged(true),
+            onTapUp: (_) => onPressedChanged(false),
+            onTapCancel: () => onPressedChanged(false),
+            borderRadius: BorderRadius.circular(borderRadius),
+            hoverColor: isFilled
+                ? Colors.white.withValues(alpha: 0.12)
+                : Colors.blue.withValues(alpha: 0.08),
+            splashColor: isFilled
+                ? Colors.white.withValues(alpha: 0.24)
+                : Colors.blue.withValues(alpha: 0.16),
+            child: AnimatedScale(
+              scale: pressed
+                  ? 0.92
+                  : hovered
+                      ? 1.06
+                      : 1.0,
+              duration: const Duration(milliseconds: 100),
+              child: Padding(
+                padding: padding,
+                child: child,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
