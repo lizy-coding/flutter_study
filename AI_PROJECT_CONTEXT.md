@@ -13,12 +13,12 @@
 
 - **路由**: go_router 统一管理，首页为模块列表，点击后 push 到对应模块
 - **状态管理**: 项目实验多种方案（Provider, Riverpod, Bloc, ChangeNotifier, 自研 IoC）
-- **模块组织**: 每个功能模块位于 `lib/<module_name>/` 下，通过 `module_entry.dart` 暴露入口 Widget
+- **模块组织**: 每个功能模块位于 `lib/modules/<category>/<module_name>/` 下，通过 `module_entry.dart` 暴露入口 Widget
 
 ## 关键约定
 
 1. **模块入口**: 每个模块必须有 `module_entry.dart`，导出名为 `*Entry` 的 Widget
-2. **路由注册**: 新模块需在 `lib/router/app_route_table.dart` 的 `_modules` 列表中注册
+2. **路由注册**: 新模块需在 `lib/app/router/app_route_table.dart` 的 `_modules` 列表中注册
 3. **依赖**: 所有依赖在根 `pubspec.yaml` 中声明，模块间不共享独立依赖
 4. **命名**: 模块目录使用 snake_case，路由路径使用 kebab-case
 
@@ -27,27 +27,56 @@
 ```
 lib/
 ├── main.dart              # 应用入口，ProviderScope 包裹
-├── app.dart               # MaterialApp.router 配置
-├── router/                # go_router 路由配置
-│   ├── app_router.dart    # GoRouter 实例
-│   └── app_route_table.dart # 路由表 + 模块列表 + ModuleEntry 定义
-└── <module>/              # 各功能模块
-    ├── module_entry.dart  # 模块入口 Widget
-    ├── module_root.dart   # 模块主页面（部分模块有）
-    ├── models/            # 数据模型
-    ├── services/          # 业务逻辑/服务
+├── app/
+│   ├── app.dart           # MaterialApp.router 配置
+│   └── router/            # go_router 路由配置
+│       ├── app_router.dart
+│       ├── app_route_table.dart # 路由表 + 模块列表 + 首页 UI
+│       └── AI_ANALYSIS.md
+├── module_registry/       # 模块元数据定义
+│   ├── module_entry.dart
+│   └── module_category.dart
+├── shared/                # 共享能力
+│   ├── learning/
+│   │   └── learning_scaffold.dart  # 教学模板组件
+│   ├── widgets/
+│   ├── utils/
+│   └── theme/
+└── modules/               # 学习模块分区
+    ├── basic/             # 基础机制
+    ├── async/             # 异步并发
     ├── state/             # 状态管理
-    ├── widgets/           # UI 组件
-    ├── pages/             # 页面级组件
-    ├── utils/             # 工具函数
-    └── network/           # 网络相关（仅 interceptor_test）
+    ├── ui/                # UI 与动效
+    └── platform/          # 网络与平台
+```
+
+## 模块内部结构（推荐）
+
+```
+modules/<category>/<module>/
+├── module_entry.dart       # 模块入口 Widget
+├── module_routes.dart      # 子路由定义（有子路由时才需要）
+├── AI_ANALYSIS.md          # 模块分析文档
+├── presentation/           # UI 层（pages/ + widgets/）
+├── application/            # 应用层（state/ + services/）
+├── domain/                 # 领域层（models/）
+└── data/                   # 数据层（api/ + parser/ + mock/）
+```
+
+简单模块可以保留精简版：
+```
+modules/basic/debounce_throttle/
+├── module_entry.dart
+├── module_root.dart
+├── AI_ANALYSIS.md
+└── utils/
 ```
 
 ## 添加新模块步骤
 
-1. 在 `lib/` 下创建模块目录 `lib/my_module/`
+1. 在 `lib/modules/<category>/` 下创建模块目录 `lib/modules/<category>/my_module/`
 2. 创建 `module_entry.dart`，导出 `MyModuleEntry` Widget
-3. 在 `lib/router/app_route_table.dart` 中：
+3. 在 `lib/app/router/app_route_table.dart` 中：
    - import 模块入口
    - 在 `_modules` 列表添加 `ModuleEntry`
 4. 如需子路由，在模块内定义 `List<GoRoute>` 并在 `ModuleEntry.routes` 中传入
