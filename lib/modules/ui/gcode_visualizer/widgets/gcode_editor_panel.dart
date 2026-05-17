@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class GcodeEditorPanel extends StatefulWidget {
   const GcodeEditorPanel({
     super.key,
-    required this.controller,
+    required this.initialText,
     required this.onParse,
     required this.onResetSample,
     required this.errorCount,
@@ -11,7 +11,7 @@ class GcodeEditorPanel extends StatefulWidget {
     required this.hasParsed,
   });
 
-  final TextEditingController controller;
+  final String initialText;
   final VoidCallback onParse;
   final VoidCallback onResetSample;
   final int errorCount;
@@ -19,14 +19,30 @@ class GcodeEditorPanel extends StatefulWidget {
   final bool hasParsed;
 
   @override
-  State<GcodeEditorPanel> createState() => _GcodeEditorPanelState();
+  State<GcodeEditorPanel> createState() => GcodeEditorPanelState();
 }
 
-class _GcodeEditorPanelState extends State<GcodeEditorPanel> {
+class GcodeEditorPanelState extends State<GcodeEditorPanel> {
+  late final TextEditingController _controller;
   bool _resetPressed = false;
   bool _parsePressed = false;
   bool _resetHovered = false;
   bool _parseHovered = false;
+
+  String get text => _controller.text;
+  set text(String value) => _controller.text = value;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.initialText);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +120,7 @@ class _GcodeEditorPanelState extends State<GcodeEditorPanel> {
           Padding(
             padding: const EdgeInsets.all(8),
             child: TextField(
-              controller: widget.controller,
+              controller: _controller,
               maxLines: 8,
               style: const TextStyle(
                 fontFamily: 'monospace',
