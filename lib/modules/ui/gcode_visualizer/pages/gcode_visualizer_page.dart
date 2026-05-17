@@ -17,31 +17,29 @@ class GcodeVisualizerPage extends StatefulWidget {
 class _GcodeVisualizerPageState extends State<GcodeVisualizerPage>
     with TickerProviderStateMixin {
   late final GcodePlayerController _controller;
-  late final TextEditingController _editorController;
+  final _editorKey = GlobalKey<GcodeEditorPanelState>();
 
   @override
   void initState() {
     super.initState();
     _controller = GcodePlayerController(vsync: this);
-    _editorController = TextEditingController(text: _controller.source);
     _controller.parse();
   }
 
   @override
   void dispose() {
-    _editorController.dispose();
     _controller.dispose();
     super.dispose();
   }
 
   void _onParse() {
-    _controller.updateSource(_editorController.text);
+    _controller.updateSource(_editorKey.currentState!.text);
     _controller.parse();
   }
 
   void _onResetSample() {
     _controller.loadSample();
-    _editorController.text = _controller.source;
+    _editorKey.currentState!.text = _controller.source;
     _controller.parse();
   }
 
@@ -124,7 +122,8 @@ class _GcodeVisualizerPageState extends State<GcodeVisualizerPage>
     return Column(
       children: [
         GcodeEditorPanel(
-          controller: _editorController,
+          key: _editorKey,
+          initialText: _controller.source,
           onParse: _onParse,
           onResetSample: _onResetSample,
           errorCount: _controller.errorCount,
