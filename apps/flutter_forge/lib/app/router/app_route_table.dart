@@ -41,6 +41,7 @@ import '../../modules/platform/file_picker/module_entry.dart';
 import '../../modules/platform/online_video_player/module_entry.dart';
 import '../../modules/platform/usb_detector/module_entry.dart';
 import '../../modules/state/local_persistence/module_entry.dart';
+import '../../modules/platform/webview/module_entry.dart';
 
 // ==================== 状态管理子路由（模块内部已定义映射） ====================
 
@@ -334,6 +335,19 @@ final List<ModuleEntry> _modules = [
     status: ModuleStatus.ready,
     supportedPlatforms: {TargetPlatform.macOS, TargetPlatform.windows},
     builder: (context) => const OnlineVideoPlayerEntry(),
+  ),
+  ModuleEntry(
+    title: '网页容器与跨平台导航',
+    path: '/webview',
+    subtitle: '统一 Android WebView 与 Windows WebView2 的导航、进度和生命周期',
+    category: ModuleCategory.platform,
+    difficulty: Difficulty.intermediate,
+    concepts: ['WebView', 'WebView2', '加载进度', '生命周期'],
+    estimatedMinutes: 30,
+    status: ModuleStatus.ready,
+    // Historical native backends support Android and Windows only.
+    supportedPlatforms: {TargetPlatform.android, TargetPlatform.windows},
+    builder: (context) => const WebviewEntry(),
   ),
 ];
 

@@ -1,7 +1,7 @@
 {
   "schema": "flutter_forge.agent_docs.module_index.v1",
   "registry": "lib/app/router/app_route_table.dart",
-  "count": 21,
+  "count": 22,
   "modules": [
     {
       "id": "tree_state",
@@ -280,6 +280,20 @@
         "module_registry"
       ],
       "analysis": "lib/modules/platform/online_video_player/AI_ANALYSIS.md"
+    },
+    {
+      "id": "webview",
+      "category": "platform",
+      "path": "lib/modules/platform/webview",
+      "route": "/webview",
+      "status": "ready",
+      "depends": [
+        "shared_learning",
+        "module_registry",
+        "webview_flutter",
+        "webview_windows"
+      ],
+      "analysis": "lib/modules/platform/webview/AI_ANALYSIS.md"
     }
   ]
 }

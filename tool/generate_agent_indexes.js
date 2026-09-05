@@ -298,6 +298,22 @@ const modules = [
     entry: 'OnlineVideoPlayerEntry',
     supportedPlatforms: ['macOS', 'windows'],
   },
+  {
+    category: 'platform',
+    id: 'webview',
+    route: '/webview',
+    status: 'ready',
+    depends: ['shared_learning', 'module_registry', 'webview_flutter', 'webview_windows'],
+    title: '网页容器与跨平台导航',
+    subtitle: '统一 Android WebView 与 Windows WebView2 的导航、进度和生命周期',
+    difficulty: 'intermediate',
+    concepts: ['WebView', 'WebView2', '加载进度', '生命周期'],
+    estimatedMinutes: 30,
+    entry: 'WebviewEntry',
+    supportedPlatforms: ['android', 'windows'],
+    supportedPlatformsComment: '// Historical native backends support Android and Windows only.',
+  },
+
 ];
 
 const categoryComments = {
@@ -356,7 +372,7 @@ const categoryMeta = {
   state: [['status_management', 'flutter_ioc', 'local_persistence'], ['state_management'], ['provider', 'flutter_riverpod', 'flutter_bloc', 'flutter_ioc_core', 'shared_preferences']],
   ui: [['gcode_visualizer', 'adsorption_line', 'download_animation', 'font_picker'], ['ui_animation_custom_paint'], ['provider', 'gcode_core', 'file_picker_bridge', 'shared_learning', 'module_registry']],
   popup_table: [['popup_widgets', 'popup_list_interaction', 'scroll_table', 'overlay_follow_compare'], ['popup_overlay_table'], ['module_registry', 'shared_learning', 'two_dimensional_scrollables']],
-  platform: [['dio_interceptor', 'usb_detector', 'file_picker', 'online_video_player'], ['network_platform'], ['dio', 'usb_serial', 'device_info_plus', 'video_player', 'video_player_win', 'shared_learning', 'file_picker_bridge']],
+  platform: [['dio_interceptor', 'usb_detector', 'file_picker', 'online_video_player', 'webview'], ['network_platform'], ['dio', 'device_info_plus', 'video_player', 'video_player_win', 'shared_learning', 'file_picker_bridge', 'webview_flutter', 'webview_windows']],
 };
 
 const flutterGuardDependency = {
