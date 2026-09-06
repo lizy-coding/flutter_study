@@ -26,6 +26,7 @@ jobs:
       - name: Bootstrap
         run: |
           flutter pub get
+          (cd packages/video_player_win/example && flutter pub get)
           git config core.hooksPath .githooks
 
       - name: Agent doc generation + drift check
