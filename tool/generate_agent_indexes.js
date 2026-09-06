@@ -139,6 +139,8 @@ const modules = [
     id: 'gcode_visualizer',
     route: '/gcode-visualizer',
     status: 'ready',
+    supportedPlatforms: ['macOS'],
+    supportedPlatformsComment: '// gcode_core v0.2.0-dev.1 validates macOS GPU rendering only.',
     depends: ['shared_learning', 'gcode_core', 'file_picker_bridge', 'module_registry'],
     title: 'G-code 解析与轨迹动画',
     subtitle: '解析 G-code 指令，绘制刀路轨迹并用动画展示执行过程',
@@ -538,7 +540,7 @@ function writeProjectContext() {
       path: packagePath,
       entrypoint: entrypoints[0],
     })),
-    external_packages: [{ name: 'gcode_core', source: 'git', url: 'https://github.com/lizy-coding/gcode_core.git', ref: '7a5228126d6e43b0cb9175b035cd2e1701950779', entrypoint: 'lib/gcode_core.dart' }],
+    external_packages: [{ name: 'gcode_core', source: 'git', url: 'https://github.com/lizy-coding/gcode_core.git', ref: 'v0.2.0-dev.1', entrypoint: 'lib/gcode_core.dart', flutter_min: '3.47.2', supported_platforms: ['macOS'], requires: ['impeller', 'flutter_gpu'], macos_deployment_target_min: '12.0' }],
     external_tools: [flutterGuardDependency],
     layers: [
       {
@@ -923,7 +925,7 @@ function writeRootIndexes() {
     entrypoints: ['lib/main.dart', 'lib/app/app_bootstrap.dart', 'lib/app/app.dart', 'lib/app/router/app_route_table.dart'],
     owns: ['app_shell', 'module_registry', 'shared_capabilities', 'learning_modules', 'host_integrations'],
     depends: [
-      'git:https://github.com/lizy-coding/gcode_core.git#7a5228126d6e43b0cb9175b035cd2e1701950779',
+      'git:https://github.com/lizy-coding/gcode_core.git#v0.2.0-dev.1',
       'packages/shared_learning',
       'packages/file_picker_bridge',
       'packages/flutter_ioc_core',

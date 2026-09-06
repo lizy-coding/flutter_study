@@ -4,9 +4,9 @@
 
 | 组件 | 版本 | 说明 |
 |------|------|------|
-| Flutter | 3.44.6 | 见 `.fvmrc` |
-| Dart | 3.12.2 | 随 Flutter |
-| Node.js | 20.20.2 | 见 `.nvmrc`（供 Agent 文档生成器） |
+| Flutter | 3.47.2 | 见 `.fvmrc` |
+| Dart | 3.13.2 | 随 Flutter |
+| Node.js | 24 | 见 `.nvmrc`（供 Agent 文档生成器） |
 | Xcode | 26+ | 仅 macOS/iOS 构建 |
 | Android SDK | 36+ | 仅 Android 构建 |
 

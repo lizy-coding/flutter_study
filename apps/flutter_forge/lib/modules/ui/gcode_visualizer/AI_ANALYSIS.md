@@ -10,6 +10,9 @@
   },
   "route": "/gcode-visualizer",
   "category": "ui",
+  "supported_platforms": [
+    "macOS"
+  ],
   "entrypoints": [
     "module_entry.dart",
     "pages",

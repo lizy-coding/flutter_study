@@ -22,7 +22,7 @@
     "host_integrations"
   ],
   "depends": [
-    "git:https://github.com/lizy-coding/gcode_core.git#7a5228126d6e43b0cb9175b035cd2e1701950779",
+    "git:https://github.com/lizy-coding/gcode_core.git#v0.2.0-dev.1",
     "packages/shared_learning",
     "packages/file_picker_bridge",
     "packages/flutter_ioc_core",

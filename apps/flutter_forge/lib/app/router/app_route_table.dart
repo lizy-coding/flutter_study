@@ -179,6 +179,8 @@ final List<ModuleEntry> _modules = [
     concepts: ['G-code', 'Parser', 'CustomPaint', 'PathMetric', '动画控制'],
     estimatedMinutes: 45,
     status: ModuleStatus.ready,
+    // gcode_core v0.2.0-dev.1 validates macOS GPU rendering only.
+    supportedPlatforms: {TargetPlatform.macOS},
     builder: (context) => const GcodeVisualizerEntry(),
   ),
   ModuleEntry(

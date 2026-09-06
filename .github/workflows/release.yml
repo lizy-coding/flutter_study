@@ -9,8 +9,8 @@ permissions:
   contents: write
 
 env:
-  FLUTTER_VERSION: "3.44.6"
-  NODE_VERSION: "20.20.2"
+  FLUTTER_VERSION: "3.47.2"
+  NODE_VERSION: "24"
 
 jobs:
   build:
@@ -30,12 +30,12 @@ jobs:
             platform: android
             artifact: flutter_forge-android-arm64
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Bootstrap
@@ -50,6 +50,8 @@ jobs:
       - name: Build macOS
         if: matrix.platform == 'macos'
         working-directory: apps/flutter_forge
+        env:
+          FLUTTER_XCODE_CC: ${{ github.workspace }}/apps/flutter_forge/tool/macos/compiler_probe.py
         run: flutter build macos --release
       - name: Package macOS
         if: matrix.platform == 'macos'
@@ -105,11 +107,11 @@ jobs:
 
   release:
     name: Create GitHub release
-    if: always() && startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v')
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - uses: actions/download-artifact@v4
@@ -139,7 +141,7 @@ jobs:
             fi
           }
 
-          printf '%s\n' '首个桌面安装器发布。macOS 构建和 Windows 安装器均未签名；首次运行时，macOS 请右键选择“打开”（或执行 `xattr -dr com.apple.quarantine`），Windows SmartScreen 请点击“更多信息（More info）”后选择“仍要运行（Run anyway）”。' > release-notes.md
+          printf '%s\n' 'Flutter Forge 多平台发布。macOS 和 Windows 产物未签名；首次运行时，macOS 请右键选择“打开”（或执行 `xattr -dr com.apple.quarantine`），Windows SmartScreen 请点击“更多信息（More info）”后选择“仍要运行（Run anyway）”。Android 产物使用工作流构建签名，仅用于项目当前发布轨道。' > release-notes.md
           printf '\n' >> release-notes.md
           write_group "Features" '^feat(\(.+\))?!?:'
           write_group "Fixes" '^fix(\(.+\))?!?:'

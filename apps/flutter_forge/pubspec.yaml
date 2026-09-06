@@ -1,10 +1,11 @@
 name: flutter_forge_app
 description: Flutter Forge app shell.
 publish_to: 'none'
-version: 1.2.4
+version: 1.2.6
 
 environment:
   sdk: ^3.11.5
+  flutter: '>=3.47.2'
 
 resolution: workspace
 
@@ -12,7 +13,7 @@ dependencies:
   gcode_core:
     git:
       url: https://github.com/lizy-coding/gcode_core.git
-      ref: 7a5228126d6e43b0cb9175b035cd2e1701950779
+      ref: v0.2.0-dev.1
   file_picker_bridge:
     path: ../../packages/file_picker_bridge
   flutter_ioc_core:
@@ -51,4 +52,7 @@ dev_dependencies:
       ref: 9f9be84a73dc4b99a956a8529b8c334849566b03
 
 flutter:
+  config:
+    # Keep plugin builds on CocoaPods so the scoped Xcode compiler probe applies.
+    enable-swift-package-manager: false
   uses-material-design: true

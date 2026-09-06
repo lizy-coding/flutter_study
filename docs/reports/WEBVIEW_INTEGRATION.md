@@ -38,13 +38,13 @@ Candidate validation: full quality gate 6/6 PASS using a temporary Git index (th
 user's staging area was not changed); platform catalog and lifecycle tests PASS.
 The generator now emits multiline platform sets deterministically.
 
-Native test: `flutter test integration_test/webview_macos_test.dart -d macos`.
-The test covers actual WKWebView loading from a loopback HTTP server, back, forward,
-reload and unmount/recreate. Native execution is PENDING: two builds stalled in
-Xcode's clang compiler probe, with sample showing a blocked write to the build-service
-pipe. Direct invocation of that compiler probe succeeds. The attempts were stopped;
-a separate concurrent host-build repair is outside this module change.
-No native test PASS or macOS build PASS is claimed yet.
+Native test: `FLUTTER_XCODE_CC="$PWD/tool/macos/compiler_probe.py" flutter test
+integration_test/webview_macos_test.dart -d macos`. The Xcode compiler probe had
+blocked while writing verbose output through SwiftBuild; the project wrapper captures
+that probe and Flutter passes it to xcodebuild as a command-line `CC` setting.
+On macOS 26.5 / Xcode 26.6 with Flutter 3.47.2, the Debug integration application
+built successfully and real WKWebView loading, back, forward, reload, disposal and
+recreation passed. Release artifact validation remains separate from this result.
 
 ## Naming contract
 
