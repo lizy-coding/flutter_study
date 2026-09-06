@@ -41,6 +41,7 @@ import '../../modules/platform/file_picker/module_entry.dart';
 import '../../modules/platform/online_video_player/module_entry.dart';
 import '../../modules/platform/usb_detector/module_entry.dart';
 import '../../modules/state/local_persistence/module_entry.dart';
+import '../../modules/platform/webview/module_entry.dart';
 
 // ==================== 状态管理子路由（模块内部已定义映射） ====================
 
@@ -178,6 +179,8 @@ final List<ModuleEntry> _modules = [
     concepts: ['G-code', 'Parser', 'CustomPaint', 'PathMetric', '动画控制'],
     estimatedMinutes: 45,
     status: ModuleStatus.ready,
+    // gcode_core v0.2.0-dev.1 validates macOS GPU rendering only.
+    supportedPlatforms: {TargetPlatform.macOS},
     builder: (context) => const GcodeVisualizerEntry(),
   ),
   ModuleEntry(
@@ -334,6 +337,23 @@ final List<ModuleEntry> _modules = [
     status: ModuleStatus.ready,
     supportedPlatforms: {TargetPlatform.macOS, TargetPlatform.windows},
     builder: (context) => const OnlineVideoPlayerEntry(),
+  ),
+  ModuleEntry(
+    title: '网页容器与跨平台导航',
+    path: '/webview',
+    subtitle: '学习 Android、macOS、Windows 网页导航与生命周期',
+    category: ModuleCategory.platform,
+    difficulty: Difficulty.intermediate,
+    concepts: ['WebView', 'WebView2', '加载进度', '生命周期'],
+    estimatedMinutes: 30,
+    status: ModuleStatus.ready,
+    // Android/macOS use webview_flutter; Windows uses WebView2.
+    supportedPlatforms: {
+      TargetPlatform.android,
+      TargetPlatform.macOS,
+      TargetPlatform.windows,
+    },
+    builder: (context) => const WebViewEntry(),
   ),
 ];
 

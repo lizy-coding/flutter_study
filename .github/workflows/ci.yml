@@ -10,22 +10,23 @@ jobs:
   quality-gate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.44.6"
+          flutter-version: "3.47.2"
           channel: stable
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: "20.20.2"
+          node-version: "24"
 
       - name: Bootstrap
         run: |
           flutter pub get
+          (cd packages/video_player_win/example && flutter pub get)
           git config core.hooksPath .githooks
 
       - name: Agent doc generation + drift check
@@ -35,8 +36,9 @@ jobs:
             AI_ANALYSIS_SCHEMA.json \
             AI_PROJECT_CONTEXT.md \
             REFACTOR_PLAN.md \
-            'lib/**/AI_ANALYSIS.md' \
-            'lib/AI_MODULE_INDEX.md' \
+            AI_ANALYSIS.md \
+            'apps/flutter_forge/lib/**/AI_ANALYSIS.md' \
+            'apps/flutter_forge/lib/AI_MODULE_INDEX.md' \
             'packages/**/AI_ANALYSIS.md'
 
       - name: Dart format

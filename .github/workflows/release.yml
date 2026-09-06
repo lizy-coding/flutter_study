@@ -9,15 +9,15 @@ permissions:
   contents: write
 
 env:
-  FLUTTER_VERSION: "3.44.6"
-  NODE_VERSION: "20.20.2"
+  FLUTTER_VERSION: "3.47.2"
+  NODE_VERSION: "24"
 
 jobs:
   build:
     name: Build ${{ matrix.os }} installer
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         include:
           - os: macos-latest
@@ -26,25 +26,35 @@ jobs:
           - os: windows-latest
             platform: windows
             artifact: flutter_forge-windows-x64.zip
+          - os: ubuntu-latest
+            platform: android
+            artifact: flutter_forge-android-arm64
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Bootstrap
-        run: flutter pub get
+        shell: bash
+        run: |
+          flutter pub get
+          (cd packages/video_player_win/example && flutter pub get)
       - name: Analyze
+        if: matrix.platform == 'android'
         run: flutter analyze
       - name: Tests
+        if: matrix.platform == 'android'
         shell: bash
         run: bash tool/test_all.sh
       - name: Build macOS
         if: matrix.platform == 'macos'
         working-directory: apps/flutter_forge
+        env:
+          FLUTTER_XCODE_CC: ${{ github.workspace }}/apps/flutter_forge/tool/macos/compiler_probe.py
         run: flutter build macos --release
       - name: Package macOS
         if: matrix.platform == 'macos'
@@ -53,6 +63,21 @@ jobs:
         if: matrix.platform == 'windows'
         working-directory: apps/flutter_forge
         run: flutter build windows --release
+      - name: Build Android ARM64 AAB
+        if: matrix.platform == 'android'
+        working-directory: apps/flutter_forge
+        run: flutter build appbundle --release
+      - name: Build Android ARM64 APK
+        if: matrix.platform == 'android'
+        working-directory: apps/flutter_forge
+        run: flutter build apk --release --target-platform android-arm64 --split-per-abi
+      - name: Stage Android ARM64 artifacts
+        if: matrix.platform == 'android'
+        shell: bash
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/apps/flutter_forge/release-assets"
+          cp "$GITHUB_WORKSPACE/apps/flutter_forge/build/app/outputs/bundle/release/app-release.aab" "$GITHUB_WORKSPACE/apps/flutter_forge/release-assets/flutter_forge-android-arm64.aab"
+          cp "$GITHUB_WORKSPACE/apps/flutter_forge/build/app/outputs/apk/release/app-arm64-v8a-release.apk" "$GITHUB_WORKSPACE/apps/flutter_forge/release-assets/flutter_forge-android-arm64.apk"
       - name: Install Inno Setup
         if: matrix.platform == 'windows'
         shell: pwsh
@@ -75,6 +100,13 @@ jobs:
           name: flutter_forge-setup-x64.exe
           path: flutter_forge-setup-x64.exe
           retention-days: 14
+      - name: Upload Android ARM64 artifacts
+        if: matrix.platform == 'android'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: apps/flutter_forge/release-assets/*
+          retention-days: 14
 
   release:
     name: Create GitHub release
@@ -82,7 +114,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - uses: actions/download-artifact@v4
@@ -112,7 +144,7 @@ jobs:
             fi
           }
 
-          printf '%s\n' '首个桌面安装器发布。macOS 构建和 Windows 安装器均未签名；首次运行时，macOS 请右键选择“打开”（或执行 `xattr -dr com.apple.quarantine`），Windows SmartScreen 请点击“更多信息（More info）”后选择“仍要运行（Run anyway）”。' > release-notes.md
+          printf '%s\n' 'Flutter Forge 多平台发布。macOS 和 Windows 产物未签名；首次运行时，macOS 请右键选择“打开”（或执行 `xattr -dr com.apple.quarantine`），Windows SmartScreen 请点击“更多信息（More info）”后选择“仍要运行（Run anyway）”。Android 产物使用工作流构建签名，仅用于项目当前发布轨道。' > release-notes.md
           printf '\n' >> release-notes.md
           write_group "Features" '^feat(\(.+\))?!?:'
           write_group "Fixes" '^fix(\(.+\))?!?:'
@@ -131,4 +163,11 @@ jobs:
       - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "${{ github.ref_name }}" release-assets/* --title "Flutter Forge ${{ github.ref_name }}" --notes-file release-notes.md
+        shell: bash
+        run: |
+          if gh release view "${{ github.ref_name }}" >/dev/null 2>&1; then
+            gh release upload "${{ github.ref_name }}" release-assets/* --clobber
+            gh release edit "${{ github.ref_name }}" --title "Flutter Forge ${{ github.ref_name }}" --notes-file release-notes.md
+          else
+            gh release create "${{ github.ref_name }}" release-assets/* --title "Flutter Forge ${{ github.ref_name }}" --notes-file release-notes.md
+          fi

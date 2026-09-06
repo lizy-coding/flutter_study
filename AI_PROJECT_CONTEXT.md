@@ -33,8 +33,6 @@
     "layout": "pub_workspace",
     "workspace_root": ".",
     "members": [
-      "packages/gcode_core",
-      "packages/flutter_study_learning",
       "packages/file_picker_bridge",
       "packages/flutter_ioc_core"
     ],
@@ -42,18 +40,6 @@
     "resolution_blocker": "none"
   },
   "internal_packages": [
-    {
-      "name": "gcode_core",
-      "type": "flutter_package",
-      "path": "packages/gcode_core",
-      "entrypoint": "lib/gcode_core.dart"
-    },
-    {
-      "name": "flutter_study_learning",
-      "type": "flutter_package",
-      "path": "packages/flutter_study_learning",
-      "entrypoint": "lib/flutter_study_learning.dart"
-    },
     {
       "name": "file_picker_bridge",
       "type": "flutter_bridge_package",
@@ -65,6 +51,24 @@
       "type": "dart_package",
       "path": "packages/flutter_ioc_core",
       "entrypoint": "lib/flutter_ioc_core.dart"
+    }
+  ],
+  "external_packages": [
+    {
+      "name": "gcode_core",
+      "source": "git",
+      "url": "https://github.com/lizy-coding/gcode_core.git",
+      "ref": "v0.2.0-dev.1",
+      "entrypoint": "lib/gcode_core.dart",
+      "flutter_min": "3.47.2",
+      "supported_platforms": [
+        "macOS"
+      ],
+      "requires": [
+        "impeller",
+        "flutter_gpu"
+      ],
+      "macos_deployment_target_min": "12.0"
     }
   ],
   "external_tools": [
@@ -145,7 +149,7 @@
       "status",
       "subtitle"
     ],
-    "required_learning_dependency": "flutter_study_learning",
+    "required_learning_dependency": "shared_learning",
     "route_path_style": "kebab_case",
     "directory_style": "snake_case"
   },
