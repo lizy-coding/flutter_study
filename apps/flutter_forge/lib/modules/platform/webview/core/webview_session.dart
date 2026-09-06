@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'webview_backend.dart';
 
 // Adapted from webview_plugin's loading manager and navigation controller.
-class WebviewSession extends ChangeNotifier {
-  WebviewSession(this.backend, {this.timeout = const Duration(seconds: 3)});
-  final WebviewBackend backend;
+class WebViewSession extends ChangeNotifier {
+  WebViewSession(this.backend, {this.timeout = const Duration(seconds: 3)});
+  final WebViewBackend backend;
   final Duration timeout;
-  StreamSubscription<WebEvent>? _subscription;
+  StreamSubscription<WebViewEvent>? _subscription;
   Timer? _timer;
   bool _disposed = false;
   bool initialized = false;
@@ -71,22 +71,22 @@ class WebviewSession extends ChangeNotifier {
     _notify();
   }
 
-  void _event(WebEvent event) {
+  void _event(WebViewEvent event) {
     if (_disposed) return;
     if (event.url != null) url = event.url!;
     switch (event.kind) {
-      case WebEventKind.started:
+      case WebViewEventKind.started:
         _begin();
-      case WebEventKind.progress:
+      case WebViewEventKind.progress:
         progress = event.progress.clamp(0, 1);
         if (progress >= 0.3) contentVisible = true;
-      case WebEventKind.finished:
+      case WebViewEventKind.finished:
         _timer?.cancel();
         progress = 1;
         loading = false;
         contentVisible = true;
         unawaited(_history());
-      case WebEventKind.error:
+      case WebViewEventKind.error:
         _fail(event.message ?? '网页加载失败');
     }
     _notify();

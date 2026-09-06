@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import '../../../shared/learning/learning_scaffold.dart';
 import 'core/webview_backend.dart';
 import 'core/webview_session.dart';
-import 'platforms/android_backend.dart';
-import 'platforms/windows_backend.dart';
+import 'platforms/webview_flutter_backend.dart';
+import 'platforms/webview2_backend.dart';
 
-class WebviewPage extends StatefulWidget {
-  const WebviewPage({super.key, this.backend});
-  final WebviewBackend? backend;
+class WebViewPage extends StatefulWidget {
+  const WebViewPage({super.key, this.backend});
+  final WebViewBackend? backend;
   @override
-  State<WebviewPage> createState() => _WebviewPageState();
+  State<WebViewPage> createState() => _WebViewPageState();
 }
 
-class _WebviewPageState extends State<WebviewPage> {
-  WebviewSession? _session;
+class _WebViewPageState extends State<WebViewPage> {
+  WebViewSession? _session;
   final _address = TextEditingController(text: 'https://example.com');
   @override
   void initState() {
@@ -24,12 +24,13 @@ class _WebviewPageState extends State<WebviewPage> {
         (kIsWeb
             ? null
             : switch (defaultTargetPlatform) {
-                TargetPlatform.android => AndroidWebviewBackend(),
-                TargetPlatform.windows => WindowsWebviewBackend(),
+                TargetPlatform.android ||
+                TargetPlatform.macOS => WebViewFlutterBackend(),
+                TargetPlatform.windows => WebView2Backend(),
                 _ => null,
               });
     if (backend != null) {
-      _session = WebviewSession(backend);
+      _session = WebViewSession(backend);
       _session!.start();
     }
   }
@@ -45,7 +46,7 @@ class _WebviewPageState extends State<WebviewPage> {
   Widget build(BuildContext context) => LearningScaffold(
     title: '网页容器与跨平台导航',
     interactiveDemo: _session == null
-        ? const Text('当前平台不可用：仅支持 Android 和 Windows')
+        ? const Text('当前平台不可用：仅支持 Android、macOS 和 Windows')
         : AnimatedBuilder(
             animation: _session!,
             builder: (context, child) {
@@ -133,7 +134,7 @@ class _WebviewPageState extends State<WebviewPage> {
     sections: const [
       LearningObjectives(
         objectives: [
-          '比较 Android WebView 与 Windows WebView2',
+          '比较 Android WebView、macOS WKWebView 与 Windows WebView2',
           '掌握网页前进、后退与加载状态管理',
           '退出页面时释放控制器、订阅和计时器',
         ],

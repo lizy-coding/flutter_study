@@ -305,13 +305,13 @@ const modules = [
     status: 'ready',
     depends: ['shared_learning', 'module_registry', 'webview_flutter', 'webview_windows'],
     title: '网页容器与跨平台导航',
-    subtitle: '统一 Android WebView 与 Windows WebView2 的导航、进度和生命周期',
+    subtitle: '学习 Android、macOS、Windows 网页导航与生命周期',
     difficulty: 'intermediate',
     concepts: ['WebView', 'WebView2', '加载进度', '生命周期'],
     estimatedMinutes: 30,
-    entry: 'WebviewEntry',
-    supportedPlatforms: ['android', 'windows'],
-    supportedPlatformsComment: '// Historical native backends support Android and Windows only.',
+    entry: 'WebViewEntry',
+    supportedPlatforms: ['android', 'macOS', 'windows'],
+    supportedPlatformsComment: '// Android/macOS use webview_flutter; Windows uses WebView2.',
   },
 
 ];
@@ -874,7 +874,13 @@ function writeRouteTable() {
       if (m.supportedPlatformsComment) {
         lines.push(`    ${m.supportedPlatformsComment}`);
       }
-      lines.push(`    supportedPlatforms: {${m.supportedPlatforms.map((platform) => `TargetPlatform.${platform}`).join(', ')}},`);
+      const platforms = m.supportedPlatforms.map((platform) => `TargetPlatform.${platform}`);
+      const inlinePlatforms = `    supportedPlatforms: {${platforms.join(', ')}},`;
+      if (inlinePlatforms.length <= 80) {
+        lines.push(inlinePlatforms);
+      } else {
+        lines.push('    supportedPlatforms: {', ...platforms.map((platform) => `      ${platform},`), '    },');
+      }
     }
     lines.push(`    builder: (context) => const ${m.entry}(),`);
     if (m.subRoutesExpander) {

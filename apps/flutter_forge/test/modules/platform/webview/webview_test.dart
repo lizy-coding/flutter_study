@@ -3,16 +3,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_forge_app/app/router/app_route_table.dart';
 import 'package:flutter_forge_app/module_registry/module_catalog_utils.dart';
 import 'package:flutter_forge_app/modules/platform/webview/module_root.dart';
-import 'webview_session_test.dart' show FakeWebviewBackend;
+import 'webview_session_test.dart' show FakeWebViewBackend;
 
 void main() {
-  test('catalog restricts WebView to historical native backends', () {
+  test('catalog enables Android, macOS and Windows WebView backends', () {
     final module = AppRouteTable.modules.singleWhere(
       (m) => m.path == '/webview',
     );
     expect(isModuleAvailable(module, TargetPlatform.android), isTrue);
     expect(isModuleAvailable(module, TargetPlatform.windows), isTrue);
-    expect(isModuleAvailable(module, TargetPlatform.macOS), isFalse);
+    expect(isModuleAvailable(module, TargetPlatform.macOS), isTrue);
     expect(isModuleAvailable(module, TargetPlatform.iOS), isFalse);
   });
   testWidgets(
@@ -22,8 +22,8 @@ void main() {
       tester.view.devicePixelRatio = 1;
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
-      final backend = FakeWebviewBackend();
-      await tester.pumpWidget(MaterialApp(home: WebviewPage(backend: backend)));
+      final backend = FakeWebViewBackend();
+      await tester.pumpWidget(MaterialApp(home: WebViewPage(backend: backend)));
       await tester.pump();
       expect(find.text('网页容器与跨平台导航'), findsOneWidget);
       expect(find.byType(Scaffold), findsOneWidget);

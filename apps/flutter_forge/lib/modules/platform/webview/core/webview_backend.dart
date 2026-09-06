@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 
-enum WebEventKind { started, progress, finished, error }
+enum WebViewEventKind { started, progress, finished, error }
 
-class WebEvent {
-  const WebEvent(this.kind, {this.url, this.progress = 0, this.message});
-  final WebEventKind kind;
+class WebViewEvent {
+  const WebViewEvent(this.kind, {this.url, this.progress = 0, this.message});
+  final WebViewEventKind kind;
   final String? url;
   final double progress;
   final String? message;
@@ -18,8 +18,8 @@ bool isWebUrl(String value) {
       uri.userInfo.isEmpty;
 }
 
-abstract class WebviewBackend {
-  Stream<WebEvent> get events;
+abstract class WebViewBackend {
+  Stream<WebViewEvent> get events;
   Future<void> initialize();
   Widget buildView();
   Future<void> loadUrl(String url);

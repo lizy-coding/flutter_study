@@ -9,7 +9,7 @@ The current session implements the same frozen task in the isolated managed chec
 ScopeGuard and architecture review remain required before integration.
 
 Ownership: `apps/flutter_forge/lib/modules/platform/webview`, route `/webview`.
-Native backends: Android and Windows. Other platforms retain an unavailable catalog entry.
+Native backends: Android, macOS and Windows. Other platforms retain an unavailable catalog entry.
 The historical wrapper source is adapted locally, with source provenance in `SOURCE.md`.
 Teaching content uses Forge's shared learning scaffold. There is no nested application or business window.
 URL inputs accept HTTP/HTTPS, Windows permission requests and popup windows are denied.
@@ -26,3 +26,40 @@ Verification:
 - Windows native runtime: PENDING; no Windows host available in this session.
 
 Windows requires WebView2 Runtime. No claim of Windows native acceptance is made from macOS tests.
+
+## macOS adaptation
+
+Android and macOS share `WebViewFlutterBackend`, using webview_flutter's registered
+Android WebView / WKWebView implementation. The generated catalog now enables macOS;
+the application already has network-client entitlements and a macOS 12 deployment target.
+The original Android-only class/file name was replaced to reflect shared ownership.
+
+Candidate validation: full quality gate 6/6 PASS using a temporary Git index (the
+user's staging area was not changed); platform catalog and lifecycle tests PASS.
+The generator now emits multiline platform sets deterministically.
+
+Native test: `flutter test integration_test/webview_macos_test.dart -d macos`.
+The test covers actual WKWebView loading from a loopback HTTP server, back, forward,
+reload and unmount/recreate. Native execution is PENDING: two builds stalled in
+Xcode's clang compiler probe, with sample showing a blocked write to the build-service
+pipe. Direct invocation of that compiler probe succeeds. The attempts were stopped;
+a separate concurrent host-build repair is outside this module change.
+No native test PASS or macOS build PASS is claimed yet.
+
+## Naming contract
+
+Agent Hub task: `normalize-webview-naming`. The user approved project-owned names
+with consistent `WebView` spelling. `WebViewEntry`, `WebViewPage`, `WebViewSession`,
+`WebViewBackend`, `WebViewEvent` and `WebViewEventKind` are the canonical types.
+`WebViewFlutterBackend` (`platforms/webview_flutter_backend.dart`) wraps
+webview_flutter for Android/macOS. `WebView2Backend`
+(`platforms/webview2_backend.dart`) wraps webview_windows for Windows.
+Third-party type names and package imports keep their upstream spelling.
+
+The naming task froze 17 paths against the existing working tree, preserving pending
+macOS adaptation and host-build changes. LangGraph scope and rename-equivalence
+checks passed; route `/webview`, directory `webview`, dependencies and platforms
+were unchanged. Full quality gate passed 6/6 using a temporary candidate index.
+Evidence lives in Agent Hub `plans/webview-naming-frozen.json` and
+`plans/webview-naming-review.json`. This naming validation does not supersede the
+native-runtime limitations recorded above.

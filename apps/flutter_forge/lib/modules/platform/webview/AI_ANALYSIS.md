@@ -12,6 +12,7 @@
   "category": "platform",
   "supported_platforms": [
     "android",
+    "macOS",
     "windows"
   ],
   "entrypoints": [

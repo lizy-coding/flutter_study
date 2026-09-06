@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'module_root.dart';
 
-class WebviewEntry extends StatelessWidget {
-  const WebviewEntry({super.key});
+class WebViewEntry extends StatelessWidget {
+  const WebViewEntry({super.key});
   @override
-  Widget build(BuildContext context) => const WebviewPage();
+  Widget build(BuildContext context) => const WebViewPage();
 }

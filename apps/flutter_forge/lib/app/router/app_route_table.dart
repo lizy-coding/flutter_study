@@ -339,15 +339,19 @@ final List<ModuleEntry> _modules = [
   ModuleEntry(
     title: '网页容器与跨平台导航',
     path: '/webview',
-    subtitle: '统一 Android WebView 与 Windows WebView2 的导航、进度和生命周期',
+    subtitle: '学习 Android、macOS、Windows 网页导航与生命周期',
     category: ModuleCategory.platform,
     difficulty: Difficulty.intermediate,
     concepts: ['WebView', 'WebView2', '加载进度', '生命周期'],
     estimatedMinutes: 30,
     status: ModuleStatus.ready,
-    // Historical native backends support Android and Windows only.
-    supportedPlatforms: {TargetPlatform.android, TargetPlatform.windows},
-    builder: (context) => const WebviewEntry(),
+    // Android/macOS use webview_flutter; Windows uses WebView2.
+    supportedPlatforms: {
+      TargetPlatform.android,
+      TargetPlatform.macOS,
+      TargetPlatform.windows,
+    },
+    builder: (context) => const WebViewEntry(),
   ),
 ];
 

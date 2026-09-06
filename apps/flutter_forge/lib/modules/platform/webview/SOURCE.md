@@ -12,3 +12,8 @@ Windows now uses native loading events instead of a page-injected message listen
 Subscriptions, timers and asynchronous shutdown are owned by the module session.
 No external repository dependency remains for this wrapper; platform engines remain
 normal pub dependencies. Upstream did not include a LICENSE file in this snapshot.
+
+Forge now also enables macOS through the registered webview_flutter WKWebView
+implementation. Android and macOS share WebViewFlutterBackend; Windows retains
+its WebView2 backend. This is a Forge extension beyond the original wrapper's
+Android/Windows platform selector.

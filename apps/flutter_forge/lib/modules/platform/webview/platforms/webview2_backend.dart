@@ -3,9 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:webview_windows/webview_windows.dart';
 import '../core/webview_backend.dart';
 
-class WindowsWebviewBackend implements WebviewBackend {
+class WebView2Backend implements WebViewBackend {
   final _controller = WebviewController();
-  final _events = StreamController<WebEvent>.broadcast();
+  final _events = StreamController<WebViewEvent>.broadcast();
   final List<StreamSubscription<dynamic>> _subscriptions = [];
   bool _disposed = false;
   bool _ready = false;
@@ -14,8 +14,8 @@ class WindowsWebviewBackend implements WebviewBackend {
   String _url = '';
   Timer? _progressTimer;
   @override
-  Stream<WebEvent> get events => _events.stream;
-  void _emit(WebEvent e) {
+  Stream<WebViewEvent> get events => _events.stream;
+  void _emit(WebViewEvent e) {
     if (!_disposed) _events.add(e);
   }
 
@@ -43,24 +43,24 @@ class WindowsWebviewBackend implements WebviewBackend {
     _subscriptions.add(
       _controller.onLoadError.listen((error) {
         _progressTimer?.cancel();
-        _emit(WebEvent(WebEventKind.error, message: error.name));
+        _emit(WebViewEvent(WebViewEventKind.error, message: error.name));
       }),
     );
     _subscriptions.add(
       _controller.loadingState.listen((state) {
         _progressTimer?.cancel();
         if (state == LoadingState.loading) {
-          _emit(WebEvent(WebEventKind.started, url: _url));
+          _emit(WebViewEvent(WebViewEventKind.started, url: _url));
           double progress = 0.1;
           _progressTimer = Timer.periodic(const Duration(milliseconds: 200), (
             timer,
           ) {
             progress = (progress + 0.03).clamp(0, 0.95);
-            _emit(WebEvent(WebEventKind.progress, progress: progress));
+            _emit(WebViewEvent(WebViewEventKind.progress, progress: progress));
             if (progress >= 0.95) timer.cancel();
           });
         } else if (state == LoadingState.navigationCompleted) {
-          _emit(WebEvent(WebEventKind.finished, url: _url));
+          _emit(WebViewEvent(WebViewEventKind.finished, url: _url));
         }
       }),
     );

@@ -4,14 +4,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_forge_app/modules/platform/webview/core/webview_backend.dart';
 import 'package:flutter_forge_app/modules/platform/webview/core/webview_session.dart';
 
-class FakeWebviewBackend implements WebviewBackend {
-  final controller = StreamController<WebEvent>.broadcast(sync: true);
+class FakeWebViewBackend implements WebViewBackend {
+  final controller = StreamController<WebViewEvent>.broadcast(sync: true);
   Completer<void>? initialization;
   bool disposed = false;
   bool fail = false;
   final List<String> calls = [];
   @override
-  Stream<WebEvent> get events => controller.stream;
+  Stream<WebViewEvent> get events => controller.stream;
   @override
   Future<void> initialize() async {
     await initialization?.future;
@@ -55,8 +55,8 @@ void main() {
   test(
     'rejects executable and malformed URLs before native navigation',
     () async {
-      final backend = FakeWebviewBackend();
-      final session = WebviewSession(backend);
+      final backend = FakeWebViewBackend();
+      final session = WebViewSession(backend);
       await session.start();
       final count = backend.calls.length;
       for (final url in [
@@ -73,8 +73,8 @@ void main() {
     },
   );
   test('late initialization never navigates after disposal', () async {
-    final backend = FakeWebviewBackend()..initialization = Completer<void>();
-    final session = WebviewSession(backend);
+    final backend = FakeWebViewBackend()..initialization = Completer<void>();
+    final session = WebViewSession(backend);
     final pending = session.start();
     session.dispose();
     backend.initialization!.complete();
@@ -83,8 +83,8 @@ void main() {
     expect(backend.disposed, isTrue);
   });
   test('reports initialization failure and allows retry', () async {
-    final backend = FakeWebviewBackend()..fail = true;
-    final session = WebviewSession(backend);
+    final backend = FakeWebViewBackend()..fail = true;
+    final session = WebViewSession(backend);
     await session.start();
     expect(session.error, contains('init failed'));
     backend.fail = false;
@@ -95,17 +95,19 @@ void main() {
   testWidgets('threshold, timeout, completion and navigation remain distinct', (
     tester,
   ) async {
-    final backend = FakeWebviewBackend();
-    final session = WebviewSession(backend);
+    final backend = FakeWebViewBackend();
+    final session = WebViewSession(backend);
     await session.start();
-    backend.controller.add(const WebEvent(WebEventKind.progress, progress: .3));
+    backend.controller.add(
+      const WebViewEvent(WebViewEventKind.progress, progress: .3),
+    );
     expect(session.contentVisible, isTrue);
     expect(session.loading, isTrue);
     await session.reload();
     await tester.pump(const Duration(seconds: 3));
     expect(session.contentVisible, isTrue);
     expect(session.loading, isTrue);
-    backend.controller.add(const WebEvent(WebEventKind.finished));
+    backend.controller.add(const WebViewEvent(WebViewEventKind.finished));
     await tester.pump();
     expect(session.canBack, isTrue);
     expect(session.loading, isFalse);

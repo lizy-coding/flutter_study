@@ -3,13 +3,14 @@ import 'package:flutter/widgets.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../core/webview_backend.dart';
 
-class AndroidWebviewBackend implements WebviewBackend {
-  final _events = StreamController<WebEvent>.broadcast();
+// webview_flutter selects Android WebView or macOS WKWebView at registration.
+class WebViewFlutterBackend implements WebViewBackend {
+  final _events = StreamController<WebViewEvent>.broadcast();
   WebViewController? _controller;
   bool _disposed = false;
   @override
-  Stream<WebEvent> get events => _events.stream;
-  void _emit(WebEvent event) {
+  Stream<WebViewEvent> get events => _events.stream;
+  void _emit(WebViewEvent event) {
     if (!_disposed) _events.add(event);
   }
 
@@ -24,14 +25,18 @@ class AndroidWebviewBackend implements WebviewBackend {
         onNavigationRequest: (request) => isWebUrl(request.url)
             ? NavigationDecision.navigate
             : NavigationDecision.prevent,
-        onPageStarted: (url) => _emit(WebEvent(WebEventKind.started, url: url)),
-        onProgress: (progress) =>
-            _emit(WebEvent(WebEventKind.progress, progress: progress / 100)),
+        onPageStarted: (url) =>
+            _emit(WebViewEvent(WebViewEventKind.started, url: url)),
+        onProgress: (progress) => _emit(
+          WebViewEvent(WebViewEventKind.progress, progress: progress / 100),
+        ),
         onPageFinished: (url) =>
-            _emit(WebEvent(WebEventKind.finished, url: url)),
+            _emit(WebViewEvent(WebViewEventKind.finished, url: url)),
         onWebResourceError: (error) {
           if (error.isForMainFrame != false) {
-            _emit(WebEvent(WebEventKind.error, message: error.description));
+            _emit(
+              WebViewEvent(WebViewEventKind.error, message: error.description),
+            );
           }
         },
       ),
