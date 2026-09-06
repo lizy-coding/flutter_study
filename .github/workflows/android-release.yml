@@ -27,7 +27,10 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
       - name: Bootstrap
-        run: flutter pub get
+        shell: bash
+        run: |
+          flutter pub get
+          (cd packages/video_player_win/example && flutter pub get)
       - name: Analyze
         run: flutter analyze
       - name: Tests
