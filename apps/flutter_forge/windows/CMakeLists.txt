@@ -64,6 +64,9 @@ if(TARGET video_player_win_plugin)
   add_dependencies(video_player_win_plugin video_player_win_DEPENDENCIES_DOWNLOAD)
   target_compile_options(video_player_win_plugin PRIVATE /wd4100)
 endif()
+if(TARGET webview_windows_plugin)
+  target_compile_definitions(webview_windows_plugin PRIVATE _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS)
+endif()
 list(FILTER PLUGIN_BUNDLED_LIBRARIES EXCLUDE REGEX "\\.targets$")
 
 
