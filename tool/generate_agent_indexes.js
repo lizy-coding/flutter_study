@@ -407,6 +407,16 @@ const workspacePackages = [
     validation: ['dart pub get', 'dart analyze', 'dart test'],
     test_status: 'configured',
   },
+  {
+    name: 'desktop_multi_window',
+    kind: 'flutter_plugin_package',
+    path: 'packages/desktop_multi_window',
+    entrypoints: ['lib/desktop_multi_window.dart'],
+    owns: ['desktop_window_lifecycle', 'multi_window_host_bridge'],
+    depends: ['flutter_sdk'],
+    validation: ['flutter pub get', 'flutter analyze', 'flutter test'],
+    test_status: 'configured',
+  },
 ];
 
 function writeJson(rel, value) {
@@ -518,7 +528,7 @@ function writeProjectContext() {
     platform: {
       current_hosts: ['macos', 'windows'],
       next_host: 'android',
-      target_hosts: ['android', 'ios', 'macos', 'windows'],
+      target_hosts: ['android', 'macos', 'windows'],
     },
     entrypoints: {
       process: 'lib/main.dart',
@@ -713,6 +723,13 @@ function writeRefactorPlan() {
         ],
       },
       {
+        id: 'web_compatibility_boundary',
+        priority: 12,
+        status: 'planned',
+        targets: ['lib/modules/platform/file_picker', 'lib/modules/platform/online_video_player', 'lib/modules/platform/webview'],
+        acceptance: ['web_backend_implemented', 'browser_runtime_evidence', 'web_module_matrix_updated'],
+      },
+      {
         id: 'android_usb_permission_boundary',
         priority: 10,
         status: 'completed',
@@ -789,13 +806,14 @@ function writeModuleIndex() {
     schema: 'flutter_forge.agent_docs.module_index.v1',
     registry: 'lib/app/router/app_route_table.dart',
     count: modules.length,
-    modules: modules.map(({ category, id, route, status, depends }) => ({
+    modules: modules.map(({ category, id, route, status, depends, supportedPlatforms }) => ({
       id,
       category,
       path: `lib/modules/${category}/${id}`,
       route,
       status,
       depends,
+      ...(supportedPlatforms ? { supported_platforms: supportedPlatforms } : {}),
       analysis: `lib/modules/${category}/${id}/AI_ANALYSIS.md`,
     })),
   });

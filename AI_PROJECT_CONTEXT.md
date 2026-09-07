@@ -17,7 +17,6 @@
     "next_host": "android",
     "target_hosts": [
       "android",
-      "ios",
       "macos",
       "windows"
     ]
@@ -34,7 +33,8 @@
     "workspace_root": ".",
     "members": [
       "packages/file_picker_bridge",
-      "packages/flutter_ioc_core"
+      "packages/flutter_ioc_core",
+      "packages/desktop_multi_window"
     ],
     "resolution_status": "active",
     "resolution_blocker": "none"
@@ -51,6 +51,12 @@
       "type": "dart_package",
       "path": "packages/flutter_ioc_core",
       "entrypoint": "lib/flutter_ioc_core.dart"
+    },
+    {
+      "name": "desktop_multi_window",
+      "type": "flutter_plugin_package",
+      "path": "packages/desktop_multi_window",
+      "entrypoint": "lib/desktop_multi_window.dart"
     }
   ],
   "external_packages": [

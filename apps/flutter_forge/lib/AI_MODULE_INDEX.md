@@ -134,6 +134,9 @@
         "file_picker_bridge",
         "module_registry"
       ],
+      "supported_platforms": [
+        "macOS"
+      ],
       "analysis": "lib/modules/ui/gcode_visualizer/AI_ANALYSIS.md"
     },
     {
@@ -251,6 +254,9 @@
         "device_info_plus",
         "module_registry"
       ],
+      "supported_platforms": [
+        "android"
+      ],
       "analysis": "lib/modules/platform/usb_detector/AI_ANALYSIS.md"
     },
     {
@@ -263,6 +269,10 @@
         "shared_learning",
         "file_picker_bridge",
         "module_registry"
+      ],
+      "supported_platforms": [
+        "macOS",
+        "windows"
       ],
       "analysis": "lib/modules/platform/file_picker/AI_ANALYSIS.md"
     },
@@ -279,6 +289,10 @@
         "video_player_win",
         "module_registry"
       ],
+      "supported_platforms": [
+        "macOS",
+        "windows"
+      ],
       "analysis": "lib/modules/platform/online_video_player/AI_ANALYSIS.md"
     },
     {
@@ -292,6 +306,11 @@
         "module_registry",
         "webview_flutter",
         "webview_windows"
+      ],
+      "supported_platforms": [
+        "android",
+        "macOS",
+        "windows"
       ],
       "analysis": "lib/modules/platform/webview/AI_ANALYSIS.md"
     }

@@ -17,7 +17,8 @@
     "layout": "pub_workspace",
     "internal_packages": [
       "packages/file_picker_bridge",
-      "packages/flutter_ioc_core"
+      "packages/flutter_ioc_core",
+      "packages/desktop_multi_window"
     ],
     "workspace_resolution_status": "active",
     "workspace_resolution_blocker": "none",
@@ -156,6 +157,21 @@
         "single_window_in_app_navigation",
         "unsupported_capability_state_visible",
         "no_android_analyzer_or_test_regressions"
+      ]
+    },
+    {
+      "id": "web_compatibility_boundary",
+      "priority": 12,
+      "status": "planned",
+      "targets": [
+        "lib/modules/platform/file_picker",
+        "lib/modules/platform/online_video_player",
+        "lib/modules/platform/webview"
+      ],
+      "acceptance": [
+        "web_backend_implemented",
+        "browser_runtime_evidence",
+        "web_module_matrix_updated"
       ]
     },
     {

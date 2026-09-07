@@ -1,0 +1,132 @@
+{
+  "schema": "flutter_forge.agent_task.v1",
+  "task_id": "EVO-20260907-platform-index-drift",
+  "title": "修复平台索引生成漂移并同步 Web 目标边界",
+  "status": "pending",
+  "manual_review": true,
+  "packaging_change": false,
+  "objective": "修复 Flutter Forge 生成源、模块索引、模块契约和项目上下文之间的平台与 workspace 成员事实漂移；为后续 Web 兼容性保留 planned 边界，不宣称 Web 已支持。",
+  "agent_role": "code executor; 仅修改 Flutter Forge 本仓库；仅允许本地 commit；严禁 git push、tag、release、Issue mutation、rebase、force-push；不得修改 Agent Hub。",
+  "background": {
+    "repo": "/Users/forest/code/langGraph/flutter_forge",
+    "branch": "dev",
+    "host": "macos",
+    "baseline": "HEAD=d76c31258f6ddbc8e02d3bb9c4514e9405c903ba; tracking=origin/dev; origin/dev=a3985fa1e276a89986f256331039f5fb2903af07; workspace clean before prompt creation",
+    "verified_facts": [
+      "tool/generate_agent_indexes.js already declares supportedPlatforms for gcode_visualizer=macOS, usb_detector=android, file_picker=macOS+windows, online_video_player=macOS+windows, webview=android+macOS+windows.",
+      "module AI_ANALYSIS.md generation already emits supported_platforms when supportedPlatforms exists; webview contract currently contains android, macOS, windows.",
+      "apps/flutter_forge/lib/AI_MODULE_INDEX.md currently omits supported_platforms for the platform-restricted modules, so generated source and module index drift semantically.",
+      "root pubspec.yaml workspace members are apps/flutter_forge, packages/file_picker_bridge, packages/flutter_ioc_core, packages/desktop_multi_window; generated AI_PROJECT_CONTEXT.md currently lists only the first two package paths under repository.members.",
+      "apps/flutter_forge/web does not exist; WebView module currently returns no backend on kIsWeb and is not declared Web-supported; online_video_player, file_picker and webview must not be promoted to Web supported without implementation and runtime evidence.",
+      "current Forge quality_gate was independently run at baseline and passed 6/6; node validator reports agent_docs_valid:43; current module index count is 22 and test layout is 22/22.",
+      "iOS and Linux are out of the current product target; do not add iOS or Linux implementation work in this task. Web may be recorded as a planned target only if the existing generated-contract model has a safe field for that distinction; do not invent an unsupported schema field without preserving validator compatibility."
+    ]
+  },
+  "design_decisions": [
+    {
+      "id": "DD-1",
+      "title": "generated_platform_facts_are_consistent",
+      "constraints": [
+        "tool/generate_agent_indexes.js remains the only edited source of generated platform metadata.",
+        "AI_MODULE_INDEX.md, module AI_ANALYSIS.md, app_route_table.dart and AI_PROJECT_CONTEXT.md must be regenerated, never hand-edited.",
+        "Every module with supportedPlatforms in the generator must expose the same normalized platform list in generated module index and module contract.",
+        "Modules without supportedPlatforms remain all-platform by the existing contract; do not add speculative restrictions."
+      ]
+    },
+    {
+      "id": "DD-2",
+      "title": "workspace_members_match_root_manifest",
+      "constraints": [
+        "Generated repository.members must match the actual root workspace declaration, including packages/desktop_multi_window if it is a workspace member.",
+        "Do not convert external or vendored packages into workspace members unless the root manifest already declares them.",
+        "Preserve dependency direction and do not change runtime package dependencies as part of index repair."
+      ]
+    },
+    {
+      "id": "DD-3",
+      "title": "web_is_planned_not_supported",
+      "constraints": [
+        "Do not add Web to supportedPlatforms for webview, online_video_player or file_picker merely because transitive packages contain Web implementations.",
+        "Do not create apps/flutter_forge/web, Web backends, Web CI, release artifacts or runtime code in this task.",
+        "If the existing project-contract schema supports a target/planned distinction, record Web as planned and remove iOS from the active target list; otherwise leave runtime target facts unchanged and document only a bounded Web follow-up in the generated source's existing planning structure.",
+        "Linux remains out of scope and must not be added to target_hosts or module support metadata."
+      ]
+    }
+  ],
+  "implementation_steps": [
+    {
+      "step": 1,
+      "action": "preflight",
+      "detail": "Re-check git status, branch tracking, HEAD/origin refs, read AGENTS.md, AI_ANALYSIS_SCHEMA.json, AI_PROJECT_CONTEXT.md, REFACTOR_PLAN.md, and inspect generator/index/module contracts. If the baseline has moved or unrelated changes exist, stop without staging them."
+    },
+    {
+      "step": 2,
+      "action": "source_repair",
+      "detail": "Patch only tool/generate_agent_indexes.js and, if required by the existing contract, the smallest machine-contract source fields needed to represent the agreed Android/macOS/Windows/Web target boundary. Keep generated files out of direct edits."
+    },
+    {
+      "step": 3,
+      "action": "regenerate",
+      "detail": "Run bash tool/generate_harness_ai_analysis.sh. Confirm generated AI_MODULE_INDEX contains supported_platforms for all restricted modules, generated module contracts match, route metadata remains consistent, and repository.members matches root pubspec workspace members."
+    },
+    {
+      "step": 4,
+      "action": "contract_checks",
+      "detail": "Add or update focused generator/validator regression coverage only if needed to prevent the exact platform-index drift from returning. Do not weaken validators or alter accepted architecture goldens."
+    },
+    {
+      "step": 5,
+      "action": "verification",
+      "detail": "Before commit, run node --check tool/generate_agent_indexes.js, node tool/validate_agent_docs.js, bash tool/check_generated_docs.sh, git diff --check, and inspect the complete diff. Then run bash tool/quality_gate.sh after all intended files are staged because the gate checks generated/format drift relative to HEAD."
+    },
+    {
+      "step": 6,
+      "action": "commit",
+      "detail": "Stage only the generator, generated machine contracts, focused regression tests, and this task JSON if it is part of the repository convention. Create one local commit with message fix(agent-docs): align platform metadata indexes. Do not push. Verify the commit file list and origin/dev remains unchanged."
+    }
+  ],
+  "acceptance_criteria": [
+    "DD-1: generator source is the only source changed for generated platform facts; no hand-edited generated artifact drift remains.",
+    "DD-1: gcode_visualizer, usb_detector, file_picker, online_video_player and webview have bidirectionally consistent platform metadata across generator output, AI_MODULE_INDEX.md, AI_ANALYSIS.md and route metadata.",
+    "DD-2: generated AI_PROJECT_CONTEXT.md repository.members equals the root pubspec.yaml workspace members and includes packages/desktop_multi_window.",
+    "DD-3: iOS and Linux are not added as active supported platforms; Web is not falsely marked supported for modules lacking a Web backend/runtime acceptance.",
+    "node tool/validate_agent_docs.js exits 0 and reports valid generated documents.",
+    "bash tool/check_generated_docs.sh exits 0.",
+    "bash tool/quality_gate.sh exits 0 with 6/6 stages passing.",
+    "git diff --check exits 0; no build output, cache, secret, Agent Hub file, CI workflow or gate-script semantic change is included.",
+    "A local commit exists; git rev-parse origin/dev is unchanged from preflight; no git push/tag/release was executed."
+  ],
+  "forbidden_changes": [
+    "Do not modify /Users/forest/code/agent-hub or any Agent Hub source/config/registry report/benchmark.",
+    "Do not hand-edit AI_MODULE_INDEX.md, AI_PROJECT_CONTEXT.md, REFACTOR_PLAN.md or any generated AI_ANALYSIS.md; modify generator source and regenerate.",
+    "Do not add apps/flutter_forge/web or implement WebView/video/file-selector Web backends.",
+    "Do not add iOS or Linux hosts, plugins, target entries or release platforms.",
+    "Do not modify .github/workflows/*.yml, tool/quality_gate.sh, tool/test_all.sh, tool/verify_test_layout.sh or other gate semantics.",
+    "Do not modify business module behavior, dependency versions, native host code or release configuration.",
+    "Do not git push, tag, release, update GitHub Issues, rebase, force-push or amend commits below the new local commit."
+  ],
+  "out_of_scope": [
+    "Web runtime implementation",
+    "Web browser integration/E2E acceptance",
+    "Agent Hub adapter generalization or benchmark/golden updates",
+    "iOS and Linux support",
+    "FlutterGuard MEDIUM cleanup",
+    "current-head macOS/Windows real-device acceptance"
+  ],
+  "validation": [
+    "node --check tool/generate_agent_indexes.js",
+    "node tool/validate_agent_docs.js",
+    "bash tool/generate_harness_ai_analysis.sh",
+    "bash tool/check_generated_docs.sh",
+    "git diff --check",
+    "bash tool/quality_gate.sh",
+    "git show --name-status --format= HEAD",
+    "git status --short --branch",
+    "git rev-parse HEAD origin/dev"
+  ],
+  "notes": [
+    "The task JSON itself is an expected new untracked file during Codex preflight.",
+    "Only this Flutter Forge checkout is in scope; Agent Hub will be evaluated and updated in a separate approved task after Forge facts stabilize.",
+    "A quality-gate pass proves repository contracts and tests only; it does not prove Web runtime support."
+  ]
+}
