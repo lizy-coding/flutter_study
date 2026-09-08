@@ -34,11 +34,12 @@ class ModuleEntry {
   /// A non-null set restricts availability to the listed host platforms.
   final Set<TargetPlatform>? supportedPlatforms;
 
-  /// Overrides Web availability for platform-restricted modules.
+  /// Overrides Web availability independently from native host support.
   ///
-  /// Platform-neutral modules support Web by default. A module with an
-  /// explicit [supportedPlatforms] set is unavailable on Web unless this is
-  /// explicitly true.
+  /// Platform-neutral modules support Web by default. Set this to false when
+  /// an otherwise platform-neutral module depends on a native-only runtime
+  /// capability. A module with an explicit [supportedPlatforms] set is
+  /// unavailable on Web unless this is explicitly true.
   final bool? supportsWeb;
 
   bool isSupportedOn(TargetPlatform platform, {required bool isWeb}) {

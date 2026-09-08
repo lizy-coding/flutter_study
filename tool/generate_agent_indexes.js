@@ -256,8 +256,8 @@ const modules = [
     estimatedMinutes: 35,
     entry: 'InterceptorTestEntry',
     routes: 'InterceptorTestRoutes',
-    supportedPlatforms: ['android', 'iOS', 'fuchsia', 'linux', 'macOS', 'windows'],
-    supportedPlatformsComment: '// Native-only: the teaching backend starts a dart:io HttpServer on localhost.',
+    supportsWeb: false,
+    supportsWebComment: '// Web-disabled: the teaching backend starts a dart:io HttpServer on localhost.',
   },
   {
     category: 'platform',
@@ -507,7 +507,7 @@ function writeSchema() {
     },
     module_contract_policy: {
       keep_for_module_rule: true,
-      content: ['route', 'category', 'status', 'entrypoints', 'analysis_parent'],
+      content: ['route', 'category', 'status', 'supported_platforms', 'supports_web', 'entrypoints', 'analysis_parent'],
       avoid: ['class_descriptions', 'long_file_inventory', 'natural_language_notes'],
     },
     package_contract_policy: {
@@ -816,7 +816,7 @@ function writeModuleIndex() {
     schema: 'flutter_forge.agent_docs.module_index.v1',
     registry: 'lib/app/router/app_route_table.dart',
     count: modules.length,
-    modules: modules.map(({ category, id, route, status, depends, supportedPlatforms }) => ({
+    modules: modules.map(({ category, id, route, status, depends, supportedPlatforms, supportsWeb }) => ({
       id,
       category,
       path: `lib/modules/${category}/${id}`,
@@ -824,6 +824,7 @@ function writeModuleIndex() {
       status,
       depends,
       ...(supportedPlatforms ? { supported_platforms: supportedPlatforms } : {}),
+      ...(supportsWeb !== undefined ? { supports_web: supportsWeb } : {}),
       analysis: `lib/modules/${category}/${id}/AI_ANALYSIS.md`,
     })),
   });
@@ -900,6 +901,12 @@ function writeRouteTable() {
     lines.push(`    concepts: ${conceptsLiteral(m.concepts)},`);
     lines.push(`    estimatedMinutes: ${m.estimatedMinutes},`);
     lines.push(`    status: ModuleStatus.${m.status},`);
+    if (m.supportsWeb !== undefined) {
+      if (m.supportsWebComment) {
+        lines.push(`    ${m.supportsWebComment}`);
+      }
+      lines.push(`    supportsWeb: ${m.supportsWeb},`);
+    }
     if (m.supportedPlatforms) {
       if (m.supportedPlatformsComment) {
         lines.push(`    ${m.supportedPlatformsComment}`);
@@ -1059,7 +1066,7 @@ function writeModuleIndexes() {
 }
 
 function writeModuleContracts() {
-  for (const { category, id: module, route, status, depends, supportedPlatforms } of modules) {
+  for (const { category, id: module, route, status, depends, supportedPlatforms, supportsWeb } of modules) {
     const dir = path.join(appRoot, 'lib/modules', category, module);
     const entrypoints = [];
     for (const item of ['module_entry.dart', 'module_root.dart', 'module_routes.dart']) {
@@ -1081,6 +1088,7 @@ function writeModuleContracts() {
       route,
       category,
       ...(supportedPlatforms ? { supported_platforms: supportedPlatforms } : {}),
+      ...(supportsWeb !== undefined ? { supports_web: supportsWeb } : {}),
       entrypoints: entrypoints.length ? entrypoints : ['module_entry.dart'],
       owns: ['module_entry', 'module_ui', 'module_docs'],
       depends,

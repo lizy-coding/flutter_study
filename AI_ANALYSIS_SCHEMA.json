@@ -70,6 +70,8 @@
       "route",
       "category",
       "status",
+      "supported_platforms",
+      "supports_web",
       "entrypoints",
       "analysis_parent"
     ],

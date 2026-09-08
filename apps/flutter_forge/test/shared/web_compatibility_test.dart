@@ -27,6 +27,22 @@ void main() {
     }
   });
 
+  test('Dio restriction does not claim or remove native host support', () {
+    final module = AppRouteTable.modules.singleWhere(
+      (entry) => entry.path == '/dio-interceptor',
+    );
+
+    for (final platform in [
+      TargetPlatform.android,
+      TargetPlatform.macOS,
+      TargetPlatform.windows,
+    ]) {
+      expect(isModuleAvailable(module, platform, false), isTrue);
+    }
+    expect(module.supportedPlatforms, isNull);
+    expect(module.supportsWeb, isFalse);
+  });
+
   testWidgets('Web entries render safe compatibility states', (tester) async {
     for (final entry in const <Widget>[
       FilePickerEntry(),
