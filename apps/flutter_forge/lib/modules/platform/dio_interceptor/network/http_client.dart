@@ -5,6 +5,8 @@ import 'interceptor/auth_interceptor.dart';
 import 'interceptor/error_interceptor.dart';
 import 'interceptor/log_interceptor.dart';
 import 'interceptor/retry_interceptor.dart';
+import 'platform_adapter_io.dart'
+    if (dart.library.js_interop) 'platform_adapter_web.dart';
 
 /// 网络请求客户端
 class HttpClient {
@@ -27,6 +29,7 @@ class HttpClient {
     );
 
     dio = Dio(options);
+    configurePlatformAdapter(dio);
 
     // 添加拦截器
     dio.interceptors.add(AuthInterceptor());

@@ -241,7 +241,7 @@
         "module_registry",
         "go_router"
       ],
-      "supports_web": false,
+      "supports_web": true,
       "analysis": "lib/modules/platform/dio_interceptor/AI_ANALYSIS.md"
     },
     {
@@ -287,6 +287,7 @@
         "shared_learning",
         "dio",
         "video_player",
+        "video_player_web",
         "video_player_win",
         "module_registry"
       ],
@@ -294,6 +295,7 @@
         "macOS",
         "windows"
       ],
+      "supports_web": true,
       "analysis": "lib/modules/platform/online_video_player/AI_ANALYSIS.md"
     },
     {

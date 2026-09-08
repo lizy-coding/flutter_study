@@ -291,8 +291,8 @@ final List<ModuleEntry> _modules = [
     concepts: ['Dio', '拦截器', 'Token 刷新', 'Mock Server', '重试机制'],
     estimatedMinutes: 35,
     status: ModuleStatus.ready,
-    // Web-disabled: the teaching backend starts a dart:io HttpServer on localhost.
-    supportsWeb: false,
+    // Web uses an in-memory Dio adapter; native hosts keep the localhost mock server.
+    supportsWeb: true,
     builder: (context) => const InterceptorTestEntry(),
     routes: InterceptorTestRoutes.routes,
   ),
@@ -337,6 +337,8 @@ final List<ModuleEntry> _modules = [
     ],
     estimatedMinutes: 35,
     status: ModuleStatus.ready,
+    // Web uses video_player_web and starts playback from a user gesture.
+    supportsWeb: true,
     supportedPlatforms: {TargetPlatform.macOS, TargetPlatform.windows},
     builder: (context) => const OnlineVideoPlayerEntry(),
   ),

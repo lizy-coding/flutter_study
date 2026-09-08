@@ -1,7 +1,8 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+
+import 'socket_error_io.dart'
+    if (dart.library.js_interop) 'socket_error_web.dart';
 
 /// 错误处理拦截器
 /// 用于统一处理网络请求错误
@@ -72,7 +73,7 @@ class ErrorInterceptor extends Interceptor {
         errorMessage = "连接错误，请检查网络";
         break;
       case DioExceptionType.unknown:
-        if (err.error is SocketException) {
+        if (isSocketError(err.error)) {
           errorMessage = "网络连接失败，请检查网络";
         } else {
           errorMessage = "未知错误: ${err.message}";

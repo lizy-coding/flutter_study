@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'mock_server/mock_server.dart';
+import 'mock_server/mock_server.dart'
+    if (dart.library.js_interop) 'mock_server/mock_server_web.dart';
 import 'pages/home_page.dart' as interceptor_test;
 
 class InterceptorTestEntry extends StatefulWidget {

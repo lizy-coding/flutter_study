@@ -36,6 +36,27 @@ void main() {
   });
 
   test(
+    'platform policy can let the player initialize without a probe',
+    () async {
+      var probeCalls = 0;
+      final adapter = VideoPlayerPluginAdapter(
+        probeBeforeOpen: false,
+        reachabilityProbe: (_) async {
+          probeCalls++;
+          return false;
+        },
+      );
+
+      await adapter.openAndPlay();
+
+      expect(probeCalls, 0);
+      expect(adapter.uiState.value, PlayerUiState.playing);
+      expect(adapter.videoController, isNotNull);
+      adapter.dispose();
+    },
+  );
+
+  test(
     'default probe uses a ranged GET compatible with media servers',
     () async {
       final httpAdapter = _RecordingHttpClientAdapter();

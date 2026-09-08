@@ -14,6 +14,7 @@
     "macOS",
     "windows"
   ],
+  "supports_web": true,
   "entrypoints": [
     "module_entry.dart",
     "module_root.dart",
@@ -29,6 +30,7 @@
     "shared_learning",
     "dio",
     "video_player",
+    "video_player_web",
     "video_player_win",
     "module_registry"
   ],

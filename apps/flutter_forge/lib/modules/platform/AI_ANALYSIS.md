@@ -22,6 +22,7 @@
     "dio",
     "device_info_plus",
     "video_player",
+    "video_player_web",
     "video_player_win",
     "shared_learning",
     "file_picker_bridge",
