@@ -291,6 +291,15 @@ final List<ModuleEntry> _modules = [
     concepts: ['Dio', '拦截器', 'Token 刷新', 'Mock Server', '重试机制'],
     estimatedMinutes: 35,
     status: ModuleStatus.ready,
+    // Native-only: the teaching backend starts a dart:io HttpServer on localhost.
+    supportedPlatforms: {
+      TargetPlatform.android,
+      TargetPlatform.iOS,
+      TargetPlatform.fuchsia,
+      TargetPlatform.linux,
+      TargetPlatform.macOS,
+      TargetPlatform.windows,
+    },
     builder: (context) => const InterceptorTestEntry(),
     routes: InterceptorTestRoutes.routes,
   ),

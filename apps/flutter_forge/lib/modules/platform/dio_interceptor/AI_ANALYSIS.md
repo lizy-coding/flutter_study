@@ -10,6 +10,14 @@
   },
   "route": "/dio-interceptor",
   "category": "platform",
+  "supported_platforms": [
+    "android",
+    "iOS",
+    "fuchsia",
+    "linux",
+    "macOS",
+    "windows"
+  ],
   "entrypoints": [
     "module_entry.dart",
     "module_routes.dart",

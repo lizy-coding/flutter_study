@@ -256,6 +256,8 @@ const modules = [
     estimatedMinutes: 35,
     entry: 'InterceptorTestEntry',
     routes: 'InterceptorTestRoutes',
+    supportedPlatforms: ['android', 'iOS', 'fuchsia', 'linux', 'macOS', 'windows'],
+    supportedPlatformsComment: '// Native-only: the teaching backend starts a dart:io HttpServer on localhost.',
   },
   {
     category: 'platform',

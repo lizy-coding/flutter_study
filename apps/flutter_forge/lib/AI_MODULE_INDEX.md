@@ -241,6 +241,14 @@
         "module_registry",
         "go_router"
       ],
+      "supported_platforms": [
+        "android",
+        "iOS",
+        "fuchsia",
+        "linux",
+        "macOS",
+        "windows"
+      ],
       "analysis": "lib/modules/platform/dio_interceptor/AI_ANALYSIS.md"
     },
     {

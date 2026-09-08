@@ -13,6 +13,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('Web catalog keeps native-only capabilities unavailable', () {
     for (final path in [
+      '/dio-interceptor',
       '/file-picker',
       '/online-video-player',
       '/webview',
