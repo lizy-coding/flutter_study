@@ -14,10 +14,11 @@
       "macos",
       "windows"
     ],
-    "next_host": "android",
+    "next_host": "web",
     "target_hosts": [
       "android",
       "macos",
+      "web",
       "windows"
     ]
   },
@@ -166,6 +167,8 @@
     "navigation_policy": "lib/app/navigation_policy.dart",
     "compact_width_breakpoint_dp": 600,
     "mobile_window_policy": "in_app_navigation_only",
+    "web_window_policy": "in_app_navigation_only",
+    "web_platform_detection": "kIsWeb_before_defaultTargetPlatform",
     "platform_capability_contract": "business_neutral_interface"
   },
   "change_protocol": {

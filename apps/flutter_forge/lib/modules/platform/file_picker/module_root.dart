@@ -29,7 +29,5 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return FilePickerPage(controller: _controller);
-  }
+  Widget build(BuildContext context) => FilePickerPage(controller: _controller);
 }

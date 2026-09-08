@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'pages/gcode_visualizer_page.dart';
+import 'pages/gcode_visualizer_page.dart'
+    if (dart.library.js_interop) 'pages/gcode_visualizer_web_page.dart';
 
 class GcodeVisualizerEntry extends StatelessWidget {
   const GcodeVisualizerEntry({super.key});

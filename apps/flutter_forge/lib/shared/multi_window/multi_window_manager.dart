@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io' show Platform;
 
 import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../module_registry/module_category.dart';
+import 'platform_support_io.dart'
+    if (dart.library.js_interop) 'platform_support_web.dart';
 
 class MultiWindowManager {
   MultiWindowManager._({MultiWindowPlatform? platform})
@@ -21,8 +22,7 @@ class MultiWindowManager {
 
   static final MultiWindowManager instance = MultiWindowManager._();
 
-  static bool get isSupported =>
-      Platform.isMacOS || Platform.isWindows || Platform.isLinux;
+  static bool get isSupported => multiWindowPlatformSupported;
 
   final Map<ModuleCategory, String> _categoryWindows = {};
   final MultiWindowPlatform _platform;

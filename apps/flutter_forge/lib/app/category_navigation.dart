@@ -20,6 +20,7 @@ class CategoryNavigation {
       platform: defaultTargetPlatform,
       width: MediaQuery.sizeOf(context).width,
       multiWindowSupported: MultiWindowManager.isSupported,
+      isWeb: kIsWeb,
     );
   }
 

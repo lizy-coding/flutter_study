@@ -25,6 +25,18 @@ void main() {
     );
   });
 
+  test('Web always uses in-app navigation on a desktop browser', () {
+    expect(
+      NavigationPolicy.resolve(
+        platform: TargetPlatform.macOS,
+        width: 1200,
+        multiWindowSupported: true,
+        isWeb: true,
+      ),
+      CategoryNavigationMode.inApp,
+    );
+  });
+
   test('compact desktop windows use in-app navigation', () {
     expect(
       NavigationPolicy.resolve(

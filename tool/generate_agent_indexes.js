@@ -527,8 +527,8 @@ function writeProjectContext() {
     },
     platform: {
       current_hosts: ['macos', 'windows'],
-      next_host: 'android',
-      target_hosts: ['android', 'macos', 'windows'],
+      next_host: 'web',
+      target_hosts: ['android', 'macos', 'web', 'windows'],
     },
     entrypoints: {
       process: 'lib/main.dart',
@@ -593,6 +593,8 @@ function writeProjectContext() {
       navigation_policy: 'lib/app/navigation_policy.dart',
       compact_width_breakpoint_dp: 600,
       mobile_window_policy: 'in_app_navigation_only',
+      web_window_policy: 'in_app_navigation_only',
+      web_platform_detection: 'kIsWeb_before_defaultTargetPlatform',
       platform_capability_contract: 'business_neutral_interface',
     },
     change_protocol: {
@@ -725,9 +727,15 @@ function writeRefactorPlan() {
       {
         id: 'web_compatibility_boundary',
         priority: 12,
-        status: 'planned',
+        status: 'completed',
         targets: ['lib/modules/platform/file_picker', 'lib/modules/platform/online_video_player', 'lib/modules/platform/webview'],
-        acceptance: ['web_backend_implemented', 'browser_runtime_evidence', 'web_module_matrix_updated'],
+        acceptance: ['web_host_release_build', 'browser_safe_fallbacks', 'web_module_matrix_updated'],
+        evidence: [
+          'Web release build completes from apps/flutter_forge',
+          'Chrome tests verify in-app navigation and native-only module filtering',
+          'file picker, online video, WebView, G-code and USB remain unavailable until their existing capability is proven on Web',
+          'conditional imports keep native-only implementations out of the Web compilation path',
+        ],
       },
       {
         id: 'android_usb_permission_boundary',
@@ -993,7 +1001,7 @@ function writeLayerIndexes() {
     id: 'flutter_forge_app.module_registry',
     kind: 'registry_index',
     entrypoints: ['module_entry.dart', 'module_category.dart', 'module_catalog_utils.dart'],
-    owns: ['module_entry_model', 'module_category_enum', 'difficulty_enum', 'module_status_enum', 'module_catalog_filtering', 'category_route_rebasing'],
+    owns: ['module_entry_model', 'module_category_enum', 'difficulty_enum', 'module_status_enum', 'native_web_availability', 'module_catalog_filtering', 'category_route_rebasing'],
     depends: ['flutter_material', 'go_router'],
   });
   writeIndex({

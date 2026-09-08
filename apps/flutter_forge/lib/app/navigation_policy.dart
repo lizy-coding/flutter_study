@@ -11,8 +11,10 @@ class NavigationPolicy {
     required TargetPlatform platform,
     required double width,
     required bool multiWindowSupported,
+    bool isWeb = false,
   }) {
-    if (platform == TargetPlatform.android ||
+    if (isWeb ||
+        platform == TargetPlatform.android ||
         platform == TargetPlatform.iOS ||
         platform == TargetPlatform.fuchsia) {
       return CategoryNavigationMode.inApp;

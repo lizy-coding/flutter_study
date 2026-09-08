@@ -162,16 +162,22 @@
     {
       "id": "web_compatibility_boundary",
       "priority": 12,
-      "status": "planned",
+      "status": "completed",
       "targets": [
         "lib/modules/platform/file_picker",
         "lib/modules/platform/online_video_player",
         "lib/modules/platform/webview"
       ],
       "acceptance": [
-        "web_backend_implemented",
-        "browser_runtime_evidence",
+        "web_host_release_build",
+        "browser_safe_fallbacks",
         "web_module_matrix_updated"
+      ],
+      "evidence": [
+        "Web release build completes from apps/flutter_forge",
+        "Chrome tests verify in-app navigation and native-only module filtering",
+        "file picker, online video, WebView, G-code and USB remain unavailable until their existing capability is proven on Web",
+        "conditional imports keep native-only implementations out of the Web compilation path"
       ]
     },
     {
