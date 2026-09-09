@@ -1,4 +1,5 @@
 import 'package:file_picker_bridge/file_picker_bridge.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,6 +17,10 @@ void main() {
 
     expect(find.text('a.gcode'), findsOneWidget);
     expect(find.text('/tmp/a.gcode'), findsOneWidget);
+    expect(find.textContaining('大小：'), findsOneWidget);
+    if (kIsWeb) {
+      expect(find.text('大小：由浏览器管理'), findsOneWidget);
+    }
   });
 
   testWidgets('cancelled selection renders the cancel branch', (tester) async {

@@ -318,6 +318,8 @@ final List<ModuleEntry> _modules = [
     concepts: ['FilePickerService', 'MethodChannel', '平台桥接', '扩展名过滤', '取消分支'],
     estimatedMinutes: 20,
     status: ModuleStatus.ready,
+    // Web uses file_selector_web and only accesses user-selected files.
+    supportsWeb: true,
     supportedPlatforms: {TargetPlatform.macOS, TargetPlatform.windows},
     builder: (context) => const FilePickerEntry(),
   ),

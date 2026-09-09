@@ -1,5 +1,5 @@
 name: file_picker_bridge
-description: File picker bridge for adapting macOS and Windows platform file managers.
+description: File picker bridge for adapting native and Web platform file managers.
 publish_to: 'none'
 version: 0.1.0
 

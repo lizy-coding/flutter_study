@@ -6,7 +6,11 @@ XTypeGroup? fileSelectorTypeGroupForExtensions(
   List<String> allowedExtensions,
 ) {
   if (allowedExtensions.isEmpty) return null;
-  return XTypeGroup(extensions: allowedExtensions);
+  return XTypeGroup(
+    extensions: allowedExtensions
+        .map((extension) => extension.replaceFirst(RegExp(r'^\.'), ''))
+        .toList(),
+  );
 }
 
 class FileSelectorFilePicker implements FilePickerService {

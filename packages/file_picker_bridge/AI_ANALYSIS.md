@@ -25,7 +25,8 @@
   ],
   "depends": [
     "flutter_sdk",
-    "file_selector"
+    "file_selector",
+    "file_selector_web"
   ],
   "children": [],
   "contracts": {

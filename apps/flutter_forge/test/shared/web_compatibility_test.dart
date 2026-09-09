@@ -13,12 +13,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('Web catalog keeps native-only capabilities unavailable', () {
-    for (final path in [
-      '/file-picker',
-      '/webview',
-      '/gcode-visualizer',
-      '/usb-detector',
-    ]) {
+    for (final path in ['/webview', '/gcode-visualizer', '/usb-detector']) {
       final module = AppRouteTable.modules.singleWhere(
         (entry) => entry.path == path,
       );
@@ -26,8 +21,12 @@ void main() {
     }
   });
 
-  test('Web catalog exposes the connected Dio and video modules', () {
-    for (final path in ['/dio-interceptor', '/online-video-player']) {
+  test('Web catalog exposes the connected platform modules', () {
+    for (final path in [
+      '/dio-interceptor',
+      '/file-picker',
+      '/online-video-player',
+    ]) {
       final module = AppRouteTable.modules.singleWhere(
         (entry) => entry.path == path,
       );

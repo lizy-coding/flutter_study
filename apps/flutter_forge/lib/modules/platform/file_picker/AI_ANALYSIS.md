@@ -14,6 +14,7 @@
     "macOS",
     "windows"
   ],
+  "supports_web": true,
   "entrypoints": [
     "module_entry.dart",
     "module_root.dart",

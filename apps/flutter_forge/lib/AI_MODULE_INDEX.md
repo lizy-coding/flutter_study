@@ -275,6 +275,7 @@
         "macOS",
         "windows"
       ],
+      "supports_web": true,
       "analysis": "lib/modules/platform/file_picker/AI_ANALYSIS.md"
     },
     {

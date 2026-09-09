@@ -179,8 +179,9 @@
         "Web release build completes from apps/flutter_forge",
         "Chrome tests verify in-app navigation and native-only module filtering",
         "Dio interceptor uses an in-memory Web transport for its existing login and article workflow",
+        "file picker uses file_selector_web with normalized extension filters",
         "online video uses video_player_web without a CORS-sensitive preflight and waits for a user play gesture",
-        "file picker, WebView, G-code and USB remain unavailable until their existing capability is proven on Web",
+        "WebView, G-code and USB remain unavailable until their existing capability is proven on Web",
         "conditional imports keep native-only implementations out of the Web compilation path"
       ]
     },

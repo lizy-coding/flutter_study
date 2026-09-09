@@ -1,8 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_forge_app/shared/learning/learning_scaffold.dart';
 
+import '../file_metadata_io.dart'
+    if (dart.library.js_interop) '../file_metadata_web.dart';
 import '../state/file_picker_controller.dart';
 
 class FilePickerPage extends StatelessWidget {
@@ -51,19 +51,13 @@ class FilePickerPage extends StatelessWidget {
         sections: const [
           LearningObjectives(
             objectives: [
-              '理解 MethodChannel 原生桥接原理',
+              '理解平台文件选择桥接原理',
               '复用中台 FilePickerService 能力',
               '掌握扩展名过滤与取消分支处理',
             ],
           ),
           ConceptChips(
-            concepts: [
-              'FilePickerService',
-              'MethodChannel',
-              '扩展过滤',
-              '取消分支',
-              '平台差异',
-            ],
+            concepts: ['FilePickerService', '平台适配', '扩展过滤', '取消分支', '平台差异'],
           ),
           CodeSnippetCard(
             title: '中台能力调用',
@@ -76,11 +70,11 @@ class FilePickerPage extends StatelessWidget {
                 "  allowedExtensions: ['.gcode', '.nc', '.tap'],\n"
                 "  title: '选择文件',\n"
                 ');',
-            explanation: '模块只依赖抽象接口，原生实现由 file_picker_bridge 包提供。',
+            explanation: '模块只依赖抽象接口，具体实现由 file_picker_bridge 按平台选择。',
           ),
           CommonPitfalls(
             pitfalls: [
-              'Windows 平台暂未注册原生 handler，调用抛 MissingPluginException',
+              'Web 只能访问用户主动选择的文件，不能遍历本地文件系统',
               '扩展过滤只是对话框提示，不校验文件内容',
               '沙箱下只能读用户所选文件（files.user-selected.read-only）',
             ],
@@ -97,7 +91,7 @@ class FilePickerPage extends StatelessWidget {
   Widget _buildResult(BuildContext context) {
     switch (controller.state) {
       case FilePickerState.idle:
-        return const Text('选择过滤类型，然后打开原生文件对话框。');
+        return const Text('选择过滤类型，然后打开平台文件选择器。');
       case FilePickerState.loading:
         return const Center(child: CircularProgressIndicator());
       case FilePickerState.picked:
@@ -105,11 +99,11 @@ class FilePickerPage extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(file.name ?? _fileName(file.path)),
+            Text(file.name ?? fileNameFromPath(file.path)),
             const SizedBox(height: 8),
             SelectableText(file.path),
             const SizedBox(height: 8),
-            Text('大小：${_fileSize(file.path)}'),
+            Text('大小：${fileSizeLabel(file.path)}'),
           ],
         );
       case FilePickerState.cancelled:
@@ -127,16 +121,6 @@ class FilePickerPage extends StatelessWidget {
         );
       case FilePickerState.error:
         return Text(controller.errorMessage ?? '文件选择失败');
-    }
-  }
-
-  String _fileName(String path) => File(path).uri.pathSegments.last;
-
-  String _fileSize(String path) {
-    try {
-      return '${File(path).statSync().size} 字节';
-    } on FileSystemException {
-      return '无法读取';
     }
   }
 }
