@@ -40,6 +40,10 @@ void main() {
 
     expect(adapter.probeBeforeOpen, isFalse);
     expect(adapter.startAutomatically, isFalse);
+    expect(
+      defaultSampleStreamUri.path,
+      endsWith('/media/flutter-forge-sample.mp4'),
+    );
     adapter.dispose();
   });
 

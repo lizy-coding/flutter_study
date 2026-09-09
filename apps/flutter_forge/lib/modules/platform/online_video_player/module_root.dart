@@ -86,9 +86,9 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(height: 12),
           VideoPlayerControls(adapter: _adapter),
           const SizedBox(height: 8),
-          const SelectableText(
-            '示例地址：$sampleStreamUrl',
-            style: TextStyle(fontSize: 12),
+          SelectableText(
+            '示例地址：$defaultSampleStreamUri',
+            style: const TextStyle(fontSize: 12),
           ),
         ],
       ),

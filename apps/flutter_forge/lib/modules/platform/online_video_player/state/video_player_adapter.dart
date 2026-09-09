@@ -5,6 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:video_player/video_player.dart';
 
 const sampleStreamUrl = 'https://media.w3.org/2010/05/sintel/trailer.mp4';
+const webSampleStreamPath = 'media/flutter-forge-sample.mp4';
+
+Uri get defaultSampleStreamUri =>
+    kIsWeb ? Uri.base.resolve(webSampleStreamPath) : Uri.parse(sampleStreamUrl);
 
 enum PlayerUiState { idle, loading, playing, paused, error }
 
@@ -33,6 +37,7 @@ class VideoPlayerPluginAdapter implements VideoPlayerAdapter {
     this.reachabilityProbe,
     bool? probeBeforeOpen,
     bool? startAutomatically,
+    Uri? mediaUri,
     Dio? dio,
     TargetPlatform? targetPlatform,
     this.noFrameTimeout = const Duration(seconds: 10),
@@ -46,7 +51,8 @@ class VideoPlayerPluginAdapter implements VideoPlayerAdapter {
            ((targetPlatform ?? defaultTargetPlatform) == TargetPlatform.windows
                ? const Duration(seconds: 12)
                : const Duration(seconds: 15)),
-       _dio = dio ?? Dio() {
+       _dio = dio ?? Dio(),
+       _mediaUri = mediaUri {
     if (controller != null) {
       _controller = controller;
       _controller!.addListener(_synchronizeState);
@@ -62,6 +68,7 @@ class VideoPlayerPluginAdapter implements VideoPlayerAdapter {
   final Duration noFrameCheckInterval;
   final Duration loadingTimeout;
   final Dio _dio;
+  final Uri? _mediaUri;
 
   VideoPlayerController? _controller;
 
@@ -234,7 +241,7 @@ class VideoPlayerPluginAdapter implements VideoPlayerAdapter {
     position.value = Duration.zero;
     duration.value = Duration.zero;
 
-    final url = Uri.parse(sampleStreamUrl);
+    final url = _mediaUri ?? defaultSampleStreamUri;
     if (probeBeforeOpen) {
       final probe = reachabilityProbe ?? _defaultReachabilityProbe;
       final probeStopwatch = Stopwatch()..start();
