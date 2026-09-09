@@ -14,7 +14,9 @@ FilePickerService createFilePickerService({
   TargetPlatform? platform,
   bool? web,
 }) {
-  if (web ?? kIsWeb) return const FileSelectorFilePicker();
+  if (web ?? kIsWeb) {
+    return const FileSelectorFilePicker(filterExtensions: false);
+  }
   final targetPlatform = platform ?? defaultTargetPlatform;
   return switch (targetPlatform) {
     TargetPlatform.android => const FileSelectorFilePicker(),

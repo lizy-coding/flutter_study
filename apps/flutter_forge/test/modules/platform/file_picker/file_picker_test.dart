@@ -16,10 +16,12 @@ void main() {
     await tester.pump();
 
     expect(find.text('a.gcode'), findsOneWidget);
-    expect(find.text('/tmp/a.gcode'), findsOneWidget);
-    expect(find.textContaining('大小：'), findsOneWidget);
     if (kIsWeb) {
-      expect(find.text('大小：由浏览器管理'), findsOneWidget);
+      expect(find.text('/tmp/a.gcode'), findsNothing);
+      expect(find.textContaining('大小：'), findsNothing);
+    } else {
+      expect(find.text('/tmp/a.gcode'), findsOneWidget);
+      expect(find.textContaining('大小：'), findsOneWidget);
     }
   });
 
@@ -52,6 +54,11 @@ void main() {
     await tester.tap(find.byKey(const Key('pick-file-button')));
     await tester.pump();
     expect(picker.allowedExtensions, contains('.gcode'));
+
+    if (kIsWeb) {
+      expect(find.text('文本'), findsNothing);
+      return;
+    }
 
     await tester.tap(find.text('文本'));
     await tester.pump();

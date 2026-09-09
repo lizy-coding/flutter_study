@@ -26,13 +26,13 @@ void main() {
     });
 
     test('selects the file selector implementation on Web', () {
-      expect(
-        createFilePickerService(
-          platform: TargetPlatform.macOS,
-          web: true,
-        ),
-        isA<FileSelectorFilePicker>(),
+      final picker = createFilePickerService(
+        platform: TargetPlatform.macOS,
+        web: true,
       );
+
+      expect(picker, isA<FileSelectorFilePicker>());
+      expect((picker as FileSelectorFilePicker).filterExtensions, isFalse);
     });
   });
 

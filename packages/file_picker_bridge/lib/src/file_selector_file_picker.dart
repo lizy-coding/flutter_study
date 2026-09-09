@@ -14,7 +14,9 @@ XTypeGroup? fileSelectorTypeGroupForExtensions(
 }
 
 class FileSelectorFilePicker implements FilePickerService {
-  const FileSelectorFilePicker();
+  const FileSelectorFilePicker({this.filterExtensions = true});
+
+  final bool filterExtensions;
 
   @override
   Future<PickedFile?> pickFile({
@@ -24,7 +26,9 @@ class FileSelectorFilePicker implements FilePickerService {
   }) async {
     final file = await openFile(
       acceptedTypeGroups: [
-        if (fileSelectorTypeGroupForExtensions(allowedExtensions)
+        if (fileSelectorTypeGroupForExtensions(
+          filterExtensions ? allowedExtensions : const [],
+        )
             case final typeGroup?)
           typeGroup,
       ],
