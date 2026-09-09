@@ -169,6 +169,8 @@
     "mobile_window_policy": "in_app_navigation_only",
     "web_window_policy": "in_app_navigation_only",
     "web_platform_detection": "kIsWeb_before_defaultTargetPlatform",
+    "web_release_build": "bash tool/build_web_release.sh",
+    "web_startup_shell": "web/index.html + web/flutter_bootstrap.js",
     "platform_capability_contract": "business_neutral_interface"
   },
   "change_protocol": {
@@ -187,6 +189,7 @@
       "flutter analyze (bare)",
       "bash tool/test_all.sh",
       "bash tool/verify_test_layout.sh",
+      "bash tool/build_web_release.sh",
       "dart run flutterguard_cli:flutterguard scan . --fail-on high (cd apps/flutter_forge)"
     ],
     "ci": {

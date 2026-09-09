@@ -318,7 +318,7 @@ final List<ModuleEntry> _modules = [
     concepts: ['FilePickerService', 'MethodChannel', '平台桥接', '扩展名过滤', '取消分支'],
     estimatedMinutes: 20,
     status: ModuleStatus.ready,
-    // Web uses file_selector_web and only accesses user-selected files.
+    // Web accepts one user-selected file and exposes only its filename.
     supportsWeb: true,
     supportedPlatforms: {TargetPlatform.macOS, TargetPlatform.windows},
     builder: (context) => const FilePickerEntry(),
@@ -339,7 +339,7 @@ final List<ModuleEntry> _modules = [
     ],
     estimatedMinutes: 35,
     status: ModuleStatus.ready,
-    // Web uses video_player_web and starts playback from a user gesture.
+    // Web uses a same-origin media asset and starts playback from a user gesture.
     supportsWeb: true,
     supportedPlatforms: {TargetPlatform.macOS, TargetPlatform.windows},
     builder: (context) => const OnlineVideoPlayerEntry(),

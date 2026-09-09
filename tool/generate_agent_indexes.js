@@ -288,7 +288,7 @@ const modules = [
     entry: 'FilePickerEntry',
     supportedPlatforms: ['macOS', 'windows'],
     supportsWeb: true,
-    supportsWebComment: '// Web uses file_selector_web and only accesses user-selected files.',
+    supportsWebComment: '// Web accepts one user-selected file and exposes only its filename.',
   },
   {
     category: 'platform',
@@ -304,7 +304,7 @@ const modules = [
     entry: 'OnlineVideoPlayerEntry',
     supportedPlatforms: ['macOS', 'windows'],
     supportsWeb: true,
-    supportsWebComment: '// Web uses video_player_web and starts playback from a user gesture.',
+    supportsWebComment: '// Web uses a same-origin media asset and starts playback from a user gesture.',
   },
   {
     category: 'platform',
@@ -601,6 +601,8 @@ function writeProjectContext() {
       mobile_window_policy: 'in_app_navigation_only',
       web_window_policy: 'in_app_navigation_only',
       web_platform_detection: 'kIsWeb_before_defaultTargetPlatform',
+      web_release_build: 'bash tool/build_web_release.sh',
+      web_startup_shell: 'web/index.html + web/flutter_bootstrap.js',
       platform_capability_contract: 'business_neutral_interface',
     },
     change_protocol: {
@@ -613,6 +615,7 @@ function writeProjectContext() {
         'flutter analyze (bare)',
         'bash tool/test_all.sh',
         'bash tool/verify_test_layout.sh',
+        'bash tool/build_web_release.sh',
         'dart run flutterguard_cli:flutterguard scan . --fail-on high (cd apps/flutter_forge)',
       ],
       ci: {
@@ -740,8 +743,9 @@ function writeRefactorPlan() {
           'Web release build completes from apps/flutter_forge',
           'Chrome tests verify in-app navigation and native-only module filtering',
           'Dio interceptor uses an in-memory Web transport for its existing login and article workflow',
-          'file picker uses file_selector_web with normalized extension filters',
-          'online video uses video_player_web without a CORS-sensitive preflight and waits for a user play gesture',
+          'file picker uses file_selector_web for one unrestricted file and displays only its filename',
+          'online video uses a same-origin controlled media asset and waits for a user play gesture',
+          'Web release uses local CanvasKit, no service worker registration and a timed loading shell',
           'WebView, G-code and USB remain unavailable until their existing capability is proven on Web',
           'conditional imports keep native-only implementations out of the Web compilation path',
         ],
