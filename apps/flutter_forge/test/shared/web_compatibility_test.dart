@@ -13,7 +13,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('Web catalog keeps native-only capabilities unavailable', () {
-    for (final path in ['/webview', '/gcode-visualizer', '/usb-detector']) {
+    for (final path in [
+      '/isolate-basic',
+      '/isolate-stream',
+      '/webview',
+      '/gcode-visualizer',
+      '/usb-detector',
+    ]) {
       final module = AppRouteTable.modules.singleWhere(
         (entry) => entry.path == path,
       );

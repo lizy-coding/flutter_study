@@ -164,6 +164,8 @@
       "priority": 12,
       "status": "completed",
       "targets": [
+        "lib/modules/async/isolate_basic",
+        "lib/modules/async/isolate_task_manager",
         "lib/modules/platform/dio_interceptor",
         "lib/modules/platform/file_picker",
         "lib/modules/platform/online_video_player",
@@ -182,6 +184,7 @@
         "file picker uses file_selector_web for one unrestricted file and displays only its filename",
         "online video uses a same-origin controlled media asset and waits for a user play gesture",
         "Web release uses local CanvasKit, no service worker registration and a timed loading shell",
+        "Safari Release keeps both Isolate modules unavailable because their progress lifecycle did not execute reliably",
         "WebView, G-code and USB remain unavailable until their existing capability is proven on Web",
         "conditional imports keep native-only implementations out of the Web compilation path"
       ]

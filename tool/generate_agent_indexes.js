@@ -79,6 +79,8 @@ const modules = [
     estimatedMinutes: 20,
     entry: 'IsolateTestEntry',
     routes: 'IsolateTestRoutes',
+    supportsWeb: false,
+    supportsWebComment: '// Safari Web validation showed no usable progress lifecycle for Isolate.spawn.',
   },
   {
     category: 'async',
@@ -92,6 +94,8 @@ const modules = [
     concepts: ['Isolate.spawn', '多任务', '进度上报', '暂停/恢复'],
     estimatedMinutes: 35,
     entry: 'IsolateStreamEntry',
+    supportsWeb: false,
+    supportsWebComment: '// Safari Web validation showed tasks stalled at zero progress.',
   },
   {
     category: 'state',
@@ -737,7 +741,7 @@ function writeRefactorPlan() {
         id: 'web_compatibility_boundary',
         priority: 12,
         status: 'completed',
-        targets: ['lib/modules/platform/dio_interceptor', 'lib/modules/platform/file_picker', 'lib/modules/platform/online_video_player', 'lib/modules/platform/webview'],
+        targets: ['lib/modules/async/isolate_basic', 'lib/modules/async/isolate_task_manager', 'lib/modules/platform/dio_interceptor', 'lib/modules/platform/file_picker', 'lib/modules/platform/online_video_player', 'lib/modules/platform/webview'],
         acceptance: ['web_host_release_build', 'browser_capability_adapters', 'browser_safe_fallbacks', 'web_module_matrix_updated'],
         evidence: [
           'Web release build completes from apps/flutter_forge',
@@ -746,6 +750,7 @@ function writeRefactorPlan() {
           'file picker uses file_selector_web for one unrestricted file and displays only its filename',
           'online video uses a same-origin controlled media asset and waits for a user play gesture',
           'Web release uses local CanvasKit, no service worker registration and a timed loading shell',
+          'Safari Release keeps both Isolate modules unavailable because their progress lifecycle did not execute reliably',
           'WebView, G-code and USB remain unavailable until their existing capability is proven on Web',
           'conditional imports keep native-only implementations out of the Web compilation path',
         ],

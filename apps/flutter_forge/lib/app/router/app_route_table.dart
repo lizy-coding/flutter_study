@@ -118,6 +118,8 @@ final List<ModuleEntry> _modules = [
     concepts: ['Isolate', 'SendPort', 'ReceivePort', '性能优化'],
     estimatedMinutes: 20,
     status: ModuleStatus.ready,
+    // Safari Web validation showed no usable progress lifecycle for Isolate.spawn.
+    supportsWeb: false,
     builder: (context) => const IsolateTestEntry(),
     routes: IsolateTestRoutes.routes,
   ),
@@ -130,6 +132,8 @@ final List<ModuleEntry> _modules = [
     concepts: ['Isolate.spawn', '多任务', '进度上报', '暂停/恢复'],
     estimatedMinutes: 35,
     status: ModuleStatus.ready,
+    // Safari Web validation showed tasks stalled at zero progress.
+    supportsWeb: false,
     builder: (context) => const IsolateStreamEntry(),
   ),
 

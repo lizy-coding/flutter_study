@@ -65,6 +65,7 @@
         "module_registry",
         "go_router"
       ],
+      "supports_web": false,
       "analysis": "lib/modules/async/isolate_basic/AI_ANALYSIS.md"
     },
     {
@@ -77,6 +78,7 @@
         "shared_learning",
         "module_registry"
       ],
+      "supports_web": false,
       "analysis": "lib/modules/async/isolate_task_manager/AI_ANALYSIS.md"
     },
     {
