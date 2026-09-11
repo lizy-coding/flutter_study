@@ -1,4 +1,4 @@
-# Flutter Forge Web Compatibility Report — 2026-09-08
+# Flutter Forge Web Compatibility Report — updated 2026-09-11
 
 ## Scope
 
@@ -18,8 +18,9 @@ to Web support.
 | Native regression suite | PASS | `bash tool/test_all.sh` passed 3/3 workspace members |
 | Repository quality gate | PASS | `bash tool/quality_gate.sh` passed 6/6 stages |
 | Manual browser traversal | PARTIAL | Wide and 360dp browser smoke covered the catalog, category navigation, a nested lifecycle interaction, platform unavailable states and AlertDialog; exhaustive per-module traversal remains pending |
-| File picker interaction | PARTIAL | Browser selection passed for `.gcode` and `.txt`, including filter and result rendering; native dialog cancellation remains pending |
-| Online video playback | PENDING | Web backend is connected; manual playback remains outside this file-picker validation pass |
+| File picker interaction | PASS | Safari browser selection renders the selected filename; Web uses unrestricted single-file selection and the widget cancellation branch passes in Chrome |
+| Online video playback | PASS | Safari Release played the same-origin six-second MP4; duration, progress and play/pause were observed |
+| Startup usability | PASS | Safari Release reached the catalog with the static loading shell, local CanvasKit and same-origin resources; exact cold-frame timing remains separately tracked |
 | Embedded WebView | NOT SUPPORTED | Browser host is not treated as a native WebView backend |
 
 ## Capability boundary
@@ -30,6 +31,9 @@ to Web support.
   the Web catalog through their Web-specific capability implementations.
 - `webview`, `gcode-visualizer`, and `usb-detector` remain unavailable in the
   Web catalog.
+- `isolate-basic` and `isolate-stream` remain unavailable in the Web catalog;
+  Safari validation showed unreliable progress and lifecycle control for
+  `Isolate.spawn`.
 - Font picker uses its existing learning entry with a Web compatibility page;
   native local-font loading is not claimed on Web.
 - Web never initializes `desktop_multi_window` and never inherits macOS or
@@ -42,12 +46,19 @@ to Web support.
   category passed.
 - 360dp viewport: compact catalog, platform unavailable cards, popup module,
   and AlertDialog open/dismiss passed without visible overflow.
-- File picker: G-code selection accepted `.gcode`; text mode exposed
-  `.txt,.md,.log`; both selections rendered the filename, browser `blob:` URL,
-  and browser-managed size state at wide and 360dp viewports.
+- File picker: Safari opened the browser chooser and the selected single file
+  rendered its filename at wide and 360dp viewports; Web does not expose the
+  native extension-filter controls or blob path in the learning result.
 - File picker cancellation: the widget cancellation branch passed in Chrome;
-  manual browser-dialog cancellation is still pending because the automation
-  file chooser cannot complete with an empty file list.
+  manual empty-dialog cancellation is not a release blocker for the single-file
+  filename use case.
+- Online video: Safari Release loaded `/media/flutter-forge-sample.mp4`, read a
+  six-second duration, started from the user gesture, advanced playback, and
+  paused successfully.
+- Startup: the Release artifact showed the loading shell before Flutter, used
+  local `/canvaskit/` resources, removed legacy service-worker control, and
+  reached the usable catalog. The exact cold first-frame budget remains in
+  `WEB_STARTUP_ISOLATE_ACCEPTANCE-20260910.md` as PENDING measurement work.
 - Browser console: a Noto font fallback warning remains; the only observed
   Engine view assertion occurred while hot-restarting the debug server and was
   not reproduced during normal navigation.
@@ -62,5 +73,6 @@ flutter analyze
 flutter test --platform chrome test/shared/navigation_policy_test.dart test/shared/module_catalog_utils_test.dart test/shared/responsive_navigation_layout_test.dart test/shared/web_compatibility_test.dart
 bash tool/test_all.sh
 flutter build web --release
+bash tool/build_web_release.sh
 bash tool/quality_gate.sh
 ```
