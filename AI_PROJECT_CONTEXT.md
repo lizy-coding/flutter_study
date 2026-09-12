@@ -174,6 +174,17 @@
     "platform_capability_contract": "business_neutral_interface"
   },
   "change_protocol": {
+    "branch_policy": {
+      "development_branch": "dev",
+      "stable_branch": "master",
+      "stable_branch_update": "pull_request_from_dev_only",
+      "stable_branch_direct_push": "forbidden",
+      "stable_branch_force_push": "forbidden",
+      "stable_branch_delete": "forbidden",
+      "required_status_check": "quality-gate",
+      "required_approvals": 1,
+      "sync_after_merge": "merge_master_topology_back_into_dev"
+    },
     "pre_read": [
       "AI_PROJECT_CONTEXT.md",
       "REFACTOR_PLAN.md",
