@@ -4,7 +4,7 @@
 
 - Base commit: `ffeeaba0f60de850be450040de460e92841223c2`
 - Scope: Web release preparation on the local `dev` checkout
-- Artifact: `apps/flutter_forge/release/1.2.6/FlutterForge-1.2.6-web.zip`
+- Artifact: `release/1.2.6/FlutterForge-1.2.6-web.zip`
 - Hosting target: GitHub Release `v1.2.6`, published through Agent Hub
 
 This report records the Web artifact prepared against the existing `v1.2.6`
