@@ -16,6 +16,7 @@ class ModuleEntry {
     required this.builder,
     this.routes = const [],
     this.supportedPlatforms,
+    this.supportsWeb,
   });
 
   final String title;
@@ -33,7 +34,16 @@ class ModuleEntry {
   /// A non-null set restricts availability to the listed host platforms.
   final Set<TargetPlatform>? supportedPlatforms;
 
-  bool isSupportedOn(TargetPlatform platform) {
+  /// Overrides Web availability independently from native host support.
+  ///
+  /// Platform-neutral modules support Web by default. Set this to false when
+  /// an otherwise platform-neutral module depends on a native-only runtime
+  /// capability. A module with an explicit [supportedPlatforms] set is
+  /// unavailable on Web unless this is explicitly true.
+  final bool? supportsWeb;
+
+  bool isSupportedOn(TargetPlatform platform, {required bool isWeb}) {
+    if (isWeb) return supportsWeb ?? supportedPlatforms == null;
     final platforms = supportedPlatforms;
     return platforms == null || platforms.contains(platform);
   }

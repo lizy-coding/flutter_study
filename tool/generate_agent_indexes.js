@@ -79,6 +79,8 @@ const modules = [
     estimatedMinutes: 20,
     entry: 'IsolateTestEntry',
     routes: 'IsolateTestRoutes',
+    supportsWeb: false,
+    supportsWebComment: '// Safari Web validation showed no usable progress lifecycle for Isolate.spawn.',
   },
   {
     category: 'async',
@@ -92,6 +94,8 @@ const modules = [
     concepts: ['Isolate.spawn', '多任务', '进度上报', '暂停/恢复'],
     estimatedMinutes: 35,
     entry: 'IsolateStreamEntry',
+    supportsWeb: false,
+    supportsWebComment: '// Safari Web validation showed tasks stalled at zero progress.',
   },
   {
     category: 'state',
@@ -256,6 +260,8 @@ const modules = [
     estimatedMinutes: 35,
     entry: 'InterceptorTestEntry',
     routes: 'InterceptorTestRoutes',
+    supportsWeb: true,
+    supportsWebComment: '// Web uses an in-memory Dio adapter; native hosts keep the localhost mock server.',
   },
   {
     category: 'platform',
@@ -285,13 +291,15 @@ const modules = [
     estimatedMinutes: 20,
     entry: 'FilePickerEntry',
     supportedPlatforms: ['macOS', 'windows'],
+    supportsWeb: true,
+    supportsWebComment: '// Web accepts one user-selected file and exposes only its filename.',
   },
   {
     category: 'platform',
     id: 'online_video_player',
     route: '/online-video-player',
     status: 'ready',
-    depends: ['shared_learning', 'dio', 'video_player', 'video_player_win', 'module_registry'],
+    depends: ['shared_learning', 'dio', 'video_player', 'video_player_web', 'video_player_win', 'module_registry'],
     title: '在线视频播放',
     subtitle: '使用 video_player 播放在线 HTTP 视频流并操控播放参数',
     difficulty: 'intermediate',
@@ -299,6 +307,8 @@ const modules = [
     estimatedMinutes: 35,
     entry: 'OnlineVideoPlayerEntry',
     supportedPlatforms: ['macOS', 'windows'],
+    supportsWeb: true,
+    supportsWebComment: '// Web uses a same-origin media asset and starts playback from a user gesture.',
   },
   {
     category: 'platform',
@@ -374,7 +384,7 @@ const categoryMeta = {
   state: [['status_management', 'flutter_ioc', 'local_persistence'], ['state_management'], ['provider', 'flutter_riverpod', 'flutter_bloc', 'flutter_ioc_core', 'shared_preferences']],
   ui: [['gcode_visualizer', 'adsorption_line', 'download_animation', 'font_picker'], ['ui_animation_custom_paint'], ['provider', 'gcode_core', 'file_picker_bridge', 'shared_learning', 'module_registry']],
   popup_table: [['popup_widgets', 'popup_list_interaction', 'scroll_table', 'overlay_follow_compare'], ['popup_overlay_table'], ['module_registry', 'shared_learning', 'two_dimensional_scrollables']],
-  platform: [['dio_interceptor', 'usb_detector', 'file_picker', 'online_video_player', 'webview'], ['network_platform'], ['dio', 'device_info_plus', 'video_player', 'video_player_win', 'shared_learning', 'file_picker_bridge', 'webview_flutter', 'webview_windows']],
+  platform: [['dio_interceptor', 'usb_detector', 'file_picker', 'online_video_player', 'webview'], ['network_platform'], ['dio', 'device_info_plus', 'video_player', 'video_player_web', 'video_player_win', 'shared_learning', 'file_picker_bridge', 'webview_flutter', 'webview_windows']],
 };
 
 const flutterGuardDependency = {
@@ -393,7 +403,7 @@ const workspacePackages = [
     path: 'packages/file_picker_bridge',
     entrypoints: ['lib/file_picker_bridge.dart'],
     owns: ['file_picker_api', 'method_channel_client', 'file_selector_client'],
-    depends: ['flutter_sdk', 'file_selector'],
+    depends: ['flutter_sdk', 'file_selector', 'file_selector_web'],
     validation: ['flutter pub get', 'flutter analyze', 'flutter test'],
     test_status: 'configured',
   },
@@ -405,6 +415,16 @@ const workspacePackages = [
     owns: ['ioc_container', 'registration_lifetimes', 'scoped_resolution'],
     depends: [],
     validation: ['dart pub get', 'dart analyze', 'dart test'],
+    test_status: 'configured',
+  },
+  {
+    name: 'desktop_multi_window',
+    kind: 'flutter_plugin_package',
+    path: 'packages/desktop_multi_window',
+    entrypoints: ['lib/desktop_multi_window.dart'],
+    owns: ['desktop_window_lifecycle', 'multi_window_host_bridge'],
+    depends: ['flutter_sdk'],
+    validation: ['flutter pub get', 'flutter analyze', 'flutter test'],
     test_status: 'configured',
   },
 ];
@@ -495,7 +515,7 @@ function writeSchema() {
     },
     module_contract_policy: {
       keep_for_module_rule: true,
-      content: ['route', 'category', 'status', 'entrypoints', 'analysis_parent'],
+      content: ['route', 'category', 'status', 'supported_platforms', 'supports_web', 'entrypoints', 'analysis_parent'],
       avoid: ['class_descriptions', 'long_file_inventory', 'natural_language_notes'],
     },
     package_contract_policy: {
@@ -517,8 +537,8 @@ function writeProjectContext() {
     },
     platform: {
       current_hosts: ['macos', 'windows'],
-      next_host: 'android',
-      target_hosts: ['android', 'ios', 'macos', 'windows'],
+      next_host: 'web',
+      target_hosts: ['android', 'macos', 'web', 'windows'],
     },
     entrypoints: {
       process: 'lib/main.dart',
@@ -583,9 +603,24 @@ function writeProjectContext() {
       navigation_policy: 'lib/app/navigation_policy.dart',
       compact_width_breakpoint_dp: 600,
       mobile_window_policy: 'in_app_navigation_only',
+      web_window_policy: 'in_app_navigation_only',
+      web_platform_detection: 'kIsWeb_before_defaultTargetPlatform',
+      web_release_build: 'bash tool/build_web_release.sh',
+      web_startup_shell: 'web/index.html + web/flutter_bootstrap.js',
       platform_capability_contract: 'business_neutral_interface',
     },
     change_protocol: {
+      branch_policy: {
+        development_branch: 'dev',
+        stable_branch: 'master',
+        stable_branch_update: 'pull_request_from_dev_only',
+        stable_branch_direct_push: 'forbidden',
+        stable_branch_force_push: 'forbidden',
+        stable_branch_delete: 'forbidden',
+        required_status_check: 'quality-gate',
+        required_approvals: 1,
+        sync_after_merge: 'merge_master_topology_back_into_dev',
+      },
       pre_read: ['AI_PROJECT_CONTEXT.md', 'REFACTOR_PLAN.md', '{target}/AI_ANALYSIS.md'],
       update_source: ['tool/generate_agent_indexes.js'],
       generate: 'bash tool/generate_harness_ai_analysis.sh',
@@ -595,6 +630,7 @@ function writeProjectContext() {
         'flutter analyze (bare)',
         'bash tool/test_all.sh',
         'bash tool/verify_test_layout.sh',
+        'bash tool/build_web_release.sh',
         'dart run flutterguard_cli:flutterguard scan . --fail-on high (cd apps/flutter_forge)',
       ],
       ci: {
@@ -713,6 +749,24 @@ function writeRefactorPlan() {
         ],
       },
       {
+        id: 'web_compatibility_boundary',
+        priority: 12,
+        status: 'completed',
+        targets: ['lib/modules/async/isolate_basic', 'lib/modules/async/isolate_task_manager', 'lib/modules/platform/dio_interceptor', 'lib/modules/platform/file_picker', 'lib/modules/platform/online_video_player', 'lib/modules/platform/webview'],
+        acceptance: ['web_host_release_build', 'browser_capability_adapters', 'browser_safe_fallbacks', 'web_module_matrix_updated'],
+        evidence: [
+          'Web release build completes from apps/flutter_forge',
+          'Chrome tests verify in-app navigation and native-only module filtering',
+          'Dio interceptor uses an in-memory Web transport for its existing login and article workflow',
+          'file picker uses file_selector_web for one unrestricted file and displays only its filename',
+          'online video uses a same-origin controlled media asset and waits for a user play gesture',
+          'Web release uses local CanvasKit, no service worker registration and a timed loading shell',
+          'Safari Release keeps both Isolate modules unavailable because their progress lifecycle did not execute reliably',
+          'WebView, G-code and USB remain unavailable until their existing capability is proven on Web',
+          'conditional imports keep native-only implementations out of the Web compilation path',
+        ],
+      },
+      {
         id: 'android_usb_permission_boundary',
         priority: 10,
         status: 'completed',
@@ -789,13 +843,15 @@ function writeModuleIndex() {
     schema: 'flutter_forge.agent_docs.module_index.v1',
     registry: 'lib/app/router/app_route_table.dart',
     count: modules.length,
-    modules: modules.map(({ category, id, route, status, depends }) => ({
+    modules: modules.map(({ category, id, route, status, depends, supportedPlatforms, supportsWeb }) => ({
       id,
       category,
       path: `lib/modules/${category}/${id}`,
       route,
       status,
       depends,
+      ...(supportedPlatforms ? { supported_platforms: supportedPlatforms } : {}),
+      ...(supportsWeb !== undefined ? { supports_web: supportsWeb } : {}),
       analysis: `lib/modules/${category}/${id}/AI_ANALYSIS.md`,
     })),
   });
@@ -872,6 +928,12 @@ function writeRouteTable() {
     lines.push(`    concepts: ${conceptsLiteral(m.concepts)},`);
     lines.push(`    estimatedMinutes: ${m.estimatedMinutes},`);
     lines.push(`    status: ModuleStatus.${m.status},`);
+    if (m.supportsWeb !== undefined) {
+      if (m.supportsWebComment) {
+        lines.push(`    ${m.supportsWebComment}`);
+      }
+      lines.push(`    supportsWeb: ${m.supportsWeb},`);
+    }
     if (m.supportedPlatforms) {
       if (m.supportedPlatformsComment) {
         lines.push(`    ${m.supportedPlatformsComment}`);
@@ -975,7 +1037,7 @@ function writeLayerIndexes() {
     id: 'flutter_forge_app.module_registry',
     kind: 'registry_index',
     entrypoints: ['module_entry.dart', 'module_category.dart', 'module_catalog_utils.dart'],
-    owns: ['module_entry_model', 'module_category_enum', 'difficulty_enum', 'module_status_enum', 'module_catalog_filtering', 'category_route_rebasing'],
+    owns: ['module_entry_model', 'module_category_enum', 'difficulty_enum', 'module_status_enum', 'native_web_availability', 'module_catalog_filtering', 'category_route_rebasing'],
     depends: ['flutter_material', 'go_router'],
   });
   writeIndex({
@@ -1031,7 +1093,7 @@ function writeModuleIndexes() {
 }
 
 function writeModuleContracts() {
-  for (const { category, id: module, route, status, depends, supportedPlatforms } of modules) {
+  for (const { category, id: module, route, status, depends, supportedPlatforms, supportsWeb } of modules) {
     const dir = path.join(appRoot, 'lib/modules', category, module);
     const entrypoints = [];
     for (const item of ['module_entry.dart', 'module_root.dart', 'module_routes.dart']) {
@@ -1053,6 +1115,7 @@ function writeModuleContracts() {
       route,
       category,
       ...(supportedPlatforms ? { supported_platforms: supportedPlatforms } : {}),
+      ...(supportsWeb !== undefined ? { supports_web: supportsWeb } : {}),
       entrypoints: entrypoints.length ? entrypoints : ['module_entry.dart'],
       owns: ['module_entry', 'module_ui', 'module_docs'],
       depends,

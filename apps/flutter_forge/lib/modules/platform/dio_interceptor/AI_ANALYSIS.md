@@ -10,6 +10,7 @@
   },
   "route": "/dio-interceptor",
   "category": "platform",
+  "supports_web": true,
   "entrypoints": [
     "module_entry.dart",
     "module_routes.dart",

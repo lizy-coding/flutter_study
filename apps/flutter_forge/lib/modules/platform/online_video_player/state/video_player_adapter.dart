@@ -5,6 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:video_player/video_player.dart';
 
 const sampleStreamUrl = 'https://media.w3.org/2010/05/sintel/trailer.mp4';
+const webSampleStreamPath = 'media/flutter-forge-sample.mp4';
+
+Uri get defaultSampleStreamUri =>
+    kIsWeb ? Uri.base.resolve(webSampleStreamPath) : Uri.parse(sampleStreamUrl);
 
 enum PlayerUiState { idle, loading, playing, paused, error }
 
@@ -31,18 +35,24 @@ class VideoPlayerPluginAdapter implements VideoPlayerAdapter {
     VideoPlayerController? controller,
     Duration? initializeTimeout,
     this.reachabilityProbe,
+    bool? probeBeforeOpen,
+    bool? startAutomatically,
+    Uri? mediaUri,
     Dio? dio,
     TargetPlatform? targetPlatform,
     this.noFrameTimeout = const Duration(seconds: 10),
     this.noFrameCheckInterval = const Duration(seconds: 1),
     this.loadingTimeout = const Duration(seconds: 25),
-  }) : targetPlatform = targetPlatform ?? defaultTargetPlatform,
+  }) : probeBeforeOpen = probeBeforeOpen ?? !kIsWeb,
+       startAutomatically = startAutomatically ?? !kIsWeb,
+       targetPlatform = targetPlatform ?? defaultTargetPlatform,
        initializeTimeout =
            initializeTimeout ??
            ((targetPlatform ?? defaultTargetPlatform) == TargetPlatform.windows
                ? const Duration(seconds: 12)
                : const Duration(seconds: 15)),
-       _dio = dio ?? Dio() {
+       _dio = dio ?? Dio(),
+       _mediaUri = mediaUri {
     if (controller != null) {
       _controller = controller;
       _controller!.addListener(_synchronizeState);
@@ -51,11 +61,14 @@ class VideoPlayerPluginAdapter implements VideoPlayerAdapter {
 
   final Duration initializeTimeout;
   final Future<bool> Function(Uri url)? reachabilityProbe;
+  final bool probeBeforeOpen;
+  final bool startAutomatically;
   final TargetPlatform targetPlatform;
   final Duration noFrameTimeout;
   final Duration noFrameCheckInterval;
   final Duration loadingTimeout;
   final Dio _dio;
+  final Uri? _mediaUri;
 
   VideoPlayerController? _controller;
 
@@ -228,23 +241,29 @@ class VideoPlayerPluginAdapter implements VideoPlayerAdapter {
     position.value = Duration.zero;
     duration.value = Duration.zero;
 
-    final url = Uri.parse(sampleStreamUrl);
-    final probe = reachabilityProbe ?? _defaultReachabilityProbe;
-    final probeStopwatch = Stopwatch()..start();
-    debugPrint('[video-diag] probe-start 0ms started');
-    bool reachable;
-    try {
-      reachable = await probe(url);
-      _logDiagnostic('probe-complete', probeStopwatch, 'reachable=$reachable');
-    } on Object catch (error) {
-      _logDiagnostic('probe-complete', probeStopwatch, 'error=$error');
-      reachable = false;
-    }
-    if (_disposed || generation != _openGeneration) return;
-    if (!reachable) {
-      _cancelLoadingWatchdog();
-      uiState.value = PlayerUiState.error;
-      return;
+    final url = _mediaUri ?? defaultSampleStreamUri;
+    if (probeBeforeOpen) {
+      final probe = reachabilityProbe ?? _defaultReachabilityProbe;
+      final probeStopwatch = Stopwatch()..start();
+      debugPrint('[video-diag] probe-start 0ms started');
+      bool reachable;
+      try {
+        reachable = await probe(url);
+        _logDiagnostic(
+          'probe-complete',
+          probeStopwatch,
+          'reachable=$reachable',
+        );
+      } on Object catch (error) {
+        _logDiagnostic('probe-complete', probeStopwatch, 'error=$error');
+        reachable = false;
+      }
+      if (_disposed || generation != _openGeneration) return;
+      if (!reachable) {
+        _cancelLoadingWatchdog();
+        uiState.value = PlayerUiState.error;
+        return;
+      }
     }
 
     await _releaseCurrent();
@@ -261,9 +280,13 @@ class VideoPlayerPluginAdapter implements VideoPlayerAdapter {
         await _disposeQuietly(controller);
         return;
       }
-      await controller.play();
       _cancelLoadingWatchdog();
-      _startNoFrameMonitor(controller, generation);
+      if (startAutomatically) {
+        await controller.play();
+        _startNoFrameMonitor(controller, generation);
+      } else {
+        uiState.value = PlayerUiState.paused;
+      }
     } on TimeoutException catch (error) {
       _logDiagnostic(
         'initialize-complete',
@@ -296,24 +319,26 @@ class VideoPlayerPluginAdapter implements VideoPlayerAdapter {
   }
 
   @override
-  Future<void> play() {
+  Future<void> play() async {
     final controller = _controller;
-    if (controller == null) return Future.value();
-    return controller.play();
+    if (controller == null) return;
+    await controller.play();
+    _startNoFrameMonitor(controller, _openGeneration);
   }
 
   @override
-  Future<void> pause() {
+  Future<void> pause() async {
     final controller = _controller;
-    if (controller == null) return Future.value();
-    return controller.pause();
+    if (controller == null) return;
+    _cancelNoFrameMonitor();
+    await controller.pause();
   }
 
   @override
   Future<void> togglePlayPause() {
     final controller = _controller;
     if (controller == null) return Future.value();
-    return controller.value.isPlaying ? controller.pause() : controller.play();
+    return controller.value.isPlaying ? pause() : play();
   }
 
   @override

@@ -11,6 +11,7 @@ void main() {
     required ModuleCategory category,
     List<GoRoute> routes = const [],
     Set<TargetPlatform>? supportedPlatforms,
+    bool? supportsWeb,
   }) {
     return ModuleEntry(
       title: path,
@@ -24,6 +25,7 @@ void main() {
       builder: (_) => const SizedBox.shrink(),
       routes: routes,
       supportedPlatforms: supportedPlatforms,
+      supportsWeb: supportsWeb,
     );
   }
 
@@ -65,8 +67,30 @@ void main() {
       category: ModuleCategory.basic,
     );
 
-    expect(isModuleAvailable(module, TargetPlatform.android), isTrue);
-    expect(isModuleAvailable(module, TargetPlatform.windows), isTrue);
+    expect(isModuleAvailable(module, TargetPlatform.android, false), isTrue);
+    expect(isModuleAvailable(module, TargetPlatform.windows, false), isTrue);
+    expect(isModuleAvailable(module, TargetPlatform.macOS, true), isTrue);
+  });
+
+  test('Web does not inherit the browser operating system availability', () {
+    final module = createModule(
+      path: '/macos-only',
+      category: ModuleCategory.platform,
+      supportedPlatforms: {TargetPlatform.macOS},
+    );
+
+    expect(isModuleAvailable(module, TargetPlatform.macOS, true), isFalse);
+  });
+
+  test('platform-restricted modules can explicitly opt in to Web', () {
+    final module = createModule(
+      path: '/web-capable',
+      category: ModuleCategory.platform,
+      supportedPlatforms: {TargetPlatform.macOS},
+      supportsWeb: true,
+    );
+
+    expect(isModuleAvailable(module, TargetPlatform.windows, true), isTrue);
   });
 
   test('platform-restricted modules only match declared platforms', () {
@@ -76,9 +100,9 @@ void main() {
       supportedPlatforms: {TargetPlatform.macOS},
     );
 
-    expect(isModuleAvailable(module, TargetPlatform.macOS), isTrue);
-    expect(isModuleAvailable(module, TargetPlatform.windows), isFalse);
-    expect(availableModules([module], TargetPlatform.windows), isEmpty);
+    expect(isModuleAvailable(module, TargetPlatform.macOS, false), isTrue);
+    expect(isModuleAvailable(module, TargetPlatform.windows, false), isFalse);
+    expect(availableModules([module], TargetPlatform.windows, false), isEmpty);
   });
 
   test('unavailable modules are excluded from category routes', () {

@@ -148,6 +148,12 @@ if (moduleIndex) {
     if (contract.node?.status !== mod.status) {
       failures.push(`${mod.analysis}:index_mismatch:status`);
     }
+    if ('supports_web' in mod && typeof mod.supports_web !== 'boolean') {
+      failures.push(`lib/AI_MODULE_INDEX.md:${mod.id}:supports_web_not_boolean`);
+    }
+    if (contract.supports_web !== mod.supports_web) {
+      failures.push(`${mod.analysis}:index_mismatch:supports_web`);
+    }
   }
 
   // ── phase 3: directory ↔ index cross-check ──────────────────────

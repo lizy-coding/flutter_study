@@ -35,7 +35,8 @@
     "lib/shared/AI_ANALYSIS.md",
     "lib/modules/AI_ANALYSIS.md",
     "packages/file_picker_bridge/AI_ANALYSIS.md",
-    "packages/flutter_ioc_core/AI_ANALYSIS.md"
+    "packages/flutter_ioc_core/AI_ANALYSIS.md",
+    "packages/desktop_multi_window/AI_ANALYSIS.md"
   ],
   "contracts": {
     "no_natural_language": true,

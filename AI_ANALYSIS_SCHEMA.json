@@ -16,7 +16,8 @@
     ],
     "package_contract": [
       "packages/file_picker_bridge/AI_ANALYSIS.md",
-      "packages/flutter_ioc_core/AI_ANALYSIS.md"
+      "packages/flutter_ioc_core/AI_ANALYSIS.md",
+      "packages/desktop_multi_window/AI_ANALYSIS.md"
     ],
     "section": [
       "lib/AI_ANALYSIS.md",
@@ -69,6 +70,8 @@
       "route",
       "category",
       "status",
+      "supported_platforms",
+      "supports_web",
       "entrypoints",
       "analysis_parent"
     ],

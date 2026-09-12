@@ -6,11 +6,17 @@ XTypeGroup? fileSelectorTypeGroupForExtensions(
   List<String> allowedExtensions,
 ) {
   if (allowedExtensions.isEmpty) return null;
-  return XTypeGroup(extensions: allowedExtensions);
+  return XTypeGroup(
+    extensions: allowedExtensions
+        .map((extension) => extension.replaceFirst(RegExp(r'^\.'), ''))
+        .toList(),
+  );
 }
 
 class FileSelectorFilePicker implements FilePickerService {
-  const FileSelectorFilePicker();
+  const FileSelectorFilePicker({this.filterExtensions = true});
+
+  final bool filterExtensions;
 
   @override
   Future<PickedFile?> pickFile({
@@ -20,7 +26,9 @@ class FileSelectorFilePicker implements FilePickerService {
   }) async {
     final file = await openFile(
       acceptedTypeGroups: [
-        if (fileSelectorTypeGroupForExtensions(allowedExtensions)
+        if (fileSelectorTypeGroupForExtensions(
+          filterExtensions ? allowedExtensions : const [],
+        )
             case final typeGroup?)
           typeGroup,
       ],

@@ -24,6 +24,16 @@ void main() {
         isA<MethodChannelFilePicker>(),
       );
     });
+
+    test('selects the file selector implementation on Web', () {
+      final picker = createFilePickerService(
+        platform: TargetPlatform.macOS,
+        web: true,
+      );
+
+      expect(picker, isA<FileSelectorFilePicker>());
+      expect((picker as FileSelectorFilePicker).filterExtensions, isFalse);
+    });
   });
 
   group('fileSelectorTypeGroupForExtensions', () {
@@ -33,7 +43,7 @@ void main() {
 
     test('maps allowed extensions to one XTypeGroup', () {
       final group = fileSelectorTypeGroupForExtensions(
-        const ['gcode', 'nc'],
+        const ['.gcode', 'nc'],
       );
 
       expect(group, isNotNull);

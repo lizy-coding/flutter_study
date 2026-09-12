@@ -91,6 +91,16 @@ bash tool/quality_gate.sh
 | 破坏元数据 | 禁止注册 `ModuleEntry` 时省略 `subtitle`、`category`、`difficulty` 等字段 |
 | 修改打包门禁 | 禁止修改 `.github/workflows/ci.yml`、`tool/quality_gate.sh` 及其余 `tool/*.sh` 门禁脚本的语义，除非任务显式声明并经人工验收（agent-hub 侧同样受 `packaging_change` 保护路径守卫约束）。`.github/workflows/release.yml` 是首个安装器发布任务明确授权的打包工作流；后续修改仍需显式 `packaging_change` 任务和人工验收。 |
 
+发布工作流规则：业务仓库 CI 只能构建并上传暂存产物，禁止直接创建、编辑或上传 GitHub Release。所有发布必须由 Agent Hub 的 `release_hosting` 图通过 `release-plan` 冻结 `ReleaseProgram`，再由 `release-run --execute` 执行；绕过 Agent Hub 的发布入口视为不合规。
+
+## Git 分支规则
+
+- `dev` 是持续开发与日常推送分支，所有功能、修复、文档和发版准备改动先进入 `dev`。
+- `master` 是受保护的稳定分支，禁止直接推送、强制推送或删除，只能通过从 `dev` 发起的 Pull Request 合入。
+- 合入 `master` 前必须通过仓库 CI 的 `quality-gate`，并至少获得 1 次批准；新提交会使旧批准失效，所有 review thread 必须解决。
+- `master` 合入后，应将其合并拓扑同步回 `dev`，避免 GitHub 因 PR merge commit 显示 `master` 虚假领先；不得通过重写 `dev` 历史处理该差异。
+- Agent 不得使用管理员绕过权限直接更新 `master`。标签与 Release 仍遵循 Agent Hub `release_hosting` 规则。
+
 ## Harless 巡检职责
 
 定期执行以下检查：

@@ -65,6 +65,7 @@
         "module_registry",
         "go_router"
       ],
+      "supports_web": false,
       "analysis": "lib/modules/async/isolate_basic/AI_ANALYSIS.md"
     },
     {
@@ -77,6 +78,7 @@
         "shared_learning",
         "module_registry"
       ],
+      "supports_web": false,
       "analysis": "lib/modules/async/isolate_task_manager/AI_ANALYSIS.md"
     },
     {
@@ -133,6 +135,9 @@
         "gcode_core",
         "file_picker_bridge",
         "module_registry"
+      ],
+      "supported_platforms": [
+        "macOS"
       ],
       "analysis": "lib/modules/ui/gcode_visualizer/AI_ANALYSIS.md"
     },
@@ -238,6 +243,7 @@
         "module_registry",
         "go_router"
       ],
+      "supports_web": true,
       "analysis": "lib/modules/platform/dio_interceptor/AI_ANALYSIS.md"
     },
     {
@@ -250,6 +256,9 @@
         "shared_learning",
         "device_info_plus",
         "module_registry"
+      ],
+      "supported_platforms": [
+        "android"
       ],
       "analysis": "lib/modules/platform/usb_detector/AI_ANALYSIS.md"
     },
@@ -264,6 +273,11 @@
         "file_picker_bridge",
         "module_registry"
       ],
+      "supported_platforms": [
+        "macOS",
+        "windows"
+      ],
+      "supports_web": true,
       "analysis": "lib/modules/platform/file_picker/AI_ANALYSIS.md"
     },
     {
@@ -276,9 +290,15 @@
         "shared_learning",
         "dio",
         "video_player",
+        "video_player_web",
         "video_player_win",
         "module_registry"
       ],
+      "supported_platforms": [
+        "macOS",
+        "windows"
+      ],
+      "supports_web": true,
       "analysis": "lib/modules/platform/online_video_player/AI_ANALYSIS.md"
     },
     {
@@ -292,6 +312,11 @@
         "module_registry",
         "webview_flutter",
         "webview_windows"
+      ],
+      "supported_platforms": [
+        "android",
+        "macOS",
+        "windows"
       ],
       "analysis": "lib/modules/platform/webview/AI_ANALYSIS.md"
     }

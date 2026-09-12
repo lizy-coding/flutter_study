@@ -10,7 +10,13 @@ import 'src/file_picker_service.dart';
 import 'src/file_selector_file_picker.dart';
 import 'src/method_channel_file_picker.dart';
 
-FilePickerService createFilePickerService({TargetPlatform? platform}) {
+FilePickerService createFilePickerService({
+  TargetPlatform? platform,
+  bool? web,
+}) {
+  if (web ?? kIsWeb) {
+    return const FileSelectorFilePicker(filterExtensions: false);
+  }
   final targetPlatform = platform ?? defaultTargetPlatform;
   return switch (targetPlatform) {
     TargetPlatform.android => const FileSelectorFilePicker(),

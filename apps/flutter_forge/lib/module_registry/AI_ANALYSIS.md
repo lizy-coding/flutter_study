@@ -18,6 +18,7 @@
     "module_category_enum",
     "difficulty_enum",
     "module_status_enum",
+    "native_web_availability",
     "module_catalog_filtering",
     "category_route_rebasing"
   ],

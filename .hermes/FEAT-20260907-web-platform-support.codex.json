@@ -1,0 +1,162 @@
+{
+  "schema": "flutter_forge.agent_task.v1",
+  "task_id": "FEAT-20260907-web-platform-support",
+  "title": "Implement Flutter Forge Web host and platform-safe Web capability boundary",
+  "status": "completed",
+  "completion_scope": "web_safe_compatibility_for_existing_features_only",
+  "manual_review": true,
+  "packaging_change": false,
+  "objective": "Add the Flutter Web host and implement only evidence-backed Web compatibility paths while preserving iOS/Linux out-of-scope status and keeping unsupported platform capabilities explicit.",
+  "scope": "web_host_and_platform_capability_boundary",
+  "agent_role": "code executor; implement and verify in Flutter Forge only; local commit allowed; git push, tag, release, GitHub Issue mutation, rebase, force-push, and Agent Hub edits forbidden",
+  "background": {
+    "repo": "/Users/forest/code/langGraph/flutter_forge",
+    "branch": "dev",
+    "host": "macos",
+    "baseline": "HEAD=1995cb38f224bd8c24740f6499825da782e4e19f; origin/dev=a3985fa1e276a89986f256331039f5fb2903af07; workspace clean before task JSON creation",
+    "verified_facts": [
+      "Forge quality_gate passed 6/6 at the current baseline; node tool/validate_agent_docs.js reports agent_docs_valid:43; module test layout is 22/22.",
+      "apps/flutter_forge/web does not exist at the baseline.",
+      "AI_PROJECT_CONTEXT.md target_hosts currently contains android, macos and windows; iOS was removed from active targets by commit 0693988; Linux is not an active target.",
+      "REFACTOR_PLAN.md contains web_compatibility_boundary with status planned and targets lib/modules/platform/file_picker, lib/modules/platform/online_video_player and lib/modules/platform/webview.",
+      "WebView module currently returns no backend when kIsWeb is true; native backends are WebViewFlutterBackend for Android/macOS and WebView2Backend for Windows.",
+      "online_video_player uses video_player and a Dio ranged reachability probe; its adapter has no Web-specific backend selection and currently depends on video_player_win in module metadata.",
+      "file_picker_bridge currently selects FileSelectorFilePicker for Android, Windows and Linux, and MethodChannelFilePicker for the remaining platforms; Web behavior is not explicitly tested.",
+      "NavigationPolicy already treats Android, iOS and fuchsia as in-app navigation and desktop compact windows as in-app navigation; Web must remain in-app and must not use desktop_multi_window.",
+      "Existing generated documents must be regenerated from tool/generate_agent_indexes.js; AI_MODULE_INDEX.md, AI_PROJECT_CONTEXT.md, REFACTOR_PLAN.md, route table and AI_ANALYSIS.md files are generated outputs and must not be hand-edited.",
+      "Existing WebView integration evidence explicitly says Windows native runtime is pending and no Web runtime claim exists; Android/macOS native evidence does not authorize a Web support claim.",
+      "The repository root workspace members are apps/flutter_forge, packages/file_picker_bridge, packages/flutter_ioc_core and packages/desktop_multi_window."
+    ]
+  },
+  "design_decisions": [
+    {
+      "id": "DD-1",
+      "title": "web_host_bootstrap",
+      "rationale": "Create the standard Flutter Web host only when the existing app bootstrap and plugin graph can compile safely for Web.",
+      "constraints": [
+        "Create apps/flutter_forge/web using the repository's existing Flutter app identity and bootstrap conventions; do not create a second application or nested MaterialApp.",
+        "Preserve Android/macOS/Windows host behavior and do not add iOS or Linux hosts.",
+        "Web must use in-app navigation and must not initialize desktop_multi_window or any native desktop window API.",
+        "Do not add secrets, signing configuration, release publishing, or CI release artifacts in this task."
+      ]
+    },
+    {
+      "id": "DD-2",
+      "title": "web_capability_matrix",
+      "rationale": "Each capability requires an actual Web implementation or an explicit unavailable/degraded state; package transitive Web support alone is insufficient.",
+      "constraints": [
+        "Evaluate WebView, online video, file picker and gcode_visualizer independently.",
+        "Use kIsWeb or TargetPlatform only at the existing platform boundary seams; do not add scattered platform checks across unrelated modules.",
+        "WebView may be marked supported only if a concrete Web backend is implemented and the Web build/test path exercises it; otherwise expose a visible unavailable/degraded state and keep metadata planned.",
+        "online_video_player may be marked supported only if video_player_web behavior is implemented/tested with the existing lifecycle safety; otherwise keep it planned or degraded without importing video_player_win on Web.",
+        "file_picker may be marked supported only if file_selector_web is reachable and tested; otherwise expose a visible unavailable state instead of falling back to MethodChannel on Web.",
+        "gcode_visualizer remains not_target on Web unless the external gcode_core contract and Flutter GPU requirements are proven compatible by the task; do not weaken the macOS-only GPU boundary."
+      ]
+    },
+    {
+      "id": "DD-3",
+      "title": "generated_contract_and_acceptance_truth",
+      "rationale": "Keep generated agent documents, runtime platform behavior and acceptance evidence synchronized without promoting planned Web work to support.",
+      "constraints": [
+        "Modify tool/generate_agent_indexes.js as the source of generated metadata, then regenerate all protected documents.",
+        "Use supportedPlatforms only for capabilities actually implemented and tested on Web; use the existing planned work-queue mechanism for incomplete capability work.",
+        "Keep iOS and Linux out of active target/support lists for this task.",
+        "Update maintained Web documentation/evidence only with results actually produced by commands; do not fabricate browser or GUI acceptance.",
+        "Do not modify Agent Hub source, registry-report.md, benchmark cases or architecture goldens in this task."
+      ]
+    }
+  ],
+  "implementation_steps": [
+    {
+      "step": 1,
+      "action": "preflight",
+      "detail": "Re-check git status, branch tracking, HEAD/origin refs, inspect pending .hermes task files, read AGENTS.md, AI_ANALYSIS_SCHEMA.json, AI_PROJECT_CONTEXT.md, REFACTOR_PLAN.md, tool/generate_agent_indexes.js, WebView/video/file-picker seams and existing tests. Stop if the baseline moved or unrelated changes exist."
+    },
+    {
+      "step": 2,
+      "action": "web_host",
+      "detail": "Create the standard apps/flutter_forge/web host and make the existing app bootstrap compile for Web. Keep desktop_multi_window disabled on Web and preserve NavigationPolicy in-app behavior."
+    },
+    {
+      "step": 3,
+      "action": "capability_adapters",
+      "detail": "Implement only the minimal Web capability adapters needed for a truthful build: WebView, online video and file picker must each either work through a concrete Web package/backend or render an explicit unavailable/degraded state. Keep gcode_visualizer macOS-only and USB Android-only."
+    },
+    {
+      "step": 4,
+      "action": "tests",
+      "detail": "Add focused Web-aware unit/widget tests for navigation policy, module availability, WebView fallback/backend selection, file picker selection, video adapter platform safety and compact Web layout. Tests must run on the available host without requiring a browser GUI; add a browser integration test only if the repository's installed Flutter toolchain supports it."
+    },
+    {
+      "step": 5,
+      "action": "generated_contracts",
+      "detail": "Update tool/generate_agent_indexes.js only for source-of-truth metadata and planned/implemented Web facts. Run bash tool/generate_harness_ai_analysis.sh and verify AI_MODULE_INDEX, route table, AI_ANALYSIS.md and AI_PROJECT_CONTEXT.md are regenerated without hand edits or drift."
+    },
+    {
+      "step": 6,
+      "action": "verification",
+      "detail": "Run node --check tool/generate_agent_indexes.js, node tool/validate_agent_docs.js, bash tool/check_generated_docs.sh, dart format ., flutter analyze, bash tool/test_all.sh, bash tool/verify_test_layout.sh, and the Web build/test commands supported by the installed Flutter SDK. Run bash tool/quality_gate.sh after the intended changes are staged."
+    },
+    {
+      "step": 7,
+      "action": "report_and_commit",
+      "detail": "Write or update a tracked Web integration report with exact command results and explicit PASS/PENDING/BLOCKED/NOT_IN_ARTIFACT boundaries. Inspect the complete diff, stage only Forge Web implementation/tests/generated outputs/report/task JSON, create one local commit with message feat(web): add Flutter Forge web platform baseline, then verify git show, git status, HEAD and origin/dev. Do not push."
+    }
+  ],
+  "acceptance_criteria": [
+    "DD-1: apps/flutter_forge/web exists and the Flutter Web build command exits 0.",
+    "DD-1: Web startup uses the existing Forge bootstrap/app/router and does not initialize desktop_multi_window or native desktop window APIs.",
+    "DD-2: WebView, online_video_player and file_picker each have an explicit tested Web behavior: supported only with a concrete backend/test, otherwise visible degraded/unavailable behavior and metadata remains planned.",
+    "DD-2: gcode_visualizer remains macOS-only and usb_detector remains Android-only; neither is promoted to Web.",
+    "DD-2: video_player_win is not selected or imported as a Web implementation; MethodChannelFilePicker is not used as an implicit Web fallback.",
+    "DD-3: tool/generate_agent_indexes.js is the source of changed generated facts; generated docs and route metadata are regenerated with zero drift.",
+    "DD-3: iOS and Linux are not added to active target or support metadata; desktop_multi_window remains not_target on Web.",
+    "node tool/validate_agent_docs.js exits 0.",
+    "bash tool/check_generated_docs.sh exits 0.",
+    "bash tool/quality_gate.sh exits 0 with 6/6 stages passing.",
+    "Web-specific tests/build evidence is recorded separately from native macOS/Windows/Android evidence; no GUI/browser PASS is claimed without execution.",
+    "A local commit exists with no Agent Hub files changed, origin/dev remains a3985fa1e276a89986f256331039f5fb2903af07, and no push/tag/release occurred."
+  ],
+  "forbidden_changes": [
+    "Do not modify /Users/forest/code/agent-hub or any Agent Hub registry/report/benchmark/golden file.",
+    "Do not add iOS or Linux hosts, active target entries or release artifacts.",
+    "Do not mark Web supported from transitive package presence, kIsWeb fallback existence or native-platform evidence alone.",
+    "Do not hand-edit AI_MODULE_INDEX.md, AI_PROJECT_CONTEXT.md, REFACTOR_PLAN.md, generated route table or AI_ANALYSIS.md files.",
+    "Do not weaken validate_agent_docs.js, quality_gate.sh, test_all.sh or verify_test_layout.sh.",
+    "Do not modify existing macOS/Windows/Android native behavior except minimal compile guards required to keep the Web host buildable.",
+    "Do not change dependency versions unless required by a concrete Web compile failure and supported by the existing package constraints; do not add unrelated packages.",
+    "Do not fabricate browser, WebView, video playback, file picker, screenshot, accessibility or runtime evidence.",
+    "Do not git push, tag, release, mutate GitHub Issues, rebase, force-push or amend commits below the new local commit."
+  ],
+  "out_of_scope": [
+    "iOS support",
+    "Linux support",
+    "Web release publishing or GitHub Actions release matrix",
+    "Web GUI/browser acceptance when no executable browser automation is available",
+    "FlutterGuard MEDIUM cleanup",
+    "Agent Hub adapter and benchmark calibration",
+    "gcode_core GPU port to Web"
+  ],
+  "validation": [
+    "node --check tool/generate_agent_indexes.js",
+    "node tool/validate_agent_docs.js",
+    "bash tool/generate_harness_ai_analysis.sh",
+    "bash tool/check_generated_docs.sh",
+    "dart format .",
+    "flutter analyze",
+    "bash tool/test_all.sh",
+    "bash tool/verify_test_layout.sh",
+    "flutter build web --release",
+    "bash tool/quality_gate.sh",
+    "git diff --check",
+    "git show --name-status --format= HEAD",
+    "git status --short --branch",
+    "git rev-parse HEAD origin/dev"
+  ],
+  "notes": [
+    "The task JSON itself is an expected new untracked file during preflight and may be included in the local commit.",
+    "The executing host is macOS; Web build evidence is possible, but real browser/WebView/video/file-picker interaction may remain PENDING or BLOCKED if no browser automation is available.",
+    "A Web build passing does not prove every module is Web-supported; report capability states independently.",
+    "After Forge commit, Agent Hub synchronization is a separate read-only refresh/report task and must not be performed by this executor."
+  ]
+}

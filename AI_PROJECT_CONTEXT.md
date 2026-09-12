@@ -14,11 +14,11 @@
       "macos",
       "windows"
     ],
-    "next_host": "android",
+    "next_host": "web",
     "target_hosts": [
       "android",
-      "ios",
       "macos",
+      "web",
       "windows"
     ]
   },
@@ -34,7 +34,8 @@
     "workspace_root": ".",
     "members": [
       "packages/file_picker_bridge",
-      "packages/flutter_ioc_core"
+      "packages/flutter_ioc_core",
+      "packages/desktop_multi_window"
     ],
     "resolution_status": "active",
     "resolution_blocker": "none"
@@ -51,6 +52,12 @@
       "type": "dart_package",
       "path": "packages/flutter_ioc_core",
       "entrypoint": "lib/flutter_ioc_core.dart"
+    },
+    {
+      "name": "desktop_multi_window",
+      "type": "flutter_plugin_package",
+      "path": "packages/desktop_multi_window",
+      "entrypoint": "lib/desktop_multi_window.dart"
     }
   ],
   "external_packages": [
@@ -160,9 +167,24 @@
     "navigation_policy": "lib/app/navigation_policy.dart",
     "compact_width_breakpoint_dp": 600,
     "mobile_window_policy": "in_app_navigation_only",
+    "web_window_policy": "in_app_navigation_only",
+    "web_platform_detection": "kIsWeb_before_defaultTargetPlatform",
+    "web_release_build": "bash tool/build_web_release.sh",
+    "web_startup_shell": "web/index.html + web/flutter_bootstrap.js",
     "platform_capability_contract": "business_neutral_interface"
   },
   "change_protocol": {
+    "branch_policy": {
+      "development_branch": "dev",
+      "stable_branch": "master",
+      "stable_branch_update": "pull_request_from_dev_only",
+      "stable_branch_direct_push": "forbidden",
+      "stable_branch_force_push": "forbidden",
+      "stable_branch_delete": "forbidden",
+      "required_status_check": "quality-gate",
+      "required_approvals": 1,
+      "sync_after_merge": "merge_master_topology_back_into_dev"
+    },
     "pre_read": [
       "AI_PROJECT_CONTEXT.md",
       "REFACTOR_PLAN.md",
@@ -178,6 +200,7 @@
       "flutter analyze (bare)",
       "bash tool/test_all.sh",
       "bash tool/verify_test_layout.sh",
+      "bash tool/build_web_release.sh",
       "dart run flutterguard_cli:flutterguard scan . --fail-on high (cd apps/flutter_forge)"
     ],
     "ci": {

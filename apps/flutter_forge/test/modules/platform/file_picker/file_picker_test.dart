@@ -1,4 +1,5 @@
 import 'package:file_picker_bridge/file_picker_bridge.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,7 +16,13 @@ void main() {
     await tester.pump();
 
     expect(find.text('a.gcode'), findsOneWidget);
-    expect(find.text('/tmp/a.gcode'), findsOneWidget);
+    if (kIsWeb) {
+      expect(find.text('/tmp/a.gcode'), findsNothing);
+      expect(find.textContaining('大小：'), findsNothing);
+    } else {
+      expect(find.text('/tmp/a.gcode'), findsOneWidget);
+      expect(find.textContaining('大小：'), findsOneWidget);
+    }
   });
 
   testWidgets('cancelled selection renders the cancel branch', (tester) async {
@@ -47,6 +54,11 @@ void main() {
     await tester.tap(find.byKey(const Key('pick-file-button')));
     await tester.pump();
     expect(picker.allowedExtensions, contains('.gcode'));
+
+    if (kIsWeb) {
+      expect(find.text('文本'), findsNothing);
+      return;
+    }
 
     await tester.tap(find.text('文本'));
     await tester.pump();

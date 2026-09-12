@@ -11,16 +11,24 @@ List<ModuleEntry> filterModulesByCategory(
   return allModules.where((module) => module.category == category).toList();
 }
 
-bool isModuleAvailable(ModuleEntry module, [TargetPlatform? platform]) {
-  return module.isSupportedOn(platform ?? defaultTargetPlatform);
+bool isModuleAvailable(
+  ModuleEntry module, [
+  TargetPlatform? platform,
+  bool? web,
+]) {
+  return module.isSupportedOn(
+    platform ?? defaultTargetPlatform,
+    isWeb: web ?? kIsWeb,
+  );
 }
 
 List<ModuleEntry> availableModules(
   List<ModuleEntry> modules, [
   TargetPlatform? platform,
+  bool? web,
 ]) {
   return modules
-      .where((module) => isModuleAvailable(module, platform))
+      .where((module) => isModuleAvailable(module, platform, web))
       .toList();
 }
 

@@ -17,7 +17,8 @@
     "layout": "pub_workspace",
     "internal_packages": [
       "packages/file_picker_bridge",
-      "packages/flutter_ioc_core"
+      "packages/flutter_ioc_core",
+      "packages/desktop_multi_window"
     ],
     "workspace_resolution_status": "active",
     "workspace_resolution_blocker": "none",
@@ -156,6 +157,36 @@
         "single_window_in_app_navigation",
         "unsupported_capability_state_visible",
         "no_android_analyzer_or_test_regressions"
+      ]
+    },
+    {
+      "id": "web_compatibility_boundary",
+      "priority": 12,
+      "status": "completed",
+      "targets": [
+        "lib/modules/async/isolate_basic",
+        "lib/modules/async/isolate_task_manager",
+        "lib/modules/platform/dio_interceptor",
+        "lib/modules/platform/file_picker",
+        "lib/modules/platform/online_video_player",
+        "lib/modules/platform/webview"
+      ],
+      "acceptance": [
+        "web_host_release_build",
+        "browser_capability_adapters",
+        "browser_safe_fallbacks",
+        "web_module_matrix_updated"
+      ],
+      "evidence": [
+        "Web release build completes from apps/flutter_forge",
+        "Chrome tests verify in-app navigation and native-only module filtering",
+        "Dio interceptor uses an in-memory Web transport for its existing login and article workflow",
+        "file picker uses file_selector_web for one unrestricted file and displays only its filename",
+        "online video uses a same-origin controlled media asset and waits for a user play gesture",
+        "Web release uses local CanvasKit, no service worker registration and a timed loading shell",
+        "Safari Release keeps both Isolate modules unavailable because their progress lifecycle did not execute reliably",
+        "WebView, G-code and USB remain unavailable until their existing capability is proven on Web",
+        "conditional imports keep native-only implementations out of the Web compilation path"
       ]
     },
     {

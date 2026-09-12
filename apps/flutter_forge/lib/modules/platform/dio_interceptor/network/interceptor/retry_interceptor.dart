@@ -1,7 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+
+import 'socket_error_io.dart'
+    if (dart.library.js_interop) 'socket_error_web.dart';
 
 /// 重试拦截器
 /// 用于网络请求失败时自动重试
@@ -118,7 +120,7 @@ class RetryInterceptor extends Interceptor {
   /// 判断错误是否应该重试
   bool _shouldRetryError(DioException err) {
     // 网络连接错误
-    if (err.error is SocketException) {
+    if (isSocketError(err.error)) {
       return true;
     }
 

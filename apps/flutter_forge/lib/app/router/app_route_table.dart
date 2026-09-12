@@ -118,6 +118,8 @@ final List<ModuleEntry> _modules = [
     concepts: ['Isolate', 'SendPort', 'ReceivePort', '性能优化'],
     estimatedMinutes: 20,
     status: ModuleStatus.ready,
+    // Safari Web validation showed no usable progress lifecycle for Isolate.spawn.
+    supportsWeb: false,
     builder: (context) => const IsolateTestEntry(),
     routes: IsolateTestRoutes.routes,
   ),
@@ -130,6 +132,8 @@ final List<ModuleEntry> _modules = [
     concepts: ['Isolate.spawn', '多任务', '进度上报', '暂停/恢复'],
     estimatedMinutes: 35,
     status: ModuleStatus.ready,
+    // Safari Web validation showed tasks stalled at zero progress.
+    supportsWeb: false,
     builder: (context) => const IsolateStreamEntry(),
   ),
 
@@ -291,6 +295,8 @@ final List<ModuleEntry> _modules = [
     concepts: ['Dio', '拦截器', 'Token 刷新', 'Mock Server', '重试机制'],
     estimatedMinutes: 35,
     status: ModuleStatus.ready,
+    // Web uses an in-memory Dio adapter; native hosts keep the localhost mock server.
+    supportsWeb: true,
     builder: (context) => const InterceptorTestEntry(),
     routes: InterceptorTestRoutes.routes,
   ),
@@ -316,6 +322,8 @@ final List<ModuleEntry> _modules = [
     concepts: ['FilePickerService', 'MethodChannel', '平台桥接', '扩展名过滤', '取消分支'],
     estimatedMinutes: 20,
     status: ModuleStatus.ready,
+    // Web accepts one user-selected file and exposes only its filename.
+    supportsWeb: true,
     supportedPlatforms: {TargetPlatform.macOS, TargetPlatform.windows},
     builder: (context) => const FilePickerEntry(),
   ),
@@ -335,6 +343,8 @@ final List<ModuleEntry> _modules = [
     ],
     estimatedMinutes: 35,
     status: ModuleStatus.ready,
+    // Web uses a same-origin media asset and starts playback from a user gesture.
+    supportsWeb: true,
     supportedPlatforms: {TargetPlatform.macOS, TargetPlatform.windows},
     builder: (context) => const OnlineVideoPlayerEntry(),
   ),

@@ -10,6 +10,7 @@
   },
   "route": "/isolate-basic",
   "category": "async",
+  "supports_web": false,
   "entrypoints": [
     "module_entry.dart",
     "module_root.dart",
