@@ -91,6 +91,8 @@ bash tool/quality_gate.sh
 | 破坏元数据 | 禁止注册 `ModuleEntry` 时省略 `subtitle`、`category`、`difficulty` 等字段 |
 | 修改打包门禁 | 禁止修改 `.github/workflows/ci.yml`、`tool/quality_gate.sh` 及其余 `tool/*.sh` 门禁脚本的语义，除非任务显式声明并经人工验收（agent-hub 侧同样受 `packaging_change` 保护路径守卫约束）。`.github/workflows/release.yml` 是首个安装器发布任务明确授权的打包工作流；后续修改仍需显式 `packaging_change` 任务和人工验收。 |
 
+发布工作流规则：业务仓库 CI 只能构建并上传暂存产物，禁止直接创建、编辑或上传 GitHub Release。所有发布必须由 Agent Hub 的 `release_hosting` 图通过 `release-plan` 冻结 `ReleaseProgram`，再由 `release-run --execute` 执行；绕过 Agent Hub 的发布入口视为不合规。
+
 ## Harless 巡检职责
 
 定期执行以下检查：

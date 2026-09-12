@@ -17,7 +17,8 @@ to Web support.
 | Safe compatibility pages | PASS | Chrome widget tests cover connected Web modules and native-only fallback entries |
 | Native regression suite | PASS | `bash tool/test_all.sh` passed 3/3 workspace members |
 | Repository quality gate | PASS | `bash tool/quality_gate.sh` passed 6/6 stages |
-| Manual browser traversal | PARTIAL | Wide and 360dp browser smoke covered the catalog, category navigation, a nested lifecycle interaction, platform unavailable states and AlertDialog; exhaustive per-module traversal remains pending |
+| Module browser traversal | PASS | Safari Release rendered all 17 available/degraded module entries and all 5 expected unavailable states without unexpected route or blank-page failures |
+| Exhaustive control interaction | PARTIAL | Representative interactions passed, including nested navigation, compact dialogs, file selection and video playback; every control branch is not claimed |
 | File picker interaction | PASS | Safari browser selection renders the selected filename; Web uses unrestricted single-file selection and the widget cancellation branch passes in Chrome |
 | Online video playback | PASS | Safari Release played the same-origin six-second MP4; duration, progress and play/pause were observed |
 | Startup usability | PASS | Safari Release reached the catalog with the static loading shell, local CanvasKit and same-origin resources; exact cold-frame timing remains separately tracked |
@@ -62,9 +63,10 @@ to Web support.
 - Browser console: a Noto font fallback warning remains; the only observed
   Engine view assertion occurred while hot-restarting the debug server and was
   not reproduced during normal navigation.
-- Remaining scope: every module's complete interactive surface, browser
-  refresh/deep-link behavior, release-build browser traversal, and automated
-  screenshot evidence.
+- Full module entry traversal is recorded in
+  `WEB_MODULE_TRAVERSAL-20260911.md`. Remaining non-blocking evidence scope is
+  every control branch and automated screenshot coverage. Refresh/deep-link,
+  Edge smoke and exact cold-start timing remain release-candidate checks.
 
 ## Commands
 
